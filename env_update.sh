@@ -82,7 +82,7 @@ ${PROXY_ENV}
       - database
     networks:
       vpcbr:
-        ipv4_address: 172.21.1.4
+        ipv4_address: 172.22.0.4
 EOL
 
 
@@ -118,5 +118,5 @@ ${PROXY_ENV}
       - database
     networks:
       vpcbr:
-        ipv4_address: 172.21.1.4
+        ipv4_address: 172.22.0.4
 EOL
