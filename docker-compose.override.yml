@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  webefnc:
+    build: ./docker/dockerfile/
+    restart: unless-stopped 
+    entrypoint: "./dev-entrypoint.sh"
+    environment:
+      http_proxy: http://10.0.0.1:80
+      APP_TIMEZONE: 'Europe/Paris'
+    volumes:
+      - ./:/var/www
+    ports:
+      - "80:80"
+    depends_on:
+      - database
+    networks:
+      vpcbr:
+        ipv4_address: 172.22.1.4

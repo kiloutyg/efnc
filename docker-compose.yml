@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  databaseefnc:
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./database_data:/var/lib/mysql
+    ports:
+      - "3306"
+    networks:
+      vpcbr:
+        ipv4_address: 172.22.0.2
+  phpmyadminefnc:
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: database
+    volumes:
+      - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+    ports:
+      - "8083:80"
+    networks:
+      vpcbr:
+        ipv4_address: 172.22.0.3
+    depends_on:
+      - database
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+          gateway: 172.22.0.1
