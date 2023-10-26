@@ -11,9 +11,10 @@ services:
     volumes:
       - ./:/var/www
     ports:
-      - "8080:80"
+      - "80:80"
     depends_on:
       - database
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
+

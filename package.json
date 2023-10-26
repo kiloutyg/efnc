@@ -1,0 +1,10 @@
+{
+  "name": "efnc",
+  "version": "0.1",
+  "description": "Fiche de Non-Conformité WebApp",
+  "main": "webpack.config.js",
+  "repository": "https://github.com/kiloutyg/efnc",
+  "author": "Florian Dkhissi <floriandkhissi@gmail.com>",
+  "license": "Apache 2",
+  "private": true
+}
