@@ -6,5 +6,26 @@
   "repository": "https://github.com/kiloutyg/efnc",
   "author": "Florian Dkhissi <floriandkhissi@gmail.com>",
   "license": "Apache 2",
-  "private": true
+  "private": true,
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  },
+  "dependencies": {
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.2",
+    "core-js": "^3.33.1",
+    "webpack": "^5.89.0"
+  },
+  "devDependencies": {
+    "@hotwired/stimulus": "^3.0.0",
+    "@symfony/stimulus-bridge": "^3.2.0",
+    "@symfony/webpack-encore": "^4.5.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-notifier": "^1.15.0"
+  }
 }

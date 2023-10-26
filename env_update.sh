@@ -77,9 +77,9 @@ ${PROXY_ENV}
     volumes:
       - ./:/var/www
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
-      - database
+      - databaseefnc
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
@@ -113,9 +113,9 @@ ${PROXY_ENV}
     volumes:
       - ./:/var/www
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
-      - database
+      - databaseefnc
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4

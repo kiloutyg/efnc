@@ -66,9 +66,9 @@ ${PROXY_ENV}
     volumes:
       - ./:/var/www
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
-      - database
+      - databaseefnc
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
@@ -118,7 +118,7 @@ MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
 # DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 # DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8&charset=utf8mb4"
 
-DATABASE_URL=mysql://root:\${MYSQL_ROOT_PASSWORD}@database/\${MYSQL_DATABASE}?serverVersion=MariaDB-10.11.4
+DATABASE_URL=mysql://root:\${MYSQL_ROOT_PASSWORD}@databaseefnc/\${MYSQL_DATABASE}?serverVersion=MariaDB-10.11.4
 
 ###< doctrine/doctrine-bundle ###
 
@@ -159,9 +159,9 @@ ${PROXY_ENV}
     volumes:
       - ./:/var/www
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
-      - database
+      - databaseefnc
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
@@ -195,9 +195,9 @@ ${PROXY_ENV}
     volumes:
       - ./:/var/www
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
-      - database
+      - databaseefnc
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
