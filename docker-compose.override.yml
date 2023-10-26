@@ -16,4 +16,4 @@ services:
       - database
     networks:
       vpcbr:
-        ipv4_address: 172.22.1.4
+        ipv4_address: 172.22.0.4
