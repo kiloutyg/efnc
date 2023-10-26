@@ -11,7 +11,7 @@ services:
     volumes:
       - ./:/var/www
     ports:
-      - "8080:80"
+      - "880:80"
     depends_on:
       - databaseefnc
     networks:
