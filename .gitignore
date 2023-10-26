@@ -63,4 +63,4 @@
 
 database_data/
 # Ignore .env file containing app secrets
-.env
+/.env
