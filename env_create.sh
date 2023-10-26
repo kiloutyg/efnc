@@ -71,7 +71,7 @@ ${PROXY_ENV}
       - database
     networks:
       vpcbr:
-        ipv4_address: 172.21.1.4
+        ipv4_address: 172.22.0.4
 EOL
 
 # Change the src/Kernel.php to set the good timezone.
@@ -164,7 +164,7 @@ ${PROXY_ENV}
       - database
     networks:
       vpcbr:
-        ipv4_address: 172.21.0.4
+        ipv4_address: 172.22.0.4
 EOL
 
 
@@ -200,7 +200,7 @@ ${PROXY_ENV}
       - database
     networks:
       vpcbr:
-        ipv4_address: 172.21.0.4
+        ipv4_address: 172.22.0.4
 EOL
 
 fi
