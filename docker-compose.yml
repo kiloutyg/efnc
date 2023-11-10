@@ -23,7 +23,7 @@ services:
     volumes:
       - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
     ports:
-      - "8083:80"
+      - "8092:80"
     networks:
       vpcbr:
         ipv4_address: 172.22.0.3
