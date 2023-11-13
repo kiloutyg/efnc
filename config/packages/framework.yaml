@@ -18,6 +18,14 @@ framework:
     php_errors:
         log: true
 
+
+    # the IP address (or range) of your proxy
+    trusted_proxies: '172.22.0.254/16'
+    # trust *all* "X-Forwarded-*" headers
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-prefix']
+    # or, if your proxy instead uses the "Forwarded" header
+    # trusted_headers: ['forwarded']
+
 when@test:
     framework:
         test: true
