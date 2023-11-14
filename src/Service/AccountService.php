@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-// use App\Entity\User;
+use App\Entity\User;
 
-// use App\Repository\UserRepository;
+use App\Repository\UserRepository;
 
 use App\Service\EntityDeletionService;
 
@@ -17,18 +17,18 @@ use App\Service\EntityDeletionService;
 class AccountService
 {
     private $passwordHasher;
-    // private $userRepository;
+    private $userRepository;
     private $manager;
     private $entityDeletionService;
 
     public function __construct(
         UserPasswordHasherInterface $passwordHasher,
-        // UserRepository $userRepository,
+        UserRepository $userRepository,
         EntityManagerInterface $manager,
         EntityDeletionService $entityDeletionService
     ) {
         $this->passwordHasher = $passwordHasher;
-        // $this->userRepository = $userRepository;
+        $this->userRepository = $userRepository;
         $this->manager = $manager;
         $this->entityDeletionService = $entityDeletionService;
     }

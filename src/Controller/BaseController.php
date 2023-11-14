@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use Symfony\Component\HttpFoundation\Response;
 
-// use App\Repository\UserRepository;
+use App\Repository\UserRepository;
 
 use App\Service\AccountService;
 use App\Service\MailerService;
@@ -42,7 +42,7 @@ class BaseController extends AbstractController
 
     // Repository methods
 
-    // protected $userRepository;
+    protected $userRepository;
 
     // Services methods
 
@@ -68,7 +68,7 @@ class BaseController extends AbstractController
 
         // Repository methods
 
-        // UserRepository                  $userRepository,
+        UserRepository                  $userRepository,
 
         // Services methods
 
@@ -93,7 +93,7 @@ class BaseController extends AbstractController
 
         // Variables related to the repositories
 
-        // $this->userRepository              = $userRepository;
+        $this->userRepository              = $userRepository;
 
         // Variables related to the services
 

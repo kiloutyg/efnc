@@ -28,7 +28,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $email = null;
+    private ?string $emailAddress = null;
 
     public function getId(): ?int
     {
@@ -100,14 +100,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getEmail(): ?string
+    public function getEmailAddress(): ?string
     {
-        return $this->email;
+        return $this->emailAddress;
     }
 
-    public function setEmail(?string $email): static
+    public function setEmailAddress(?string $emailAddress): static
     {
-        $this->email = $email;
+        $this->emailAddress = $emailAddress;
 
         return $this;
     }

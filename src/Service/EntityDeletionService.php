@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 
-// use App\Repository\UserRepository;
+use App\Repository\UserRepository;
 
 
 
@@ -27,13 +27,13 @@ class EntityDeletionService
     public function __construct(
         EntityManagerInterface          $em,
 
-        // UserRepository                  $userRepository,
+        UserRepository                  $userRepository,
 
         LoggerInterface                 $logger
     ) {
         $this->em                           = $em;
 
-        // $this->userRepository               = $userRepository;
+        $this->userRepository               = $userRepository;
 
         $this->logger                       = $logger;
     }
