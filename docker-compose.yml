@@ -20,6 +20,7 @@ services:
     restart: unless-stopped
     environment:
       PMA_HOST: databaseefnc
+      PMA_ABSOLUTE_URI: http://${HOSTNAME}/efncpma/
     volumes:
       - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
     labels:
