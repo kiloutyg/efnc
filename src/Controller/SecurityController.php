@@ -29,7 +29,7 @@ class SecurityController extends FrontController
         $error        = $authenticationUtils->getLastAuthenticationError(); // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', [
+        return $this->render('services/security/login.html.twig', [
             'last_username' => $lastUsername,
             'error'         => $error,
             'user'          => $this->getUser()
@@ -66,21 +66,12 @@ class SecurityController extends FrontController
 
             if ($usermod instanceof User) {
                 $this->addFlash('success', 'Le compte ' . $usermod->getUsername() . ' a été modifié');
-                return $this->redirectToRoute('app_super_admin');
+                return $this->redirectToRoute('app_base');
             };
-            return $this->redirectToRoute('app_super_admin');
+            return $this->redirectToRoute('app_base');
         }
     }
 
-
-    // This function is managing the logic of authentication
-    private function authenticateUser(User $user)
-    {
-        $providerKey = 'secured_area'; // your firewall name
-        $token       = new UsernamePasswordToken($user, $providerKey, $user->getRoles());
-
-        $this->container->get('security.token_storage')->setToken($token);
-    }
 
     // This function is responsible for managing the logic of the account deletion
     #[Route(path: '/delete_account/basic', name: 'app_delete_account_basic')]
@@ -89,7 +80,7 @@ class SecurityController extends FrontController
         $id = $request->query->get('id');
         $user = $this->userRepository->findOneBy(['id' => $id]);
 
-        return $this->redirectToRoute('app_super_admin');
+        return $this->redirectToRoute('app_base');
     }
 
     // This function is responsible for managing the logic of the account deletion
@@ -101,7 +92,6 @@ class SecurityController extends FrontController
         $this->accountService->deleteUser($id);
         $this->addFlash('success',  'Le compte a été supprimé');
 
-        return $this->redirectToRoute('app_super_admin');
+        return $this->redirectToRoute('app_base');
     }
-
 }

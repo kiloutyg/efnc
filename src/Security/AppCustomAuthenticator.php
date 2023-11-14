@@ -32,7 +32,7 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $name = $request->request->get('name', '');
+        $name = $request->request->get('username', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $name);
 

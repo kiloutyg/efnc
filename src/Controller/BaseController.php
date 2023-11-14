@@ -53,6 +53,7 @@ class BaseController extends AbstractController
 
     // Variables used in the twig templates to display all the entities
 
+    protected $users;
 
 
 
@@ -104,11 +105,14 @@ class BaseController extends AbstractController
 
         // Variables used in the twig templates to display all the entities
 
+        $this->users                        = $this->userRepository->findAll();
     }
 
     protected function render(string $view, array $parameters = [], Response $response = null): Response
     {
-        $commonParameters = [];
+        $commonParameters = [
+            'users'                 => $this->users,
+        ];
 
         $parameters = array_merge($commonParameters, $parameters);
 

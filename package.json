@@ -21,6 +21,7 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.2",
     "core-js": "^3.33.1",
+    "favicon": "^0.0.2",
     "select2": "^4.1.0-rc.0",
     "webpack": "^5.89.0"
   },
