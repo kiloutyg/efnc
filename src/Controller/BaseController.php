@@ -15,7 +15,12 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use Symfony\Component\HttpFoundation\Response;
 
+// use App\Repository\UserRepository;
 
+use App\Service\AccountService;
+use App\Service\MailerService;
+use App\Service\EntityDeletionService;
+use App\Service\FolderCreationService;
 
 #[Route('/', name: 'app_')]
 
@@ -37,9 +42,14 @@ class BaseController extends AbstractController
 
     // Repository methods
 
+    // protected $userRepository;
 
     // Services methods
 
+    protected $accountService;
+    protected $mailerService;
+    protected $entityDeletionService;
+    protected $folderCreationService;
 
     // Variables used in the twig templates to display all the entities
 
@@ -54,12 +64,18 @@ class BaseController extends AbstractController
         UserPasswordHasherInterface     $passwordHasher,
         LoggerInterface                 $loggerInterface,
         ParameterBagInterface           $params,
-        AuthorizationCheckerInterface   $authChecker
+        AuthorizationCheckerInterface   $authChecker,
 
         // Repository methods
 
+        // UserRepository                  $userRepository,
 
         // Services methods
+
+        AccountService                  $accountService,
+        MailerService                   $mailerService,
+        EntityDeletionService           $entityDeletionService,
+        FolderCreationService           $folderCreationService
 
 
     ) {
@@ -77,9 +93,14 @@ class BaseController extends AbstractController
 
         // Variables related to the repositories
 
+        // $this->userRepository              = $userRepository;
 
         // Variables related to the services
 
+        $this->accountService               = $accountService;
+        $this->mailerService                = $mailerService;
+        $this->entityDeletionService        = $entityDeletionService;
+        $this->folderCreationService        = $folderCreationService;
 
         // Variables used in the twig templates to display all the entities
 

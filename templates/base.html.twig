@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Welcome!
+			{% block title %}eFNC
 			{% endblock %}
 		</title>
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
@@ -32,7 +32,7 @@
 				<a class="navbar-brand" href="{{ path('app_base') }}">
 					<h2>
 						<strong>
-							DocAuPoste
+							eFNC
 						</strong>
 					</h2>
 				</a>
@@ -49,9 +49,9 @@
 							<a class="btn btn-primary" href="{{ path('app_logout') }}">Déconnexion</a>
 						</p>
 						<div style="width: 10px"></div>
-						<p>
+						{# <p>
 							<a class="btn btn-outline-info" href="{{path('app_tutorial')}}">TUTO</a>
-						</p>
+						</p> #}
 					{% endif %}
 				</div>
 			</div>
