@@ -2,6 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\EFNC;
+
+use App\Form\FormCreationType;
+
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,9 +21,21 @@ class FrontController extends BaseController
     }
 
     #[Route('/form_creation', name: 'form_creation')]
-    public function formCreation(): Response
+    public function formCreation(Request $request): Response
     {
-        return $this->render('services/efnc/creation/form_creation.html.twig', []);
+        $efnc = new EFNC();
+        $form = $this->createForm(FormCreationType::class, $efnc);
+
+        if ($request->getMethod('GET')) {
+            return $this->render('services/efnc/creation/form_creation.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        } else if ($request->getMethod('POST')) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->addFlash('success', 'C\'est bon khey!');
+            }
+            return $this->redirectToRoute('app_base', []);
+        }
     }
 
     #[Route('/admin_page', name: 'admin_page')]

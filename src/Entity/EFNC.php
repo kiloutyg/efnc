@@ -13,6 +13,7 @@ class EFNC
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    
     #[ORM\Column]
     private ?int $id = null;
 
@@ -52,7 +53,7 @@ class EFNC
     #[ORM\Column]
     private ?int $QuantityToBlock = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $DetailedDescription = null;
 
     #[ORM\Column]
