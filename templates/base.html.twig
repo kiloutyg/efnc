@@ -3,10 +3,12 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Welcome!
+			{% block title %}eFNC
 			{% endblock %}
 		</title>
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/ico" href="{{ asset('favicon.ico') }}"/>
+
 		{% block stylesheets %}
 			{{
             encore_entry_link_tags('app')
@@ -17,8 +19,129 @@
 			{{ encore_entry_script_tags('app') }}
 
 		{% endblock %}
+		{% include "services/toast/_toasts.html.twig" %}
+
 	</head>
-	<body>
-		{% block body %}{% endblock %}
+	<body
+		class="d-flex flex-column  min-vh-100 ">
+
+		<!-- Main Navigation -->
+
+		<nav class="navbar navbar-expand-lg navbar-dark flex-shrink-0" style="background-color: #1f3e52">
+			<div class="container">
+				<a class="navbar-brand" href="{{ path('app_base') }}">
+					<img class="img-fluid align-center justify-content-center" src="{{ asset('Plastic_Omnium.svg') }}" alt="Logo de PlasticOmnium" role="img" width="125"/>
+				</a>
+				<a class="navbar-brand" href="{{ path('app_base') }}">
+					<h2>
+						<strong>
+							eFNC
+						</strong>
+					</h2>
+				</a>
+				<div class="ms-auto d-flex align-items-center">
+					{% if app.user is null %}
+						<a class="btn btn-primary" href="{{ path('app_login') }}">Connexion</a>
+					{% else %}
+						<p>
+							<strong>
+								{{app.user.username|capitalize|split('.')|first }}
+								{{app.user.username|upper|split('.')|last }}
+							</strong>
+							<a class="btn btn-primary" href="{{ path('app_logout') }}">Déconnexion</a>
+						</p>
+						<div style="width: 10px"></div>
+					{% endif %}
+				</div>
+			</div>
+		</nav>
+
+		<!-- End Main Navigation -->
+		{% if users is defined %}
+
+			{% if users is empty %}
+
+				<div class="container ">
+
+					<h5 class="my-5">
+						<strong>Pour commencer à utiliser l'application, veuillez créer le superadministrateur :
+						</strong>
+					</h5>
+					<div class="card border-0 shadow rounded-3 my-5">
+						<div class="card-body">
+							<div class="row">
+								<form action="{{ path('app_create_account') }}" method="post">
+									{% include "services/accountservices/create_account.html.twig" %}
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			{% else %}
+
+				<div class="container flex-grow-1 d-flex flex-column">
+
+					{% include "services/navbarservices/navbarservices.html.twig" %}
+
+					{% block body %}
+
+						<p>
+							<h1 class="text-justify mb-2 mt-4 flex-shrink-0">
+								<strong>
+									eFNC
+								</strong>
+							</h1>
+						</p>
+						<h3 class="text-justify flex-shrink-0">
+							<strong>
+								Le site des Fiches de Non Conformités de P.O. Langres.</strong>
+						</h3>
+						<div class="inner-container d-flex flex-column justify-content-center align-items-center flex-grow-1">
+							<div class="d-flex  mb-5 mt-5 line-list align-items-center justify-content-center flex-wrap">
+								<a class="btn btn-primary btn-lg m-5 " role="button" aria-pressed="true" style="color:white" href="{{path('app_form_creation')}}">
+									<span class="line-details text-justify">
+										NOUVELLE FICHE DE NON CONFORMITÉ
+									</span>
+								</a>
+							</div>
+						</div>
+
+					{% endblock %}
+				</div>
+
+
+			{% endif %}
+
+		{% endif %}
+
+
+		<!-- Footer -->
+
+		<footer class="container py-3 border-top  flex-shrink-0">
+			<div class="d-flex flex-wrap justify-content-between">
+				<div class="col-md-5 d-flex align-items-center">
+					<span class="me-1" style="color: red">
+						<i class="fas fa-copyright"></i>
+					</span>
+					<a target="_blank" href="http://topnet.corp.ponet/" style="color: #25a1dd" class="mb-3  mb-md-0 text-decoration-none lh-1">PlasticOmnium Langres</a>
+				</div>
+				<div>
+					<a href="javascript:void(0)" onclick="event.preventDefault(); window.history.back();">
+						<i class="fa fa-arrow-circle-o-left" 'aria-hidden="false"'>Retour</i>
+					</a>
+				</div>
+				<ul class="nav col-md-5 justify-content-end list-unstyled d-flex">
+					<li class="ms-3">
+						<a class="text-muted" target="_blank" href="https://github.com/kiloutyg/">
+							<i class="fab fa-github"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</footer>
+
+		<!-- End Footer -->
+
 	</body>
 </html>

@@ -70,3 +70,15 @@ database_data/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+###> symfony/maker-bundle ###
+/migrations/*
+###> symfony/maker-bundle ###
+
+###> VSC stuff ###
+.vscode
+###> VSC stuff ###
+temp
+
+docker-compose.override.yml
+database.test.tar.gz
+doc.test.tar.gz

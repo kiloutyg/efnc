@@ -20,10 +20,15 @@ services:
     restart: unless-stopped
     environment:
       PMA_HOST: databaseefnc
+      PMA_ABSOLUTE_URI: http://${HOSTNAME}/efncpma/
     volumes:
       - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
-    ports:
-      - "8092:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.phpmyadminefnc.rule=PathPrefix(`/efncpma`)"
+      - "traefik.http.routers.phpmyadminefnc.middlewares=strip-phpmyadminefnc-prefix"
+      - "traefik.http.middlewares.strip-phpmyadminefnc-prefix.stripPrefix.prefixes=/efncpma"
+      - "traefik.http.routers.phpmyadminefnc.entrypoints=web"
     networks:
       vpcbr:
         ipv4_address: 172.22.0.3

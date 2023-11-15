@@ -10,10 +10,14 @@ services:
       APP_TIMEZONE: 'Europe/Paris'
     volumes:
       - ./:/var/www
-    ports:
-      - "8090:80"
     depends_on:
       - databaseefnc
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.webefnc.rule=PathPrefix(`/efnc`)
+      - traefik.http.routers.webefnc.middlewares=strip-webefnc-prefix
+      - traefik.http.middlewares.strip-webefnc-prefix.stripprefix.prefixes=/efnc
+      - traefik.http.routers.webefnc.entrypoints=web
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
