@@ -9,7 +9,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="icon" type="image/ico" href="{{ asset('favicon.ico') }}"/>
 
-
 		{% block stylesheets %}
 			{{
             encore_entry_link_tags('app')
@@ -25,7 +24,9 @@
 	</head>
 	<body
 		class="d-flex flex-column  min-vh-100 ">
+
 		<!-- Main Navigation -->
+
 		<nav class="navbar navbar-expand-lg navbar-dark flex-shrink-0" style="background-color: #1f3e52">
 			<div class="container">
 				<a class="navbar-brand" href="{{ path('app_base') }}">
@@ -38,7 +39,6 @@
 						</strong>
 					</h2>
 				</a>
-
 				<div class="ms-auto d-flex align-items-center">
 					{% if app.user is null %}
 						<a class="btn btn-primary" href="{{ path('app_login') }}">Connexion</a>
@@ -51,17 +51,18 @@
 							<a class="btn btn-primary" href="{{ path('app_logout') }}">Déconnexion</a>
 						</p>
 						<div style="width: 10px"></div>
-
 					{% endif %}
 				</div>
 			</div>
 		</nav>
+
 		<!-- End Main Navigation -->
+		{% if users is defined %}
 
+			{% if users is empty %}
 
-		<div class="container ">
-			{% if users is defined %}
-				{% if users is empty %}
+				<div class="container ">
+
 					<h5 class="my-5">
 						<strong>Pour commencer à utiliser l'application, veuillez créer le superadministrateur :
 						</strong>
@@ -75,40 +76,48 @@
 							</div>
 						</div>
 					</div>
-				{% endif %}
-			{% endif %}
-
-		</div>
-		<div class="container flex-grow-1 d-flex flex-column">
-			{% include "services/navbarservices/navbarservices.html.twig" %}
-
-
-			{% block body %}
-				<p>
-					<h1 class="text-justify mb-2 mt-4 flex-shrink-0">
-						<strong>
-							eFNC
-						</strong>
-					</h1>
-				</p>
-				<h3 class="text-justify flex-shrink-0">
-					<strong>
-						Le site des Fiches de Non Conformités de P.O. Langres.</strong>
-				</h3>
-				<div class="inner-container d-flex flex-column justify-content-center align-items-center flex-grow-1">
-					<div class="d-flex  mb-5 mt-5 line-list align-items-center justify-content-center flex-wrap">
-						<a class="btn btn-primary btn-lg m-5 " role="button" aria-pressed="true" style="color:white" href="{{path('app_base')}}">
-							<span class="line-details text-justify">
-								NOUVELLE FICHE DE NON CONFORMITÉ
-							</span>
-						</a>
-					</div>
 				</div>
 
-			{% endblock %}
+			{% else %}
 
-		</div>
+				<div class="container flex-grow-1 d-flex flex-column">
+
+					{% include "services/navbarservices/navbarservices.html.twig" %}
+
+					{% block body %}
+
+						<p>
+							<h1 class="text-justify mb-2 mt-4 flex-shrink-0">
+								<strong>
+									eFNC
+								</strong>
+							</h1>
+						</p>
+						<h3 class="text-justify flex-shrink-0">
+							<strong>
+								Le site des Fiches de Non Conformités de P.O. Langres.</strong>
+						</h3>
+						<div class="inner-container d-flex flex-column justify-content-center align-items-center flex-grow-1">
+							<div class="d-flex  mb-5 mt-5 line-list align-items-center justify-content-center flex-wrap">
+								<a class="btn btn-primary btn-lg m-5 " role="button" aria-pressed="true" style="color:white" href="{{path('app_form_creation')}}">
+									<span class="line-details text-justify">
+										NOUVELLE FICHE DE NON CONFORMITÉ
+									</span>
+								</a>
+							</div>
+						</div>
+
+					{% endblock %}
+				</div>
+
+
+			{% endif %}
+
+		{% endif %}
+
+
 		<!-- Footer -->
+
 		<footer class="container py-3 border-top  flex-shrink-0">
 			<div class="d-flex flex-wrap justify-content-between">
 				<div class="col-md-5 d-flex align-items-center">
@@ -131,6 +140,8 @@
 				</ul>
 			</div>
 		</footer>
+
 		<!-- End Footer -->
+
 	</body>
 </html>
