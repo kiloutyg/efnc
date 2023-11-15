@@ -73,11 +73,28 @@ class EFNC
     #[ORM\OneToMany(mappedBy: 'EFNC', targetEntity: RiskWeighting::class)]
     private Collection $riskWeightings;
 
+    #[ORM\OneToMany(mappedBy: 'EFNC', targetEntity: BoughtComponent::class)]
+    private Collection $boughtComponents;
+
+    #[ORM\OneToMany(mappedBy: 'EFNC', targetEntity: RootCausesAnalyse::class)]
+    private Collection $rootCausesAnalyses;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $Status = null;
+
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    private ?\DateTimeImmutable $ClosedDate = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $PilotVisa = null;
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
         $this->immediateConservatoryMeasures = new ArrayCollection();
         $this->riskWeightings = new ArrayCollection();
+        $this->boughtComponents = new ArrayCollection();
+        $this->rootCausesAnalyses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -363,6 +380,102 @@ class EFNC
                 $riskWeighting->setEFNC(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BoughtComponent>
+     */
+    public function getBoughtComponents(): Collection
+    {
+        return $this->boughtComponents;
+    }
+
+    public function addBoughtComponent(BoughtComponent $boughtComponent): static
+    {
+        if (!$this->boughtComponents->contains($boughtComponent)) {
+            $this->boughtComponents->add($boughtComponent);
+            $boughtComponent->setEFNC($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoughtComponent(BoughtComponent $boughtComponent): static
+    {
+        if ($this->boughtComponents->removeElement($boughtComponent)) {
+            // set the owning side to null (unless already changed)
+            if ($boughtComponent->getEFNC() === $this) {
+                $boughtComponent->setEFNC(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RootCausesAnalyse>
+     */
+    public function getRootCausesAnalyses(): Collection
+    {
+        return $this->rootCausesAnalyses;
+    }
+
+    public function addRootCausesAnalysis(RootCausesAnalyse $rootCausesAnalysis): static
+    {
+        if (!$this->rootCausesAnalyses->contains($rootCausesAnalysis)) {
+            $this->rootCausesAnalyses->add($rootCausesAnalysis);
+            $rootCausesAnalysis->setEFNC($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRootCausesAnalysis(RootCausesAnalyse $rootCausesAnalysis): static
+    {
+        if ($this->rootCausesAnalyses->removeElement($rootCausesAnalysis)) {
+            // set the owning side to null (unless already changed)
+            if ($rootCausesAnalysis->getEFNC() === $this) {
+                $rootCausesAnalysis->setEFNC(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->Status;
+    }
+
+    public function setStatus(?bool $Status): static
+    {
+        $this->Status = $Status;
+
+        return $this;
+    }
+
+    public function getClosedDate(): ?\DateTimeImmutable
+    {
+        return $this->ClosedDate;
+    }
+
+    public function setClosedDate(\DateTimeImmutable $ClosedDate): static
+    {
+        $this->ClosedDate = $ClosedDate;
+
+        return $this;
+    }
+
+    public function getPilotVisa(): ?string
+    {
+        return $this->PilotVisa;
+    }
+
+    public function setPilotVisa(?string $PilotVisa): static
+    {
+        $this->PilotVisa = $PilotVisa;
 
         return $this;
     }
