@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Service;
+
 use App\Entity\EFNC;
 use App\Entity\ImmediatePreventiveActionPlan;
 use App\Entity\Picture;
