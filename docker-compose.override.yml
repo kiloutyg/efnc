@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  webefnc:
+  web:
     build: ./docker/dockerfile/
     restart: unless-stopped 
     entrypoint: "./dev-entrypoint.sh"
@@ -11,7 +11,7 @@ services:
     volumes:
       - ./:/var/www
     depends_on:
-      - databaseefnc
+      - database
     labels:
       - traefik.enable=true
       - traefik.http.routers.webefnc.rule=PathPrefix(`/efnc`)

@@ -67,7 +67,7 @@ cat > docker-compose.override.yml <<EOL
 version: '3.8'
 
 services:
-  webefnc:
+  web:
     build: ./docker/dockerfile/
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
@@ -79,7 +79,7 @@ ${PROXY_ENV}
     ports:
       - "8080:80"
     depends_on:
-      - databaseefnc
+      - database
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
@@ -103,7 +103,7 @@ cat > docker-compose.override.yml <<EOL
 version: '3.8'
 
 services:
-  webefnc:
+  web:
     build: ./docker/dockerfile/
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
@@ -115,7 +115,7 @@ ${PROXY_ENV}
     ports:
       - "8080:80"
     depends_on:
-      - databaseefnc
+      - database
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4

@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  databaseefnc:
+  database:
     image: mariadb:latest
     restart: unless-stopped
     environment:
@@ -15,11 +15,11 @@ services:
     networks:
       vpcbr:
         ipv4_address: 172.22.0.2
-  phpmyadminefnc:
+  phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: unless-stopped
     environment:
-      PMA_HOST: databaseefnc
+      PMA_HOST: database
       PMA_ABSOLUTE_URI: http://${HOSTNAME}/efncpma/
     volumes:
       - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
@@ -33,7 +33,7 @@ services:
       vpcbr:
         ipv4_address: 172.22.0.3
     depends_on:
-      - databaseefnc
+      - database
 
 
 networks:

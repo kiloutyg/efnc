@@ -19,4 +19,10 @@ class FrontController extends BaseController
     {
         return $this->render('services/efnc/creation/form_creation.html.twig', []);
     }
+
+    #[Route('/admin_page', name: 'admin_page')]
+    public function adminPage(): Response
+    {
+        return $this->render('admin_page.html.twig', []);
+    }
 }
