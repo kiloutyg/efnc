@@ -30,6 +30,7 @@ class FrontController extends BaseController
 
         if ($request->getMethod() == 'POST') {
             if ($form->isSubmitted() && $form->isValid()) {
+                $this->formCreationService->createForm($efnc, $form, $request);
                 $this->addFlash('success', 'C\'est bon khey!');
                 return $this->redirectToRoute('app_base', []);
             } else {

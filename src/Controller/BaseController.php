@@ -24,6 +24,7 @@ use App\Service\AccountService;
 use App\Service\MailerService;
 use App\Service\EntityDeletionService;
 use App\Service\FolderCreationService;
+use App\Service\FormCreationService;
 
 #[Route('/', name: 'app_')]
 
@@ -53,6 +54,7 @@ class BaseController extends AbstractController
     protected $mailerService;
     protected $entityDeletionService;
     protected $folderCreationService;
+    protected $formCreationService;
 
     // Variables used in the twig templates to display all the entities
 
@@ -79,7 +81,8 @@ class BaseController extends AbstractController
         AccountService                  $accountService,
         MailerService                   $mailerService,
         EntityDeletionService           $entityDeletionService,
-        FolderCreationService           $folderCreationService
+        FolderCreationService           $folderCreationService,
+        FormCreationService             $formCreationService
 
 
     ) {
@@ -105,6 +108,7 @@ class BaseController extends AbstractController
         $this->mailerService                = $mailerService;
         $this->entityDeletionService        = $entityDeletionService;
         $this->folderCreationService        = $folderCreationService;
+        $this->formCreationService          = $formCreationService;
 
         // Variables used in the twig templates to display all the entities
 
