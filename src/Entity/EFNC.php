@@ -56,7 +56,7 @@ class EFNC
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $DetailedDescription = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $CreatedAt = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]

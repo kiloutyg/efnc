@@ -1,13 +1,13 @@
-version: '3.8'
+version: "3.8"
 
 services:
   web:
     build: ./docker/dockerfile/
-    restart: unless-stopped 
+    restart: unless-stopped
     entrypoint: "./dev-entrypoint.sh"
     environment:
       http_proxy: http://10.0.0.1:80
-      APP_TIMEZONE: 'Europe/Paris'
+      APP_TIMEZONE: "Europe/Paris"
     volumes:
       - ./:/var/www
     depends_on:
@@ -21,4 +21,3 @@ services:
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
-
