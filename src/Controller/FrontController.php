@@ -7,9 +7,10 @@ use App\Entity\EFNC;
 use App\Form\FormCreationType;
 
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\Routing\Annotation\Route;
+
 
 #[Route('/', name: 'app_')]
 class FrontController extends BaseController
@@ -25,16 +26,20 @@ class FrontController extends BaseController
     {
         $efnc = new EFNC();
         $form = $this->createForm(FormCreationType::class, $efnc);
+        $form->handleRequest($request);
 
-        if ($request->getMethod('GET')) {
+        if ($request->getMethod() == 'POST') {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->addFlash('success', 'C\'est bon khey!');
+                return $this->redirectToRoute('app_base', []);
+            } else {
+                $this->addFlash('error', 'C\'est pas bon khey!');
+                return $this->redirectToRoute('app_base', []);
+            }
+        } else if ($request->getMethod() == 'GET') {
             return $this->render('services/efnc/creation/form_creation.html.twig', [
                 'form' => $form->createView(),
             ]);
-        } else if ($request->getMethod('POST')) {
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->addFlash('success', 'C\'est bon khey!');
-            }
-            return $this->redirectToRoute('app_base', []);
         }
     }
 

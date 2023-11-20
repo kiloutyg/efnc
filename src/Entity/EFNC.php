@@ -13,54 +13,54 @@ class EFNC
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    
+
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $Title = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $Creator = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $DetectionDate = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $Team = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $DetectionPlace = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $ProductDesignation = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $Project = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $UAP = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $NonConformityOrigin = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $Quantity = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $AnomalyType = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $QuantityToBlock = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $DetailedDescription = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $CreatedAt = null;
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $CreatedAt = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $UpdatedAt = null;
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $UpdatedAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $SAPReference = null;
@@ -83,11 +83,14 @@ class EFNC
     #[ORM\Column(nullable: true)]
     private ?bool $Status = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private ?\DateTimeImmutable $ClosedDate = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $ClosedDate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $PilotVisa = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $DetectionTime = null;
 
     public function __construct()
     {
@@ -259,28 +262,40 @@ class EFNC
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->CreatedAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $CreatedAt): static
+    public function setCreatedAt(\DateTimeInterface $CreatedAt): static
     {
         $this->CreatedAt = $CreatedAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->CreatedAt = new \DateTimeInterface();
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->UpdatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $UpdatedAt): static
+    public function setUpdatedAt(\DateTimeInterface $UpdatedAt): static
     {
         $this->UpdatedAt = $UpdatedAt;
 
         return $this;
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->UpdatedAt = new \DateTimeInterface();
     }
 
     public function getSAPReference(): ?string
@@ -453,16 +468,19 @@ class EFNC
     public function setStatus(?bool $Status): static
     {
         $this->Status = $Status;
-
+        // If the status is set to true, we set the ClosedDate to the current date
+        if ($Status === true) {
+            $this->ClosedDate = new \DateTimeInterface();
+        }
         return $this;
     }
 
-    public function getClosedDate(): ?\DateTimeImmutable
+    public function getClosedDate(): ?\DateTimeInterface
     {
         return $this->ClosedDate;
     }
 
-    public function setClosedDate(\DateTimeImmutable $ClosedDate): static
+    public function setClosedDate(\DateTimeInterface $ClosedDate): static
     {
         $this->ClosedDate = $ClosedDate;
 
@@ -477,6 +495,18 @@ class EFNC
     public function setPilotVisa(?string $PilotVisa): static
     {
         $this->PilotVisa = $PilotVisa;
+
+        return $this;
+    }
+
+    public function getDetectionTime(): ?\DateTimeInterface
+    {
+        return $this->DetectionTime;
+    }
+
+    public function setDetectionTime(\DateTimeInterface $DetectionTime): static
+    {
+        $this->DetectionTime = $DetectionTime;
 
         return $this;
     }
