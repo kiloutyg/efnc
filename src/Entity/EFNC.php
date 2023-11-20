@@ -56,10 +56,10 @@ class EFNC
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $DetailedDescription = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $CreatedAt = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $UpdatedAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -83,7 +83,7 @@ class EFNC
     #[ORM\Column(nullable: true)]
     private ?bool $Status = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $ClosedDate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
