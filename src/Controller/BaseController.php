@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Response;
 
 use App\Repository\UserRepository;
+use App\Repository\EFNCRepository;
 
 use App\Service\AccountService;
 use App\Service\MailerService;
@@ -47,6 +48,7 @@ class BaseController extends AbstractController
     // Repository methods
 
     protected $userRepository;
+    protected $EFNCRepository;
 
     // Services methods
 
@@ -75,6 +77,7 @@ class BaseController extends AbstractController
         // Repository methods
 
         UserRepository                  $userRepository,
+        EFNCRepository                  $EFNCRepository,
 
         // Services methods
 
@@ -100,7 +103,8 @@ class BaseController extends AbstractController
 
         // Variables related to the repositories
 
-        $this->userRepository              = $userRepository;
+        $this->userRepository               = $userRepository;
+        $this->EFNCRepository               = $EFNCRepository;
 
         // Variables related to the services
 
@@ -119,6 +123,7 @@ class BaseController extends AbstractController
     {
         $commonParameters = [
             'users'                 => $this->users,
+            'forms'                 => $this->EFNCRepository->findAll(),
         ];
 
         $parameters = array_merge($commonParameters, $parameters);

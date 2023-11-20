@@ -87,6 +87,18 @@
 		</nav>
 
 		<!-- End Main Navigation -->
+
+		{% if forms is defined and forms is not empty %}
+			<pre>
+
+{{ dump(forms) }}
+
+
+
+			
+		</pre>
+		{% endif %}
+
 		{% if users is defined %}
 
 			{% if users is empty %}

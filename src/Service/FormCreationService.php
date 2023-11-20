@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\EFNC;
@@ -37,10 +38,7 @@ class FormCreationService
     private $logger;
 
     private $params;
-    private $request;
-    private $response;
-    private $file;
-    private $route;
+    // private $file;
 
     private $em;
 
@@ -54,10 +52,7 @@ class FormCreationService
         LoggerInterface                             $logger,
 
         ParameterBagInterface                       $params,
-        File                                        $file,
-        Request                                     $request,
-        Response                                    $response,
-        Route                                       $route,
+        // File                                        $file,
 
         EntityManagerInterface                      $em
     ) {
@@ -70,17 +65,19 @@ class FormCreationService
         $this->logger                                       = $logger;
 
         $this->params                                       = $params;
-        $this->file                                         = $file;
-        $this->request                                      = $request;
-        $this->response                                     = $response;
-        $this->route                                        = $route;
+        // $this->file                                         = $file;
 
         $this->em                                           = $em;
     }
-    public function createForm(EFNC $efnc)
+    public function createForm(EFNC $efnc, Request $request)
     {
-        $this->logger->info('full request and form data passed in the request just to see: ' . json_encode($this->request->request->all()));
+        $this->logger->info('full request and form data passed in the request just to see: ' . json_encode($request->request->all()));
+
+        $efnc->setCreatedAt(new \DateTimeImmutable('now'));
+
         $this->em->persist($efnc);
         $this->em->flush();
+
+        return true;
     }
 }
