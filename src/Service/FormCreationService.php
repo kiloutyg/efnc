@@ -73,7 +73,7 @@ class FormCreationService
     {
         $this->logger->info('full request and form data passed in the request just to see: ' . json_encode($request->request->all()));
 
-        $efnc->setCreatedAt(new \DateTimeImmutable('now'));
+        $efnc->setCreatedAt(new \DateTime());
 
         $this->em->persist($efnc);
         $this->em->flush();
