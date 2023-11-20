@@ -76,7 +76,9 @@ class FormCreationService
         $now = new \DateTime();
         $this->logger->info('Current DateTime: ' . $now->format('Y-m-d H:i:s'));
         $efnc->setCreatedAt($now);
-
+        if ((key_exists('status', $request->request->all()) != true) && ($request->request->get('status') != true)) {
+            $efnc->setStatus(false);
+        };
         $this->em->persist($efnc);
         $this->em->flush();
 

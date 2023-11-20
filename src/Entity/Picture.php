@@ -19,6 +19,9 @@ class Picture
     #[ORM\ManyToOne(inversedBy: 'pictures')]
     private ?EFNC $EFNC = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $filename = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Picture
     public function setEFNC(?EFNC $EFNC): static
     {
         $this->EFNC = $EFNC;
+
+        return $this;
+    }
+
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(string $filename): static
+    {
+        $this->filename = $filename;
 
         return $this;
     }
