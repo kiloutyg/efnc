@@ -11,9 +11,11 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
+use Symfony\Component\Validator\Constraints\File;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,7 +28,7 @@ class FormCreationType extends AbstractType
             ->add('Creator')
             ->add('DetectionDate', DateType::class, [
                 'widget' => 'single_text',
-                'html5' => true,
+                'html5' => false,
                 'attr' => ['class' => 'js-datepicker'],
                 'required' => true,
             ])
@@ -45,12 +47,39 @@ class FormCreationType extends AbstractType
             ->add('AnomalyType')
             ->add('QuantityToBlock')
             ->add('DetailedDescription')
-            ->add('SAPReference');
-        // ->add('Status', CheckboxType::class, [
-        //     'label'    => 'Status',
-        //     'required' => false,
-        // ])
-        // ->add('PilotVisa');
+            ->add('SAPReference')
+            ->add('TraceabilityPicture', FileType::class, [
+                'label' => 'TraceabilityPicture',
+                'mapped' => false,
+                'required' => true,
+                'multiple' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '4096k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid picture',
+                    ])
+                ],
+            ])
+            ->add('NCpicture', FileType::class, [
+                'label' => 'NCpicture',
+                'mapped' => false,
+                'required' => true,
+                'multiple' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '4096k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid picture',
+                    ])
+                ],
+            ]);
 
         // Add an event listener for the form
         $builder->addEventListener(
@@ -71,7 +100,6 @@ class FormCreationType extends AbstractType
             }
         );
     }
-
 
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -110,6 +110,17 @@
 					{{ form_label(form.SAPReference, 'Référence SAP :', { label_attr: { class: 'form-label', for: 'SAPReference' } }) }}
 					{{ form_widget(form.SAPReference, { attr: { class: 'form-control', id: 'SAPReference', placeholder: 'Référence SAP' } }) }}
 				</div>
+				<div
+					class="col-md-auto">
+					{{ form_label(form.TraceabilityPicture, 'Photo de Traçabilité Obligatoire :', { label_attr: { class: 'form-label', for: 'TraceabilityPicture' } }) }}
+					{{ form_widget(form.TraceabilityPicture, { attr: { class: 'form-control', id: 'TraceabilityPicture', placeholder: 'Photo de Traçabilité Obligatoire' } }) }}
+				</div>
+				<div
+					class="col-md-auto">
+					{{ form_label(form.NCpicture, 'Photo de non-conformité :', { label_attr: { class: 'form-label', for: 'NCpicture' } }) }}
+					{{ form_widget(form.NCpicture, { attr: { class: 'form-control', id: 'NCpicture', placeholder: 'Photo de non-conformité' } }) }}
+				</div>
+
 
 			</div>
 

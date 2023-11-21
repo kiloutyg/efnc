@@ -19,4 +19,4 @@ const $ = require('jquery');
 
 // Make jQuery and Popper.js available globally
 global.$ = global.jQuery = $;
-global.createPopper = createPopper;
+// global.createPopper = createPopper;
