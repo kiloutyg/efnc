@@ -85,50 +85,53 @@ class FormCreationService extends AbstractController
 
         $this->em                                           = $em;
     }
-    public function createNCForm(EFNC $efnc, Request $request, FormInterface $form)
-    {
+    public function createNCForm(
+        EFNC $efnc,
+        Request $request,
+        FormInterface $form1
+    ) {
         $this->logger->info('full request and form data passed in the request just to see: ' . json_encode($request->request->all()));
 
 
         $now = new \DateTime();
-        $this->logger->info('Current DateTime: ' . $now->format('Y-m-d H:i:s'));
         $efnc->setCreatedAt($now);
 
+        $efncFolderName = $form1->get('Project')->getData() . '.' . $now->format('Y-m-d') . '.' . $form1->get('Title')->getData();
+        // $this->FolderCreationService->folderStructure($efncFolderName);
 
-        $efncFolderName = $form->get('Project') . '.' . $now->format('Y-m-d H:i:s') . '.' . $form->get('Title');
-        $this->logger->info('EFNC Folder Name: ' . $efncFolderName);
-        $this->FolderCreationService->folderStructure($efncFolderName);
-
-        // if ((key_exists('status', $request->request->all()) != true) && ($request->request->get('status') != true)) {
-        //     $efnc->setStatus(false);
-        // };
-        if ($form->get('status')->getData() != true) {
-            $efnc->setStatus(false);
+        if ((key_exists('Status', $request->request->all()) == true) && ($request->request->get('Status')) != null) {
+            $efnc->setStatus(true);
         };
 
-        // if ((key_exists('TraceabilityPicture', $request->request->all()) == true) && ($request->request->get('TraceabilityPicture')) != null) {
-        //     $traceabilityPictures = $request->request->all('TraceabilityPicture');
-        // };
+        // Check if 'picture' key exists and is not null
+        if (key_exists('picture', $request->files->all()) && $request->files->get('picture') != null) {
+            $pictures = $request->files->all()['picture'];
 
-        $traceabilityPictures = $form->get('TraceabilityPicture')->getData();
-        $ncPictures = $form->get('NCpicture')->getData();
+            // Process TraceabilityPictures
+            if (key_exists('TraceabilityPicture', $pictures)) {
+                foreach ($pictures['TraceabilityPicture'] as $traceabilityPicture) {
+                    $traceabilityPictures[] = $traceabilityPicture;
+                }
+            }
+
+            // Process NCpictures
+            if (key_exists('NCpicture', $pictures)) {
+                foreach ($pictures['NCpicture'] as $ncPicture) {
+                    $ncPictures[] = $ncPicture;
+                }
+            }
+        }
+
 
         // Process each file, e.g., save them to the server
         foreach ($traceabilityPictures as $picture) {
             // Save or process $pictures
-            $result = $this->pictureUpload($picture, $efnc, $efncFolderName);
-            if ($result === true) {
-                $efnc->addPicture($picture);
-            }
+            $this->pictureUpload($picture, $efnc, $efncFolderName);
         }
 
         foreach ($ncPictures as $picture) {
             // Save or process $picture
-            $result = $this->pictureUpload($picture, $efnc, $efncFolderName);
-
-            if ($result === true) {
-                $efnc->addPicture($picture);
-            }
+            $this->pictureUpload($picture, $efnc, $efncFolderName);
         }
         $this->em->persist($efnc);
         $this->em->flush();
@@ -175,12 +178,18 @@ class FormCreationService extends AbstractController
         }
         $path = $folderPath . '/' . $filename;
 
+        $file->move($folderPath . '/', $filename);
+
         $picture = new Picture();
         $picture->setFile(new File($path));
         $picture->setEFNC($efnc);
         $picture->setFilename($filename);
         $picture->setPath($path);
+        $efnc->addPicture($picture);
+
         $this->em->persist($picture);
+        $this->em->persist($efnc);
+        $this->em->flush();
         return true;
     }
 }

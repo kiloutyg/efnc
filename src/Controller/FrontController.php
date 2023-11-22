@@ -25,12 +25,21 @@ class FrontController extends BaseController
     public function formCreation(Request $request): Response
     {
         $efnc = new EFNC();
-        $form = $this->createForm(FormCreationType::class, $efnc);
-        $form->handleRequest($request);
+        $form1 = $this->createForm(FormCreationType::class, $efnc);
+
+        $form1->handleRequest($request);
 
         if ($request->getMethod() == 'POST') {
-            if ($form->isSubmitted() && $form->isValid()) {
-                $result = $this->formCreationService->createNCForm($efnc, $request, $form);
+
+            if (
+                $form1->isSubmitted() && $form1->isValid()
+            ) {
+
+                $result = $this->formCreationService->createNCForm(
+                    $efnc,
+                    $request,
+                    $form1
+                );
 
                 if ($result === true) {
 
@@ -45,7 +54,8 @@ class FrontController extends BaseController
             }
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/efnc/creation/form_creation.html.twig', [
-                'form' => $form->createView(),
+                'form1' => $form1->createView(),
+
             ]);
         }
     }

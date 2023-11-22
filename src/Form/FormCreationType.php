@@ -4,12 +4,11 @@ namespace App\Form;
 
 use App\Entity\EFNC;
 use Symfony\Component\Form\AbstractType;
-
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\StringType;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -29,7 +28,6 @@ class FormCreationType extends AbstractType
             ->add('DetectionDate', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => true,
-                // 'attr' => ['class' => 'js-datepicker'],
                 'required' => true,
             ])
             ->add('DetectionTime', TimeType::class, [
@@ -47,39 +45,8 @@ class FormCreationType extends AbstractType
             ->add('AnomalyType')
             ->add('QuantityToBlock')
             ->add('DetailedDescription')
-            ->add('SAPReference')
-            ->add('TraceabilityPicture', FileType::class, [
-                'label' => 'TraceabilityPicture',
-                'mapped' => false,
-                'required' => false,
-                'multiple' => true,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '4096k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid picture',
-                    ])
-                ],
-            ])
-            ->add('NCpicture', FileType::class, [
-                'label' => 'NCpicture',
-                'mapped' => false,
-                'required' => false,
-                'multiple' => true,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '4096k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid picture',
-                    ])
-                ],
-            ]);
+            ->add('SAPReference');
+
 
         // Add an event listener for the form
         $builder->addEventListener(

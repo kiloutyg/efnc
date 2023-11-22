@@ -27,7 +27,7 @@ function previewNcPicture() {
 }
 document.addEventListener('turbo:load', () => {
     document.body.addEventListener('change', (event) => {
-        if (event.target && event.target.id === 'form_creation_NCpicture') {
+        if (event.target && event.target.id === 'picture_NCpicture') {
             previewNcPicture.call(event.target);
         }
     });
@@ -66,7 +66,7 @@ function previewTraceabilityPicture() {
 
 document.addEventListener('turbo:load', () => {
     document.body.addEventListener('change', (event) => {
-        if (event.target && event.target.id === 'form_creation_TraceabilityPicture') {
+        if (event.target && event.target.id === 'picture_TraceabilityPicture') {
             previewTraceabilityPicture.call(event.target);
         }
     });
