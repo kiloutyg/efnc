@@ -1,0 +1,46 @@
+{% block stylesheets %}
+	{{
+            encore_entry_link_tags('app')
+        }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('app') }}
+	{{ encore_entry_script_tags('datepicker') }}
+	{{ encore_entry_script_tags('toast') }}
+	{{ encore_entry_script_tags('picture-preview') }}
+	{# {{ encore_entry_script_tags('file-input-display')}} #}
+{% endblock %}
+{% block body %}
+
+	<ul
+		class="list-group"
+		style="background-color:azure">
+
+		{% for form in forms %}
+			{# <li
+																																																							class="list-group-item list-group-item-action d-flex justify-content-between align-items-center shadow-lg "> #}
+			<div
+				class="ml-auto">
+				<strong>
+					<a
+						href="#"
+						class="list-group-item list-group-item-action {% if form.Status is same as (null) %} list-group-item-light {% elseif form.Status is same as (true) %} list-group-item-success{% else %}list-group-item-warning{% endif %} d-flex justify-content-between align-items-center ">
+
+
+						{{ form.Title|upper }}
+						{{ form.id|upper }}
+
+
+						|
+						{{ form.Project|upper }}
+						|
+						{{form.CreatedAt|date('d/m/Y') }}
+						|
+					</a>
+				</strong>
+			</div>
+			{# </li> #}
+		{% endfor %}
+	</ul>
+{% endblock %}

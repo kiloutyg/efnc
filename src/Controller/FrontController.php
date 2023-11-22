@@ -65,4 +65,10 @@ class FrontController extends BaseController
     {
         return $this->render('admin_page.html.twig', []);
     }
+
+    #[Route('/form_list', name: 'form_list')]
+    public function formList(): Response
+    {
+        return $this->render('/services/efnc/display/efnc_list.html.twig', []);
+    }
 }

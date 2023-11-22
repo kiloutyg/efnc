@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-	<head>
+	<head
+		lang="fr">
 		<meta
 			charset="UTF-8">
 		<title>
@@ -95,8 +96,6 @@
 
 {{ dump(forms) }}
 
-
-
 			
 		</pre>
 		{% endif %}
@@ -170,7 +169,9 @@
 								</a>
 							</div>
 						</div>
-
+						<iframe
+							name="form_list"
+							src="{{ path('app_form_list')}}" frameborder="0"></iframe>
 					{% endblock %}
 				</div>
 
