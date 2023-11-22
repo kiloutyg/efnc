@@ -13,14 +13,19 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use App\Repository\UserRepository;
+use App\Repository\EFNCRepository;
 
 use App\Service\AccountService;
 use App\Service\MailerService;
 use App\Service\EntityDeletionService;
 use App\Service\FolderCreationService;
+use App\Service\FormCreationService;
 
 #[Route('/', name: 'app_')]
 
@@ -43,6 +48,7 @@ class BaseController extends AbstractController
     // Repository methods
 
     protected $userRepository;
+    protected $EFNCRepository;
 
     // Services methods
 
@@ -50,6 +56,7 @@ class BaseController extends AbstractController
     protected $mailerService;
     protected $entityDeletionService;
     protected $folderCreationService;
+    protected $formCreationService;
 
     // Variables used in the twig templates to display all the entities
 
@@ -70,13 +77,15 @@ class BaseController extends AbstractController
         // Repository methods
 
         UserRepository                  $userRepository,
+        EFNCRepository                  $EFNCRepository,
 
         // Services methods
 
         AccountService                  $accountService,
         MailerService                   $mailerService,
         EntityDeletionService           $entityDeletionService,
-        FolderCreationService           $folderCreationService
+        FolderCreationService           $folderCreationService,
+        FormCreationService             $formCreationService
 
 
     ) {
@@ -94,7 +103,8 @@ class BaseController extends AbstractController
 
         // Variables related to the repositories
 
-        $this->userRepository              = $userRepository;
+        $this->userRepository               = $userRepository;
+        $this->EFNCRepository               = $EFNCRepository;
 
         // Variables related to the services
 
@@ -102,6 +112,7 @@ class BaseController extends AbstractController
         $this->mailerService                = $mailerService;
         $this->entityDeletionService        = $entityDeletionService;
         $this->folderCreationService        = $folderCreationService;
+        $this->formCreationService          = $formCreationService;
 
         // Variables used in the twig templates to display all the entities
 
@@ -112,6 +123,7 @@ class BaseController extends AbstractController
     {
         $commonParameters = [
             'users'                 => $this->users,
+            'EFNCs'                 => $this->EFNCRepository->findAll(),
         ];
 
         $parameters = array_merge($commonParameters, $parameters);

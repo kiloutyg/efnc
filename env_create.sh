@@ -18,7 +18,7 @@ done
 read -p "What Timezone to use? (default Europe/Paris) " TIMEZONE
 if [ -z "${TIMEZONE}" ]
   then
-    TIMEZONE="'Europe/Paris'"
+    TIMEZONE=Europe/Paris
 fi
 
 
@@ -62,7 +62,7 @@ services:
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
 ${PROXY_ENV}
-      APP_TIMEZONE: ${TIMEZONE}
+      APP_TIMEZONE: "${TIMEZONE}"
     volumes:
       - ./:/var/www
     ports:
@@ -90,7 +90,7 @@ class Kernel extends BaseKernel
     public function boot(): void
     {
         parent::boot();
-        date_default_timezone_set(${TIMEZONE});
+        date_default_timezone_set("${TIMEZONE}");
     }
 }
 EOL
@@ -156,7 +156,7 @@ services:
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
 ${PROXY_ENV}
-      APP_TIMEZONE: ${TIMEZONE}
+      APP_TIMEZONE: "${TIMEZONE}"
     volumes:
       - ./:/var/www
     ports:
@@ -192,7 +192,7 @@ services:
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
 ${PROXY_ENV}
-      APP_TIMEZONE: ${TIMEZONE}
+      APP_TIMEZONE: "${TIMEZONE}"
     volumes:
       - ./:/var/www
     ports:

@@ -1,4 +1,5 @@
 import './bootstrap.js';
+
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -10,3 +11,12 @@ import './bootstrap.js';
 import './styles/app.scss';
 // start the Stimulus application
 import './bootstrap';
+
+const $ = require('jquery');
+// this "modifies" the jquery module: adding behavior to it
+// the bootstrap module doesn't export/return anything
+
+
+// Make jQuery and Popper.js available globally
+global.$ = global.jQuery = $;
+// global.createPopper = createPopper;

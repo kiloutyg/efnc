@@ -1,0 +1,50 @@
+{% block stylesheets %}
+	{{
+            encore_entry_link_tags('app')
+        }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('app') }}
+	{{ encore_entry_script_tags('datepicker') }}
+	{{ encore_entry_script_tags('toast') }}
+	{{ encore_entry_script_tags('picture-preview') }}
+	{# {{ encore_entry_script_tags('file-input-display')}} #}
+{% endblock %}
+{% block body %}
+
+	<ul
+		class="list-group"
+		style="background-color:azure">
+
+		{% for EFNC in EFNCs %}
+			<div
+				class="ml-auto">
+				<strong>
+					<a
+						target="_top"
+						href=" {{path('app_form_display_modification', { 'efncID': EFNC.id})}}"
+						{% if EFNC.Status is same as (null) %} class="list-group-item list-group-item-action list-group-item-light d-flex justify-content-between align-items-center "
+						{% elseif EFNC.Status is same as (true) %} class="list-group-item list-group-item-action list-group-item-success d-flex justify-content-between align-items-center "
+						{% else %} class="list-group-item list-group-item-action list-group-item-warning d-flex justify-content-between align-items-center "
+						{% endif %}>
+
+
+						{{ EFNC.Title|upper }}
+
+						{{ EFNC.id|upper }}
+
+
+						|
+						{{ EFNC.Project|upper }}
+
+						|
+						{{EFNC.CreatedAt|date('d/m/Y') }}
+
+						|
+					</a>
+				</strong>
+			</div>
+		{% endfor %}
+	</ul>
+{% endblock %}

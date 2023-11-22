@@ -25,7 +25,6 @@ class FolderCreationService
     {
         // The function obtain the right folder name from the entity name 
         $parts = explode('.', $folderName);
-        $parts = array_reverse($parts);
         $folderPath = $this->public_dir . '/doc';
 
         // Then the function creates the folder using the dedicated function
@@ -40,7 +39,6 @@ class FolderCreationService
     {
 
         $parts = explode('.', $folderName);
-        $parts = array_reverse($parts);
         $folderPath = $this->public_dir . '/doc';
 
         foreach ($parts as $part) {
