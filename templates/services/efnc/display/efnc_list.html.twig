@@ -17,30 +17,34 @@
 		class="list-group"
 		style="background-color:azure">
 
-		{% for form in forms %}
-			{# <li
-																																																							class="list-group-item list-group-item-action d-flex justify-content-between align-items-center shadow-lg "> #}
+		{% for EFNC in EFNCs %}
 			<div
 				class="ml-auto">
 				<strong>
 					<a
-						href="#"
-						class="list-group-item list-group-item-action {% if form.Status is same as (null) %} list-group-item-light {% elseif form.Status is same as (true) %} list-group-item-success{% else %}list-group-item-warning{% endif %} d-flex justify-content-between align-items-center ">
+						target="_top"
+						href=" {{path('app_form_display_modification', { 'efncID': EFNC.id})}}"
+						{% if EFNC.Status is same as (null) %} class="list-group-item list-group-item-action list-group-item-light d-flex justify-content-between align-items-center "
+						{% elseif EFNC.Status is same as (true) %} class="list-group-item list-group-item-action list-group-item-success d-flex justify-content-between align-items-center "
+						{% else %} class="list-group-item list-group-item-action list-group-item-warning d-flex justify-content-between align-items-center "
+						{% endif %}>
 
 
-						{{ form.Title|upper }}
-						{{ form.id|upper }}
+						{{ EFNC.Title|upper }}
+
+						{{ EFNC.id|upper }}
 
 
 						|
-						{{ form.Project|upper }}
+						{{ EFNC.Project|upper }}
+
 						|
-						{{form.CreatedAt|date('d/m/Y') }}
+						{{EFNC.CreatedAt|date('d/m/Y') }}
+
 						|
 					</a>
 				</strong>
 			</div>
-			{# </li> #}
 		{% endfor %}
 	</ul>
 {% endblock %}

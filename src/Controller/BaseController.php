@@ -123,7 +123,7 @@ class BaseController extends AbstractController
     {
         $commonParameters = [
             'users'                 => $this->users,
-            'forms'                 => $this->EFNCRepository->findAll(),
+            'EFNCs'                 => $this->EFNCRepository->findAll(),
         ];
 
         $parameters = array_merge($commonParameters, $parameters);

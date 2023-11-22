@@ -93,11 +93,10 @@
 
 		{% if forms is defined and forms is not empty %}
 			<pre>
-
-{{ dump(forms) }}
-
-			
 		</pre>
+
+			{# {{ dump(EFNCs) }} #}
+
 		{% endif %}
 
 		{% if users is defined %}
@@ -168,10 +167,14 @@
 									</span>
 								</a>
 							</div>
+
 						</div>
 						<iframe
+							class="d-flex mb-3 rounded-3 flex-grow-1"
 							name="form_list"
 							src="{{ path('app_form_list')}}" frameborder="0"></iframe>
+
+
 					{% endblock %}
 				</div>
 

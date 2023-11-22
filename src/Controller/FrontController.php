@@ -71,4 +71,37 @@ class FrontController extends BaseController
     {
         return $this->render('/services/efnc/display/efnc_list.html.twig', []);
     }
+
+    #[Route('/form{efncID}_display_modification', name: 'form_display_modification')]
+    public function formModificationDisplay(int $efncID, Request $request): Response
+    {
+        $efnc = $this->EFNCRepository->find(['id' => $efncID]);
+        $form1 = $this->createForm(FormCreationType::class, $efnc);
+
+        if ($request->getMethod() == 'GET') {
+            return $this->render('/services/efnc/display/form_modification.html.twig', [
+                'form1' => $form1->createView(),
+                'EFNC' => $efnc,
+            ]);
+        } else {
+            $form1->handleRequest($request);
+
+            if ($form1->isSubmitted() && $form1->isValid()) {
+                // $result = $this->formCreationService->modifyNCForm(
+                //     $efnc,
+                //     $request,
+                //     $form1
+                // );
+
+                // if ($result === true) {
+
+                $this->addFlash('success', 'C\'est bon khey!');
+                return $this->redirectToRoute('app_base', []);
+                // } else {
+                //     $this->addFlash('error', 'C\'est pas bon khey!');
+                //     return $this->redirectToRoute('app_base', []);
+                // }
+            }
+        }
+    }
 }

@@ -60,10 +60,10 @@ class FormCreationType extends AbstractType
                     return;
                 }
 
-                if ($efnc->getStatus()) {
-                    // Make PilotVisa required if Status is true
-                    $form->add('PilotVisa', null, ['required' => true]);
-                }
+                // if ($efnc->getStatus()) {
+                //     // Make PilotVisa required if Status is true
+                //     $form->add('PilotVisa', null, ['required' => true]);
+                // }
             }
         );
     }
