@@ -9,11 +9,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Symfony\Component\Validator\Constraints\File;
 
@@ -28,8 +28,8 @@ class FormCreationType extends AbstractType
             ->add('Creator')
             ->add('DetectionDate', DateType::class, [
                 'widget' => 'single_text',
-                'html5' => false,
-                'attr' => ['class' => 'js-datepicker'],
+                'html5' => true,
+                // 'attr' => ['class' => 'js-datepicker'],
                 'required' => true,
             ])
             ->add('DetectionTime', TimeType::class, [
@@ -51,7 +51,7 @@ class FormCreationType extends AbstractType
             ->add('TraceabilityPicture', FileType::class, [
                 'label' => 'TraceabilityPicture',
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'multiple' => true,
                 'constraints' => [
                     new File([
@@ -67,7 +67,7 @@ class FormCreationType extends AbstractType
             ->add('NCpicture', FileType::class, [
                 'label' => 'NCpicture',
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'multiple' => true,
                 'constraints' => [
                     new File([

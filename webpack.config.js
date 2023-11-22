@@ -24,6 +24,7 @@ Encore
     .addEntry('datepicker', './assets/js/datepicker.js')
     .addEntry('toast', './assets/js/toast.js')
     .addEntry('picture-preview', './assets/js/picture-preview.js')
+    .addEntry('file-input-display', './assets/js/file-input-display.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

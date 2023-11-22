@@ -30,7 +30,7 @@ class FrontController extends BaseController
 
         if ($request->getMethod() == 'POST') {
             if ($form->isSubmitted() && $form->isValid()) {
-                $result = $this->formCreationService->createForm($efnc, $request);
+                $result = $this->formCreationService->createNCForm($efnc, $request, $form);
 
                 if ($result === true) {
 
