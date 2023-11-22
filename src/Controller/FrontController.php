@@ -8,6 +8,8 @@ use App\Form\FormCreationType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -103,5 +105,29 @@ class FrontController extends BaseController
                 // }
             }
         }
+    }
+
+    #[Route('/picture_view/{pictureID}', name: 'picture_view')]
+    public function pictureView(int $pictureID): Response
+    {
+        // $picture = $this->pictureRepository->findOneBy(['id' => $pictureID]);
+        $picture = $this->pictureRepository->find($pictureID);
+
+        if (!$picture) {
+            throw $this->createNotFoundException('No picture found for id ' . $pictureID);
+        }
+        $filePath = $picture->getPath();
+        if (
+            !file_exists($filePath) || !is_readable($filePath)
+        ) {
+            throw $this->createNotFoundException('File not found or not readable');
+        }
+        $response = new BinaryFileResponse($filePath);
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE, // Use DISPOSITION_ATTACHMENT for download
+            $picture->getFilename()
+        );
+
+        return $response;
     }
 }

@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use App\Repository\UserRepository;
 use App\Repository\EFNCRepository;
+use App\Repository\PictureRepository;
 
 use App\Service\AccountService;
 use App\Service\MailerService;
@@ -49,6 +50,7 @@ class BaseController extends AbstractController
 
     protected $userRepository;
     protected $EFNCRepository;
+    protected $pictureRepository;
 
     // Services methods
 
@@ -78,6 +80,7 @@ class BaseController extends AbstractController
 
         UserRepository                  $userRepository,
         EFNCRepository                  $EFNCRepository,
+        PictureRepository               $pictureRepository,
 
         // Services methods
 
@@ -105,6 +108,7 @@ class BaseController extends AbstractController
 
         $this->userRepository               = $userRepository;
         $this->EFNCRepository               = $EFNCRepository;
+        $this->pictureRepository            = $pictureRepository;
 
         // Variables related to the services
 

@@ -91,11 +91,25 @@
 
 		<!-- End Main Navigation -->
 
-		{% if forms is defined and forms is not empty %}
+		{% if EFNCs is defined and EFNCs is not empty %}
+
+
 			<pre>
 		</pre>
 
-			{# {{ dump(EFNCs) }} #}
+			{# {{ dump(EFNCs) }}
+						{% for EFNC in EFNCs %}
+							{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
+								{% for picture in EFNC.pictures %}
+									<pre>
+				{{ dump(picture) }}
+			</pre>
+			
+								{% endfor %}
+							{% endif %}
+			
+			
+						{% endfor %} #}
 
 		{% endif %}
 

@@ -126,12 +126,12 @@ class FormCreationService extends AbstractController
         // Process each file, e.g., save them to the server
         foreach ($traceabilityPictures as $picture) {
             // Save or process $pictures
-            $this->pictureUpload($picture, $efnc, $efncFolderName);
+            $this->pictureUpload($picture, $efnc, $efncFolderName, 'traceability');
         }
 
         foreach ($ncPictures as $picture) {
             // Save or process $picture
-            $this->pictureUpload($picture, $efnc, $efncFolderName);
+            $this->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
         }
         $this->em->persist($efnc);
         $this->em->flush();
@@ -143,7 +143,7 @@ class FormCreationService extends AbstractController
 
 
 
-    public function pictureUpload(UploadedFile $file, EFNC $efnc, $efncFolderName, $newFileName = null)
+    public function pictureUpload(UploadedFile $file, EFNC $efnc, $efncFolderName, string $category, $newFileName = null)
     {
 
         $public_dir = $this->projectDir . '/public';
@@ -185,6 +185,7 @@ class FormCreationService extends AbstractController
         $picture->setEFNC($efnc);
         $picture->setFilename($filename);
         $picture->setPath($path);
+        $picture->setCategory($category);
         $efnc->addPicture($picture);
 
         $this->em->persist($picture);
