@@ -74,7 +74,7 @@ class FrontController extends BaseController
         $form1 = $this->createForm(FormCreationType::class, $efnc);
 
         if ($request->getMethod() == 'GET') {
-            return $this->render('/services/efnc/display/form_modification.html.twig', [
+            return $this->render('/services/efnc/modification/form_modification.html.twig', [
                 'form1' => $form1->createView(),
                 'EFNC' => $efnc,
             ]);
