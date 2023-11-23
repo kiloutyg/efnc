@@ -17,31 +17,41 @@
 		class="list-group"
 		style="background-color:azure">
 
-		{% for EFNC in EFNCs %}
+		{% for EFNC in EFNCs|sort((a,b) => b.id <=> a.id) %}
 			<div
 				class="ml-auto">
 				<strong>
 					<a
 						target="_top"
 						href=" {{path('app_form_display_modification', { 'efncID': EFNC.id})}}"
-						{% if EFNC.Status is same as (null) %} class="list-group-item list-group-item-action list-group-item-light d-flex justify-content-between align-items-center "
-						{% elseif EFNC.Status is same as (true) %} class="list-group-item list-group-item-action list-group-item-success d-flex justify-content-between align-items-center "
-						{% else %} class="list-group-item list-group-item-action list-group-item-warning d-flex justify-content-between align-items-center "
+						{% if EFNC.Status is same as (null) %} class="list-group-item list-group-item-action list-group-item-light  "
+						{% elseif EFNC.Status is same as (true) %} class="list-group-item list-group-item-action list-group-item-success  "
+						{% else %} class="list-group-item list-group-item-action list-group-item-warning"
 						{% endif %}>
 
+						<div
+							class="d-flex justify-content-between align-items-center">
+							<div>
+								{{ EFNC.Title|upper }}
 
-						{{ EFNC.Title|upper }}
-
-						{{ EFNC.id|upper }}
-
-
-						|
-						{{ EFNC.Project|upper }}
-
-						|
-						{{EFNC.CreatedAt|date('d/m/Y') }}
-
-						|
+								{{ EFNC.id|upper }}
+							</div>
+							<div>
+								|
+							</div>
+							<div>
+								{{ EFNC.Project|upper }}
+							</div>
+							<div>
+								|
+							</div>
+							<div>
+								{{EFNC.CreatedAt|date('d/m/Y') }}
+							</div>
+							<div>
+								|
+							</div>
+						</div>
 					</a>
 				</strong>
 			</div>

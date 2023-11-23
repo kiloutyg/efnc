@@ -132,34 +132,21 @@
 						for="picture_TraceabilityPicture">
 						Photo de Traçabilité Obligatoire :
 					</label>
+
 					{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
-
 						{% for picture in EFNC.pictures %}
-
 							{% if picture.category is same as('traceability') %}
 								<img
 									class="img-fluid"
-
-									src="
-																												{{path('app_picture_view', {'pictureID': picture.id})}}
-																																								"
-									alt="Image de traçabilité obligatoire">
-
+									src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
 							{% endif %}
 							{% if picture.category is same as(null) %}
 								<img
 									class="img-fluid"
-
-									src="
-																													{{path('app_picture_view', {'pictureID': picture.id})}}
-																													"
-									alt="Image de traçabilité obligatoire">
-
+									src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
 							{% endif %}
-
 						{% endfor %}
 					{% endif %}
-
 
 					<div
 						id="traceability-picture-container">
@@ -170,7 +157,6 @@
 							multiple="multiple"
 							class="form-control"
 							placeholder="Photo de Traçabilité Obligatoire">
-
 						<div
 							id="TraceabilityPicturePreview"></div>
 					</div>
@@ -184,6 +170,16 @@
 						Photo de non-conformité :
 					</label>
 
+					{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
+						{% for picture in EFNC.pictures %}
+							{% if picture.category is same as('NC') %}
+								<img
+									class="img-fluid"
+									src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+
 					<div
 						id="nc-picture-container">
 						<input
@@ -193,13 +189,10 @@
 							multiple="multiple"
 							class="form-control"
 							placeholder="Photo de non-conformité">
-
 						<div
 							id="NCpicturePreview"></div>
 					</div>
-
 				</div>
-
 			</div>
 
 			<div
