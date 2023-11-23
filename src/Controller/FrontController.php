@@ -55,12 +55,6 @@ class FrontController extends BaseController
     }
 
 
-    #[Route('/admin_page', name: 'admin_page')]
-    public function adminPage(): Response
-    {
-        return $this->render('services/admin/admin_page.html.twig', []);
-    }
-
 
     #[Route('/form_list', name: 'form_list')]
     public function formList(): Response

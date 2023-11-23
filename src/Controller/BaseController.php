@@ -26,6 +26,8 @@ use App\Service\FolderCreationService;
 use App\Service\FormCreationService;
 use App\Service\FormModificationService;
 use App\Service\PictureService;
+use App\Service\TeamService;
+use App\Service\ProjectService;
 
 #[Route('/', name: 'app_')]
 
@@ -60,6 +62,8 @@ class BaseController extends AbstractController
     protected $formCreationService;
     protected $formModificationService;
     protected $pictureService;
+    protected $teamService;
+    protected $projectService;
 
     // Variables used in the twig templates to display all the entities
 
@@ -91,7 +95,9 @@ class BaseController extends AbstractController
         FolderCreationService           $folderCreationService,
         FormCreationService             $formCreationService,
         FormModificationService         $formModificationService,
-        PictureService                  $pictureService
+        PictureService                  $pictureService,
+        TeamService                     $teamService,
+        ProjectService                  $projectService
 
 
     ) {
@@ -122,6 +128,8 @@ class BaseController extends AbstractController
         $this->formCreationService          = $formCreationService;
         $this->formModificationService      = $formModificationService;
         $this->pictureService               = $pictureService;
+        $this->teamService                  = $teamService;
+        $this->projectService               = $projectService;
 
         // Variables used in the twig templates to display all the entities
 

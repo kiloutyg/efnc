@@ -27,7 +27,18 @@
 			class="card-body">
 			<div
 				class="row">
-				{% include "services/admin_services/team/team_creation.html.twig" %}
+				{{ render(controller('App\\Controller\\AdminController::teamCreation')) }}
+
+			</div>
+		</div>
+	</div>
+	<div
+		class="card border-0 shadow rounded-3 my-5">
+		<div
+			class="card-body">
+			<div
+				class="row">
+				{{ render(controller('App\\Controller\\AdminController::projectCreation')) }}
 
 			</div>
 		</div>
