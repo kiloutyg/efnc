@@ -8,6 +8,8 @@ use App\Form\FormCreationType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,37 +27,30 @@ class FrontController extends BaseController
     public function formCreation(Request $request): Response
     {
         $efnc = new EFNC();
-        $form1 = $this->createForm(FormCreationType::class, $efnc);
 
+        $form1 = $this->createForm(FormCreationType::class, $efnc);
         $form1->handleRequest($request);
 
         if ($request->getMethod() == 'POST') {
-
             if (
                 $form1->isSubmitted() && $form1->isValid()
             ) {
-
                 $result = $this->formCreationService->createNCForm(
                     $efnc,
                     $request,
                     $form1
                 );
-
                 if ($result === true) {
-
                     $this->addFlash('success', 'C\'est bon khey!');
                     return $this->redirectToRoute('app_base', []);
                 }
             } else {
-
-
                 $this->addFlash('error', 'C\'est pas bon khey!');
                 return $this->redirectToRoute('app_base', []);
             }
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/efnc/creation/form_creation.html.twig', [
                 'form1' => $form1->createView(),
-
             ]);
         }
     }
@@ -63,7 +58,7 @@ class FrontController extends BaseController
     #[Route('/admin_page', name: 'admin_page')]
     public function adminPage(): Response
     {
-        return $this->render('admin_page.html.twig', []);
+        return $this->render('services/efnc/admin/admin_page.html.twig', []);
     }
 
     #[Route('/form_list', name: 'form_list')]
@@ -79,29 +74,50 @@ class FrontController extends BaseController
         $form1 = $this->createForm(FormCreationType::class, $efnc);
 
         if ($request->getMethod() == 'GET') {
-            return $this->render('/services/efnc/display/form_modification.html.twig', [
+            return $this->render('/services/efnc/modification/form_modification.html.twig', [
                 'form1' => $form1->createView(),
                 'EFNC' => $efnc,
             ]);
         } else {
             $form1->handleRequest($request);
-
             if ($form1->isSubmitted() && $form1->isValid()) {
-                // $result = $this->formCreationService->modifyNCForm(
-                //     $efnc,
-                //     $request,
-                //     $form1
-                // );
-
-                // if ($result === true) {
-
-                $this->addFlash('success', 'C\'est bon khey!');
-                return $this->redirectToRoute('app_base', []);
-                // } else {
-                //     $this->addFlash('error', 'C\'est pas bon khey!');
-                //     return $this->redirectToRoute('app_base', []);
-                // }
+                $result = $this->formModificationService->modifyNCForm(
+                    $efnc,
+                    $request,
+                    $form1
+                );
+                if ($result === true) {
+                    $this->addFlash('success', 'C\'est bon khey!');
+                    return $this->redirectToRoute('app_base', []);
+                } else {
+                    $this->addFlash('error', 'C\'est pas bon khey!');
+                    return $this->redirectToRoute('app_base', []);
+                }
             }
         }
+    }
+
+    #[Route('/picture_view/{pictureID}', name: 'picture_view')]
+    public function pictureView(int $pictureID): Response
+    {
+        // $picture = $this->pictureRepository->findOneBy(['id' => $pictureID]);
+        $picture = $this->pictureRepository->find($pictureID);
+
+        if (!$picture) {
+            throw $this->createNotFoundException('No picture found for id ' . $pictureID);
+        }
+        $filePath = $picture->getPath();
+        if (
+            !file_exists($filePath) || !is_readable($filePath)
+        ) {
+            throw $this->createNotFoundException('File not found or not readable');
+        }
+        $response = new BinaryFileResponse($filePath);
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE, // Use DISPOSITION_ATTACHMENT for download
+            $picture->getFilename()
+        );
+
+        return $response;
     }
 }

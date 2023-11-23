@@ -91,11 +91,25 @@
 
 		<!-- End Main Navigation -->
 
-		{% if forms is defined and forms is not empty %}
+		{% if EFNCs is defined and EFNCs is not empty %}
+
+
 			<pre>
 		</pre>
 
-			{# {{ dump(EFNCs) }} #}
+			{# {{ dump(EFNCs) }}
+												{% for EFNC in EFNCs %}
+													{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
+														{% for picture in EFNC.pictures %}
+															<pre>
+										{{ dump(picture) }}
+									</pre>
+									
+														{% endfor %}
+													{% endif %}
+									
+									
+												{% endfor %} #}
 
 		{% endif %}
 
@@ -135,6 +149,26 @@
 					{% include "services/navbarservices/navbarservices.html.twig" %}
 
 					{% block body %}
+						{% if app.user %}
+							{% if  is_granted('ROLE_SUPER_ADMIN', object = null, field = null)%}
+								<aside
+									class="position-absolute end-0">
+									<a
+										href="{{ path('app_admin_page') }}" class="btn shadow bg-dark"
+										style="color:white;">
+										<span
+											class="fa fa-gear"></span>
+										<strong>
+											<span
+												class="button-text">
+												Centre de Super-Administration
+											</span>
+										</strong>
+									</a>
+								</aside>
+
+							{% endif %}
+						{% endif %}
 
 						<p>
 							<h1
