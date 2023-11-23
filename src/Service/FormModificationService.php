@@ -18,7 +18,7 @@ use App\Entity\EFNC;
 
 use App\Service\PictureService;
 
-class FormCreationService extends AbstractController
+class FormModificationService extends AbstractController
 {
     private $PictureService;
 
@@ -46,16 +46,16 @@ class FormCreationService extends AbstractController
 
         $this->em                                           = $em;
     }
-    public function createNCForm(
+    public function modifyNCForm(
         EFNC $efnc,
         Request $request,
         FormInterface $form1
     ) {
         $now = new \DateTime();
 
-        $efnc->setCreatedAt($now);
+        $efnc->setUpdatedAt($now);
 
-        $efncFolderName = $form1->get('Project')->getData() . '.' . $now->format('Y-m-d') . '.' . $form1->get('Title')->getData();
+        $efncFolderName = $efnc->getProject() . '.' . $efnc->getCreatedAt()->format('Y-m-d') . '.' . $efnc->getTitle();
 
         if ((key_exists('Status', $request->request->all()) == true) && ($request->request->get('Status')) != null) {
             $efnc->setStatus(true);

@@ -27,37 +27,30 @@ class FrontController extends BaseController
     public function formCreation(Request $request): Response
     {
         $efnc = new EFNC();
-        $form1 = $this->createForm(FormCreationType::class, $efnc);
 
+        $form1 = $this->createForm(FormCreationType::class, $efnc);
         $form1->handleRequest($request);
 
         if ($request->getMethod() == 'POST') {
-
             if (
                 $form1->isSubmitted() && $form1->isValid()
             ) {
-
                 $result = $this->formCreationService->createNCForm(
                     $efnc,
                     $request,
                     $form1
                 );
-
                 if ($result === true) {
-
                     $this->addFlash('success', 'C\'est bon khey!');
                     return $this->redirectToRoute('app_base', []);
                 }
             } else {
-
-
                 $this->addFlash('error', 'C\'est pas bon khey!');
                 return $this->redirectToRoute('app_base', []);
             }
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/efnc/creation/form_creation.html.twig', [
                 'form1' => $form1->createView(),
-
             ]);
         }
     }
@@ -87,22 +80,19 @@ class FrontController extends BaseController
             ]);
         } else {
             $form1->handleRequest($request);
-
             if ($form1->isSubmitted() && $form1->isValid()) {
-                // $result = $this->formCreationService->modifyNCForm(
-                //     $efnc,
-                //     $request,
-                //     $form1
-                // );
-
-                // if ($result === true) {
-
-                $this->addFlash('success', 'C\'est bon khey!');
-                return $this->redirectToRoute('app_base', []);
-                // } else {
-                //     $this->addFlash('error', 'C\'est pas bon khey!');
-                //     return $this->redirectToRoute('app_base', []);
-                // }
+                $result = $this->formModificationService->modifyNCForm(
+                    $efnc,
+                    $request,
+                    $form1
+                );
+                if ($result === true) {
+                    $this->addFlash('success', 'C\'est bon khey!');
+                    return $this->redirectToRoute('app_base', []);
+                } else {
+                    $this->addFlash('error', 'C\'est pas bon khey!');
+                    return $this->redirectToRoute('app_base', []);
+                }
             }
         }
     }

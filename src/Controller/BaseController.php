@@ -4,19 +4,16 @@ namespace App\Controller;
 
 use  \Psr\Log\LoggerInterface;
 
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-
-use Symfony\Component\HttpFoundation\Response;
 
 use App\Repository\UserRepository;
 use App\Repository\EFNCRepository;
@@ -27,6 +24,8 @@ use App\Service\MailerService;
 use App\Service\EntityDeletionService;
 use App\Service\FolderCreationService;
 use App\Service\FormCreationService;
+use App\Service\FormModificationService;
+use App\Service\PictureService;
 
 #[Route('/', name: 'app_')]
 
@@ -59,6 +58,8 @@ class BaseController extends AbstractController
     protected $entityDeletionService;
     protected $folderCreationService;
     protected $formCreationService;
+    protected $formModificationService;
+    protected $pictureService;
 
     // Variables used in the twig templates to display all the entities
 
@@ -88,7 +89,9 @@ class BaseController extends AbstractController
         MailerService                   $mailerService,
         EntityDeletionService           $entityDeletionService,
         FolderCreationService           $folderCreationService,
-        FormCreationService             $formCreationService
+        FormCreationService             $formCreationService,
+        FormModificationService         $formModificationService,
+        PictureService                  $pictureService
 
 
     ) {
@@ -117,6 +120,8 @@ class BaseController extends AbstractController
         $this->entityDeletionService        = $entityDeletionService;
         $this->folderCreationService        = $folderCreationService;
         $this->formCreationService          = $formCreationService;
+        $this->formModificationService      = $formModificationService;
+        $this->pictureService               = $pictureService;
 
         // Variables used in the twig templates to display all the entities
 
