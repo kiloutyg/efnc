@@ -10,18 +10,28 @@
 		Page d'Administration
 	</h1>
 
-	{% if is_granted('ROLE_SUPER_ADMIN') %}
+	<div
+		class="card border-0 shadow rounded-3 my-5">
 		<div
-			class="card border-0 shadow rounded-3 my-5">
+			class="card-body">
 			<div
-				class="card-body">
-				<div
-					class="row">
-					{% include "services/accountservices/create_account.html.twig" %}
-				</div>
+				class="row">
+				{% include "services/admin_services/accountservices/create_account.html.twig" %}
+
 			</div>
 		</div>
-	{% endif %}
+	</div>
+	<div
+		class="card border-0 shadow rounded-3 my-5">
+		<div
+			class="card-body">
+			<div
+				class="row">
+				{% include "services/admin_services/team/team_creation.html.twig" %}
+
+			</div>
+		</div>
+	</div>
 
 
 {% endblock %}

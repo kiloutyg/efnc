@@ -1,5 +1,6 @@
 {% block body %}
 
+
 	<div
 		class="card border-0 shadow rounded-3 my-5 bg-secondary">
 		<div
@@ -15,14 +16,13 @@
 						style="color:white">
 						<strong>
 							Création de compte
+
 						</strong>
 					</h3>
 					<form
 						class="d-flex flex-column "
 						method="post"
-						action="
-																					{{ path('app_create_account') }}
-																					">
+						action="{{ path('app_create_account') }}">
 
 						{% if error is defined %}
 							{% if error %}
@@ -38,6 +38,7 @@
 							<label
 								for="username">
 								Nom d'utilisateur
+
 							</label>
 							<input
 								type="text"
@@ -46,13 +47,13 @@
 								required
 								class="form-control"
 								id="username">
-
 						</div>
 						<div
 							class="form-control mb-3">
 							<label
 								for="floatingPassword">
 								Mot de passe
+
 							</label>
 							<input
 								type="password"
@@ -61,13 +62,13 @@
 								name="password"
 								required
 								class="form-control">
-
 						</div>
 						<div
 							class="form-control mb-3">
 							<label
 								for="emailAddress">
 								Adresse Mail
+
 							</label>
 							<input
 								type="email"
@@ -79,7 +80,8 @@
 						</div>
 						<div
 							class="form-control mb-3">
-							{% include 'services/accountservices/role_affectation.html.twig' %}
+							{% include 'services/admin_services/accountservices/role_affectation.html.twig' %}
+
 						</div>
 
 						<input
@@ -92,6 +94,7 @@
 								class="btn btn-primary btn-login text-uppercase fw-bold mt-2 mb-5"
 								type="submit">
 								Création du compte
+
 							</button>
 						</div>
 					</form>
@@ -100,20 +103,17 @@
 
 			</div>
 
-			{% if users is not empty %}
-
+			{% if users is not empty and users|length > 1 %}
 				<hr
 					class="my-4">
-
 				<div
 					class=" row d-flex align-items-center gy-lg-0 gy-5">
-
 					<div
-						class="col-10 mx-auto">
+						class="col-12 mx-auto">
 						<div
 							class="form-control">
 							<table
-								class="table table-striped text-center">
+								class="table">
 								<thead>
 									<tr>
 										<th
@@ -123,10 +123,6 @@
 										<th
 											scope="col">
 											Role
-										</th>
-										<th
-											scope="col">
-											service
 										</th>
 										<th
 											scope="col">
@@ -145,20 +141,14 @@
 								<tbody>
 									{% for user in users %}
 										{% if app.user.id != user.id and compare_roles(app.user.roles, user.roles) %}
+
 											<tr>
 												<td>
-													{{user.username|capitalize|split('.')|first }}
-													{{user.username|upper|split('.')|last }}
+													{{ user.username|capitalize|split('.')|first }}
+													{{ user.username|upper|split('.')|last }}
 												</td>
 												<td>
 													{{ user.roles|json_encode|convert_encoding('UTF-8', 'UTF-8') }}
-												</td>
-												<td>
-													{% if user.department.name is defined%}
-														{{ user.department.name }}
-													{% else %}
-														inconnu
-													{% endif %}
 												</td>
 												<td>
 													{% if user.emailAddress %}
@@ -168,15 +158,14 @@
 													{% endif %}
 												</td>
 												<td>
-
 													<a
-														href="{{path('app_delete_account_basic', {id: user.id})}}" class="btn btn-danger delete-user">
+														href="{{ path('app_delete_account_basic', {userId: user.id}) }}" class="btn btn-danger delete-user">
 														Supprimer
 													</a>
 												</td>
 												<td>
 													<a
-														href="{{path('app_modify_account', {userid: user.id})}}" class="btn btn-danger">
+														href="{{ path('app_modify_account', {userid: user.id}) }}" class="btn btn-danger">
 														modifier
 													</a>
 												</td>
