@@ -98,18 +98,18 @@
 		</pre>
 
 			{# {{ dump(EFNCs) }}
-												{% for EFNC in EFNCs %}
-													{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
-														{% for picture in EFNC.pictures %}
-															<pre>
-										{{ dump(picture) }}
-									</pre>
-									
-														{% endfor %}
-													{% endif %}
-									
-									
-												{% endfor %} #}
+																		{% for EFNC in EFNCs %}
+																			{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
+																				{% for picture in EFNC.pictures %}
+																					<pre>
+																{{ dump(picture) }}
+															</pre>
+															
+																				{% endfor %}
+																			{% endif %}
+															
+															
+																		{% endfor %} #}
 
 		{% endif %}
 
@@ -132,10 +132,8 @@
 							class="card-body">
 							<div
 								class="row">
-								<form
-									action="{{ path('app_create_account') }}" method="post">
-									{% include "services/accountservices/create_account.html.twig" %}
-								</form>
+
+								{% include "services/accountservices/create_account.html.twig" %}
 							</div>
 						</div>
 					</div>

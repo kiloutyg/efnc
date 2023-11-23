@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Page d'Administration
+{% endblock %}
+
+{% block body %}
+
+	<h1>
+		Page d'Administration
+	</h1>
+
+	{% if is_granted('ROLE_SUPER_ADMIN') %}
+		<div
+			class="card border-0 shadow rounded-3 my-5">
+			<div
+				class="card-body">
+				<div
+					class="row">
+					{% include "services/accountservices/create_account.html.twig" %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+
+{% endblock %}
