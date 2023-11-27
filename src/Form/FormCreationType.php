@@ -2,13 +2,18 @@
 
 namespace App\Form;
 
+use App\Entity\AnomalyType;
 use App\Entity\EFNC;
+use App\Entity\Origin;
+use App\Entity\Place;
+use App\Entity\Project;
+use App\Entity\Team;
+use App\Entity\UAP;
+
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\StringType;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -23,7 +28,7 @@ class FormCreationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Title')
+            // ->add('Title')
             ->add('Creator')
             ->add('DetectionDate', DateType::class, [
                 'widget' => 'single_text',
@@ -35,14 +40,38 @@ class FormCreationType extends AbstractType
                 'html5' => true,
                 'required' => true,
             ])
-            ->add('Team')
-            ->add('DetectionPlace')
+            ->add('Team', EntityType::class, [
+                'class' => Team::class,
+                'choice_label' => 'name',
+                'required' => true,
+            ])
+            ->add('DetectionPlace', EntityType::class, [
+                'class' => Place::class,
+                'choice_label' => 'name',
+                'required' => true,
+            ])
             ->add('ProductDesignation')
-            ->add('Project')
-            ->add('UAP')
-            ->add('NonConformityOrigin')
+            ->add('Project', EntityType::class, [
+                'class' => Project::class,
+                'choice_label' => 'name',
+                'required' => true,
+            ])
+            ->add('UAP', EntityType::class, [
+                'class' => UAP::class,
+                'choice_label' => 'name',
+                'required' => true,
+            ])
+            ->add('NonConformityOrigin', EntityType::class, [
+                'class' => Origin::class,
+                'choice_label' => 'name',
+                'required' => true,
+            ])
             ->add('Quantity')
-            ->add('AnomalyType')
+            ->add('AnomalyType', EntityType::class, [
+                'class' => AnomalyType::class,
+                'choice_label' => 'name',
+                'required' => true,
+            ])
             ->add('QuantityToBlock')
             ->add('DetailedDescription')
             ->add('SAPReference');

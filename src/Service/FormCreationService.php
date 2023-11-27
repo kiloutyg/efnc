@@ -57,6 +57,9 @@ class FormCreationService extends AbstractController
 
         $efncFolderName = $form1->get('Project')->getData() . '.' . $now->format('Y-m-d') . '.' . $form1->get('Title')->getData();
 
+        $efncTitle = $this->efncTitleBuilding($efnc);
+        $efnc->setTitle($efncTitle);
+
         if ((key_exists('Status', $request->request->all()) == true) && ($request->request->get('Status')) != null) {
             $efnc->setStatus(true);
         };
@@ -86,9 +89,19 @@ class FormCreationService extends AbstractController
             // Save or process $picture
             $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
         }
+
         $this->em->persist($efnc);
         $this->em->flush();
 
         return true;
+    }
+
+
+    public function efncTitleBuilding(EFNC $efnc)
+    {
+        $efncTitle = 'FNC' . '.' . $efnc->getId() . '.' . $efnc->getDetectionPlace() . '.' . $efnc->getProject() . '.' . $efnc->getProductDesignation() . '.' . $efnc->getAnomalyType();
+
+        // return $this->slugify($efncTitle);
+        return $efncTitle;
     }
 }
