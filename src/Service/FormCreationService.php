@@ -54,11 +54,11 @@ class FormCreationService extends AbstractController
         $now = new \DateTime();
 
         $efnc->setCreatedAt($now);
-
-        $efncFolderName = $form1->get('Project')->getData() . '.' . $now->format('Y-m-d') . '.' . $form1->get('Title')->getData();
-
         $efncTitle = $this->efncTitleBuilding($efnc);
         $efnc->setTitle($efncTitle);
+
+        $efncFolderName = $form1->get('Project')->getData()->getName() . '.' . $now->format('Y-m-d') . '.' . $efncTitle;
+
 
         if ((key_exists('Status', $request->request->all()) == true) && ($request->request->get('Status')) != null) {
             $efnc->setStatus(true);
@@ -99,7 +99,7 @@ class FormCreationService extends AbstractController
 
     public function efncTitleBuilding(EFNC $efnc)
     {
-        $efncTitle = 'FNC' . '.' . $efnc->getId() . '.' . $efnc->getDetectionPlace() . '.' . $efnc->getProject() . '.' . $efnc->getProductDesignation() . '.' . $efnc->getAnomalyType();
+        $efncTitle = 'FNC' . '_' . $efnc->getId() . '_' . $efnc->getDetectionPlace()->getName() . '_' . $efnc->getProject()->getName() . '_' . $efnc->getProductDesignation() . '_' . $efnc->getAnomalyType()->getName();
 
         // return $this->slugify($efncTitle);
         return $efncTitle;
