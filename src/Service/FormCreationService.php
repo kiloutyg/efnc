@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-// use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -22,7 +22,7 @@ class FormCreationService extends AbstractController
 {
     private $PictureService;
 
-    // private $logger;
+    private $logger;
 
     protected $projectDir;
 
@@ -32,7 +32,7 @@ class FormCreationService extends AbstractController
 
         PictureService                              $PictureService,
 
-        // LoggerInterface                             $logger,
+        LoggerInterface                             $logger,
 
         ParameterBagInterface                       $params,
 
@@ -40,7 +40,7 @@ class FormCreationService extends AbstractController
     ) {
         $this->PictureService                               = $PictureService;
 
-        // $this->logger                                       = $logger;
+        $this->logger                                       = $logger;
 
         $this->projectDir                                   = $params->get('kernel.project_dir');
 
@@ -52,13 +52,13 @@ class FormCreationService extends AbstractController
         FormInterface $form1
     ) {
         $now = new \DateTime();
-
         $efnc->setCreatedAt($now);
+        $this->em->persist($efnc);
+
         $efncTitle = $this->efncTitleBuilding($efnc);
         $efnc->setTitle($efncTitle);
 
         $efncFolderName = $form1->get('Project')->getData()->getName() . '.' . $now->format('Y-m-d') . '.' . $efncTitle;
-
 
         if ((key_exists('Status', $request->request->all()) == true) && ($request->request->get('Status')) != null) {
             $efnc->setStatus(true);
@@ -81,15 +81,18 @@ class FormCreationService extends AbstractController
             }
         }
         // Process each file, e.g., save them to the server
-        foreach ($traceabilityPictures as $picture) {
-            // Save or process $pictures
-            $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'traceability');
+        if (!empty($traceabilityPictures)) {
+            foreach ($traceabilityPictures as $picture) {
+                // Save or process $pictures
+                $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'traceability');
+            }
         }
-        foreach ($ncPictures as $picture) {
-            // Save or process $picture
-            $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
+        if (!empty($ncPictures)) {
+            foreach ($ncPictures as $picture) {
+                // Save or process $picture
+                $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
+            }
         }
-
         $this->em->persist($efnc);
         $this->em->flush();
 
@@ -99,8 +102,8 @@ class FormCreationService extends AbstractController
 
     public function efncTitleBuilding(EFNC $efnc)
     {
-        $efncTitle = 'FNC' . '_' . $efnc->getId() . '_' . $efnc->getDetectionPlace()->getName() . '_' . $efnc->getProject()->getName() . '_' . $efnc->getProductDesignation() . '_' . $efnc->getAnomalyType()->getName();
-
+        $efncTitle = 'FNC' . '_' . $efnc->getDetectionPlace()->getName() . '_' . $efnc->getProject()->getName() . '_' . $efnc->getProductDesignation() . '_' . $efnc->getAnomalyType()->getName();
+        $this->logger->info('fnc id for title:' . $efnc->getId());
         // return $this->slugify($efncTitle);
         return $efncTitle;
     }

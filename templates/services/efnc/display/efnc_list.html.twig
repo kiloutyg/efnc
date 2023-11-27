@@ -32,15 +32,26 @@
 						<div
 							class="d-flex justify-content-between align-items-center">
 							<div>
-								{{ EFNC.Title|upper }}
-
-								{{ EFNC.id|upper }}
+								{{ EFNC.Title|upper|split('_')|first }}
+								{{ EFNC.id|upper}}
 							</div>
 							<div>
 								|
 							</div>
 							<div>
-								{{ EFNC.Project.name|upper }}
+								{{ EFNC.nonConformityOrigin.name|upper }}
+							</div>
+							<div>
+								|
+							</div>
+							<div>
+								{{ EFNC.ProductDesignation|upper }}
+							</div>
+							<div>
+								|
+							</div>
+							<div>
+								{{EFNC.Project.name|upper }}
 							</div>
 							<div>
 								|
@@ -48,9 +59,7 @@
 							<div>
 								{{EFNC.CreatedAt|date('d/m/Y') }}
 							</div>
-							<div>
-								|
-							</div>
+
 						</div>
 					</a>
 				</strong>

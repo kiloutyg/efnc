@@ -55,7 +55,8 @@ class FormModificationService extends AbstractController
 
         $efnc->setUpdatedAt($now);
 
-        $efncFolderName = $efnc->getProject() . '.' . $efnc->getCreatedAt()->format('Y-m-d') . '.' . $efnc->getTitle();
+
+        $efncFolderName = $form1->get('Project')->getData()->getName() . '.' . $now->format('Y-m-d') . '.' . $efnc->getTitle();
 
         if ((key_exists('Status', $request->request->all()) == true) && ($request->request->get('Status')) != null) {
             $efnc->setStatus(true);

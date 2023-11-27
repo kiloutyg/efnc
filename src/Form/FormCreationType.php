@@ -13,6 +13,7 @@ use App\Entity\UAP;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,7 +29,6 @@ class FormCreationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // ->add('Title')
             ->add('Creator')
             ->add('DetectionDate', DateType::class, [
                 'widget' => 'single_text',
@@ -66,13 +66,23 @@ class FormCreationType extends AbstractType
                 'choice_label' => 'name',
                 'required' => true,
             ])
-            ->add('Quantity')
             ->add('AnomalyType', EntityType::class, [
                 'class' => AnomalyType::class,
                 'choice_label' => 'name',
                 'required' => true,
             ])
-            ->add('QuantityToBlock')
+            ->add('Quantity', NumberType::class, [
+                'html5' => true,
+                'required' => true,
+                'input' => 'number',
+                'attr' => ['min' => 0, 'max' => 1000000],
+            ])
+            ->add( 'QuantityToBlock', NumberType::class, [
+            'html5' => true,
+            'required' => true,
+            'input' => 'number',
+            'attr' => ['min' => 0, 'max' => 1000000],
+        ]))
             ->add('DetailedDescription')
             ->add('SAPReference');
 
