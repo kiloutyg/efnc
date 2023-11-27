@@ -1,0 +1,20 @@
+{% block body %}
+	<div
+		class="card border-0 shadow rounded-3 my-5 bg-secondary">
+		<div
+			class="card-body ">
+			{{ form_start(projectForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_project_creation') }) }}
+			<div
+				class="col-md-auto">
+				{{ form_label(projectForm.name) }}
+				{{ form_widget(projectForm.name) }}
+			</div>
+			<div
+				class="d-grid col-md-auto mx-auto">
+				{{ form_label(projectForm.save) }}
+				{{ form_widget(projectForm.save) }}
+			</div>
+			{{ form_end(projectForm) }}
+		</div>
+	</div>
+{% endblock %}

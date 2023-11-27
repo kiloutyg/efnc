@@ -26,6 +26,12 @@ use App\Service\FolderCreationService;
 use App\Service\FormCreationService;
 use App\Service\FormModificationService;
 use App\Service\PictureService;
+use App\Service\TeamService;
+use App\Service\ProjectService;
+use App\Service\OriginService;
+use App\Service\UAPService;
+use App\Service\AnomalyTypeService;
+use App\Service\PlaceService;
 
 #[Route('/', name: 'app_')]
 
@@ -60,6 +66,12 @@ class BaseController extends AbstractController
     protected $formCreationService;
     protected $formModificationService;
     protected $pictureService;
+    protected $teamService;
+    protected $projectService;
+    protected $originService;
+    protected $uapService;
+    protected $anomalyTypeService;
+    protected $placeService;
 
     // Variables used in the twig templates to display all the entities
 
@@ -91,7 +103,13 @@ class BaseController extends AbstractController
         FolderCreationService           $folderCreationService,
         FormCreationService             $formCreationService,
         FormModificationService         $formModificationService,
-        PictureService                  $pictureService
+        PictureService                  $pictureService,
+        TeamService                     $teamService,
+        ProjectService                  $projectService,
+        OriginService                   $originService,
+        UAPService                      $uapService,
+        AnomalyTypeService              $anomalyTypeService,
+        PlaceService                    $placeService
 
 
     ) {
@@ -122,6 +140,12 @@ class BaseController extends AbstractController
         $this->formCreationService          = $formCreationService;
         $this->formModificationService      = $formModificationService;
         $this->pictureService               = $pictureService;
+        $this->teamService                  = $teamService;
+        $this->projectService               = $projectService;
+        $this->originService                = $originService;
+        $this->uapService                   = $uapService;
+        $this->anomalyTypeService           = $anomalyTypeService;
+        $this->placeService                 = $placeService;
 
         // Variables used in the twig templates to display all the entities
 

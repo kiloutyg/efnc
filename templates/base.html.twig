@@ -28,6 +28,7 @@
 			{{ encore_entry_script_tags('datepicker') }}
 			{{ encore_entry_script_tags('toast') }}
 			{{ encore_entry_script_tags('picture-preview') }}
+			{{ encore_entry_script_tags('confirmation')}}
 			{# {{ encore_entry_script_tags('file-input-display')}} #}
 		{% endblock %}
 
@@ -91,28 +92,6 @@
 
 		<!-- End Main Navigation -->
 
-		{% if EFNCs is defined and EFNCs is not empty %}
-
-
-			<pre>
-		</pre>
-
-			{# {{ dump(EFNCs) }}
-												{% for EFNC in EFNCs %}
-													{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
-														{% for picture in EFNC.pictures %}
-															<pre>
-										{{ dump(picture) }}
-									</pre>
-									
-														{% endfor %}
-													{% endif %}
-									
-									
-												{% endfor %} #}
-
-		{% endif %}
-
 		{% if users is defined %}
 
 			{% if users is empty %}
@@ -132,10 +111,8 @@
 							class="card-body">
 							<div
 								class="row">
-								<form
-									action="{{ path('app_create_account') }}" method="post">
-									{% include "services/accountservices/create_account.html.twig" %}
-								</form>
+
+								{% include "services/admin_services/accountservices/create_account.html.twig" %}
 							</div>
 						</div>
 					</div>
@@ -144,15 +121,16 @@
 			{% else %}
 
 				<div
-					class="container flex-grow-1 d-flex flex-column">
+					class="container flex-grow-1 d-flex flex-column ">
 
-					{% include "services/navbarservices/navbarservices.html.twig" %}
+					{% include "services/navbarservices/navbar_service.html.twig" %}
 
 					{% block body %}
 						{% if app.user %}
-							{% if  is_granted('ROLE_SUPER_ADMIN', object = null, field = null)%}
+							{% if  is_granted('ROLE_MANAGER', object = null, field = null)%}
 								<aside
-									class="position-absolute end-0">
+									class="position-absolute end-0 mt-2 ">
+
 									<a
 										href="{{ path('app_admin_page') }}" class="btn shadow bg-dark"
 										style="color:white;">

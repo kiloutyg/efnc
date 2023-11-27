@@ -97,7 +97,7 @@ class AccountService
                         $role = $request->request->get('role');
                         $user->setRoles([$role]);
                     };
-                   
+
                     if ($request->request->get('emailAddress') != '') {
                         $emailAddress = $request->request->get('emailAddress');
                         $user->setEmailAddress($emailAddress);
@@ -118,10 +118,12 @@ class AccountService
     public function deleteUser($id)
     {
         $user = $this->userRepository->find($id);
-        $this->entityDeletionService->deleteEntity('user', $id);
-
-        $this->manager->remove($user);
-        $this->manager->flush();
+        $result = $this->entityDeletionService->deleteEntity('user', $id);
+        if ($result) {
+            $this->manager->remove($user);
+            $this->manager->flush();
+            return true;
+        }
     }
 
     // This function is responsible for blocking a user account
