@@ -12,32 +12,33 @@ use Symfony\Component\Form\FormInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-use App\Entity\Project;
+use App\Entity\AnomalyType;
 
 
-class ProjectService extends AbstractController
+class AnomalyTypeService extends AbstractController
 {
     private $logger;
 
     private $em;
 
     public function __construct(
-        LoggerInterface                             $logger,
 
-        EntityManagerInterface                      $em
+        LoggerInterface                                     $logger,
+
+        EntityManagerInterface                              $em
     ) {
         $this->logger                                       = $logger;
 
         $this->em                                           = $em;
     }
 
-    public function createProject(
-        Project $Project,
+    public function createAnomalyType(
+        AnomalyType $AnomalyType,
         Request $request,
-        FormInterface $ProjectForm
+        FormInterface $AnomalyForm
     ) {
 
-        $this->em->persist($Project);
+        $this->em->persist($AnomalyType);
         $this->em->flush();
         return true;
     }

@@ -12,16 +12,17 @@ use Symfony\Component\Form\FormInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-use App\Entity\Project;
+use App\Entity\UAP;
 
 
-class ProjectService extends AbstractController
+class UAPService extends AbstractController
 {
     private $logger;
 
     private $em;
 
     public function __construct(
+
         LoggerInterface                             $logger,
 
         EntityManagerInterface                      $em
@@ -31,13 +32,13 @@ class ProjectService extends AbstractController
         $this->em                                           = $em;
     }
 
-    public function createProject(
-        Project $Project,
+    public function createUAP(
+        UAP $uap,
         Request $request,
-        FormInterface $ProjectForm
+        FormInterface $uapForm
     ) {
 
-        $this->em->persist($Project);
+        $this->em->persist($uap);
         $this->em->flush();
         return true;
     }

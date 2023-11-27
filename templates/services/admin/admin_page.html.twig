@@ -43,6 +43,51 @@
 			</div>
 		</div>
 	</div>
+	<div
+		class="card border-0 shadow rounded-3 my-5">
+		<div
+			class="card-body">
+			<div
+				class="row">
+				{{ render(controller('App\\Controller\\AdminController::originCreation')) }}
+
+			</div>
+		</div>
+	</div>
+	<div
+		class="card border-0 shadow rounded-3 my-5">
+		<div
+			class="card-body">
+			<div
+				class="row">
+				{{ render(controller('App\\Controller\\AdminController::uapCreation')) }}
+
+			</div>
+		</div>
+	</div>
+	<div
+		class="card border-0 shadow rounded-3 my-5">
+		<div
+			class="card-body">
+			<div
+				class="row">
+				{{ render(controller('App\\Controller\\AdminController::anomalyTypeCreation')) }}
+
+
+			</div>
+		</div>
+	</div>
+	<div
+		class="card border-0 shadow rounded-3 my-5">
+		<div
+			class="card-body">
+			<div
+				class="row">
+				{{ render(controller('App\\Controller\\AdminController::placeCreation')) }}
+
+			</div>
+		</div>
+	</div>
 
 
 {% endblock %}

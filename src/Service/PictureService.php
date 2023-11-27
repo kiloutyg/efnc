@@ -11,42 +11,28 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\EFNC;
 use App\Entity\Picture;
 
-// use App\Service\FolderCreationService;
-
 
 class PictureService extends AbstractController
 {
-
-
     // private $logger;
 
     private $projectDir;
 
-    // private $FolderCreationService;
-
-
     private $em;
 
     public function __construct(
-
         // LoggerInterface                     $logger,
 
         ParameterBagInterface               $params,
 
-        // FolderCreationService               $FolderCreationService,
-
         EntityManagerInterface              $em
     ) {
-
         // $this->logger                       = $logger;
-
-        // $this->FolderCreationService        = $FolderCreationService;
 
         $this->projectDir                   = $params->get('kernel.project_dir');
 

@@ -12,32 +12,33 @@ use Symfony\Component\Form\FormInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-use App\Entity\Project;
+use App\Entity\Place;
 
 
-class ProjectService extends AbstractController
+class PlaceService extends AbstractController
 {
     private $logger;
 
     private $em;
 
     public function __construct(
-        LoggerInterface                             $logger,
 
-        EntityManagerInterface                      $em
+        LoggerInterface                                     $logger,
+
+        EntityManagerInterface                              $em
     ) {
         $this->logger                                       = $logger;
 
         $this->em                                           = $em;
     }
 
-    public function createProject(
-        Project $Project,
+    public function createPlace(
+        Place $Place,
         Request $request,
-        FormInterface $ProjectForm
+        FormInterface $AnomalyForm
     ) {
 
-        $this->em->persist($Project);
+        $this->em->persist($Place);
         $this->em->flush();
         return true;
     }

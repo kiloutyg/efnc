@@ -12,32 +12,33 @@ use Symfony\Component\Form\FormInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-use App\Entity\Project;
+use App\Entity\Origin;
 
 
-class ProjectService extends AbstractController
+class OriginService extends AbstractController
 {
     private $logger;
 
     private $em;
 
     public function __construct(
-        LoggerInterface                             $logger,
 
-        EntityManagerInterface                      $em
+        LoggerInterface                                     $logger,
+
+        EntityManagerInterface                              $em
     ) {
         $this->logger                                       = $logger;
 
         $this->em                                           = $em;
     }
 
-    public function createProject(
-        Project $Project,
+    public function createOrigin(
+        origin $origin,
         Request $request,
-        FormInterface $ProjectForm
+        FormInterface $originForm
     ) {
 
-        $this->em->persist($Project);
+        $this->em->persist($origin);
         $this->em->flush();
         return true;
     }
