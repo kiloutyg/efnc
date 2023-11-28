@@ -49,7 +49,8 @@ class FormCreationService extends AbstractController
     public function createNCForm(
         EFNC $efnc,
         Request $request,
-        FormInterface $form1
+        FormInterface $form1 = null
+
     ) {
         $now = new \DateTime();
         $efnc->setCreatedAt($now);
@@ -66,7 +67,6 @@ class FormCreationService extends AbstractController
         // Check if 'picture' key exists and is not null
         if (key_exists('picture', $request->files->all()) && $request->files->get('picture') != null) {
             $pictures = $request->files->all()['picture'];
-
             // Process TraceabilityPictures
             if (key_exists('TraceabilityPicture', $pictures)) {
                 foreach ($pictures['TraceabilityPicture'] as $traceabilityPicture) {
@@ -81,19 +81,20 @@ class FormCreationService extends AbstractController
             }
         }
         // Process each file, e.g., save them to the server
-        if (!empty($traceabilityPictures)) {
+        if (isset($traceabilityPictures)) {
             foreach ($traceabilityPictures as $picture) {
                 // Save or process $pictures
                 $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'traceability');
             }
         }
-        if (!empty($ncPictures)) {
+        if (isset($ncPictures)) {
             foreach ($ncPictures as $picture) {
                 // Save or process $picture
                 $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
             }
         }
         $this->em->persist($efnc);
+
         $this->em->flush();
 
         return true;

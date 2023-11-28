@@ -55,7 +55,6 @@ class FormModificationService extends AbstractController
 
         $efnc->setUpdatedAt($now);
 
-
         $efncFolderName = $form1->get('Project')->getData()->getName() . '.' . $now->format('Y-m-d') . '.' . $efnc->getTitle();
 
         if ((key_exists('Status', $request->request->all()) == true) && ($request->request->get('Status')) != null) {
@@ -78,15 +77,21 @@ class FormModificationService extends AbstractController
                 }
             }
         }
-        // Process each file, e.g., save them to the server
-        foreach ($traceabilityPictures as $picture) {
-            // Save or process $pictures
-            $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'traceability');
+        if (isset($traceabilityPictures)) {
+            // Process each file, e.g., save them to the server
+            foreach ($traceabilityPictures as $picture) {
+                // Save or process $pictures
+                $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'traceability');
+            }
         }
-        foreach ($ncPictures as $picture) {
-            // Save or process $picture
-            $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
+        if (isset($ncPictures)) {
+            // Process each file, e.g., save them to the server
+            foreach ($ncPictures as $picture) {
+                // Save or process $picture
+                $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
+            }
         }
+
         $this->em->persist($efnc);
         $this->em->flush();
 
