@@ -33,6 +33,7 @@ use App\Service\UAPService;
 use App\Service\AnomalyTypeService;
 use App\Service\PlaceService;
 use App\Service\ImCoMeService;
+use App\Service\RiskWeightingService;
 
 #[Route('/', name: 'app_')]
 
@@ -74,6 +75,7 @@ class BaseController extends AbstractController
     protected $anomalyTypeService;
     protected $placeService;
     protected $imcomeService;
+    protected $riskWeightingService;
 
     // Variables used in the twig templates to display all the entities
 
@@ -112,7 +114,8 @@ class BaseController extends AbstractController
         UAPService                      $uapService,
         AnomalyTypeService              $anomalyTypeService,
         PlaceService                    $placeService,
-        ImCoMeService                   $imcomeService
+        ImCoMeService                   $imcomeService,
+        RiskWeightingService            $riskWeightingService
 
 
     ) {
@@ -150,6 +153,7 @@ class BaseController extends AbstractController
         $this->anomalyTypeService           = $anomalyTypeService;
         $this->placeService                 = $placeService;
         $this->imcomeService                = $imcomeService;
+        $this->riskWeightingService         = $riskWeightingService;
 
         // Variables used in the twig templates to display all the entities
 

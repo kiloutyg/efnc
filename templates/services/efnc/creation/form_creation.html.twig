@@ -134,11 +134,41 @@
 				</div>
 			</div>
 			{{ form_row(imcomeForm._token) }}
+			<h3>
+				<strong>
+					Non-Conformity Prioritization :
+				</strong>
+			</h3>
+			{{ form_start(riskWeightingForm, { attr: {class: 'd-flex flex-column ', id: 'imcomeCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_form_creation') }) }}
+			<div class="row g-3">
+
+				<div class="col-auto">
+					{{ form_label(riskWeightingForm.severityWeight) }}
+					{{ form_widget(riskWeightingForm.severityWeight) }}
+				</div>
+				<div class="col-auto">
+					{{ form_label(riskWeightingForm.frequencyWeight) }}
+					{{ form_widget(riskWeightingForm.frequencyWeight) }}
+				</div>
+
+				<div class="col-auto">
+					{{ form_label(riskWeightingForm.detectabilityWeight) }}
+					{{ form_widget(riskWeightingForm.detectabilityWeight) }}
+				</div>
+
+				<div class="col-auto">
+					{{ form_label(riskWeightingForm.RiskPriorityIndex) }}
+					{{ form_widget(riskWeightingForm.RiskPriorityIndex) }}
+				</div>
+			</div>
+			{{ form_row(riskWeightingForm._token) }}
 			<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
 				<button type="submit" class="btn btn-primary mb-3 submit-upload-modification">
 					Créer
 				</button>
 			</div>
+			{{ form_end(riskWeightingForm) }}
+
 			{{ form_end(imcomeForm) }}
 
 			{{ form_end(form1) }}

@@ -13,43 +13,26 @@ class RiskWeighting
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Type = null;
-
-    #[ORM\Column]
-    private ?int $Weight = null;
-
     #[ORM\ManyToOne(inversedBy: 'riskWeightings')]
     private ?EFNC $EFNC = null;
+
+    #[ORM\Column]
+    private ?int $severityWeight = null;
+
+    #[ORM\Column]
+    private ?int $frequencyWeight = null;
+
+    #[ORM\Column]
+    private ?int $detectabilityWeight = null;
+
+    #[ORM\Column]
+    private ?int $RiskPriorityIndex = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getType(): ?string
-    {
-        return $this->Type;
-    }
-
-    public function setType(string $Type): static
-    {
-        $this->Type = $Type;
-
-        return $this;
-    }
-
-    public function getWeight(): ?int
-    {
-        return $this->Weight;
-    }
-
-    public function setWeight(int $Weight): static
-    {
-        $this->Weight = $Weight;
-
-        return $this;
-    }
 
     public function getEFNC(): ?EFNC
     {
@@ -59,6 +42,54 @@ class RiskWeighting
     public function setEFNC(?EFNC $EFNC): static
     {
         $this->EFNC = $EFNC;
+
+        return $this;
+    }
+
+    public function getSeverityWeight(): ?int
+    {
+        return $this->severityWeight;
+    }
+
+    public function setSeverityWeight(int $severityWeight): static
+    {
+        $this->severityWeight = $severityWeight;
+
+        return $this;
+    }
+
+    public function getFrequencyWeight(): ?int
+    {
+        return $this->frequencyWeight;
+    }
+
+    public function setFrequencyWeight(int $frequencyWeight): static
+    {
+        $this->frequencyWeight = $frequencyWeight;
+
+        return $this;
+    }
+
+    public function getDetectabilityWeight(): ?int
+    {
+        return $this->detectabilityWeight;
+    }
+
+    public function setDetectabilityWeight(int $detectabilityWeight): static
+    {
+        $this->detectabilityWeight = $detectabilityWeight;
+
+        return $this;
+    }
+
+    public function getRiskPriorityIndex(): ?int
+    {
+        return $this->RiskPriorityIndex;
+    }
+
+    public function setRiskPriorityIndex(int $RiskPriorityIndex): static
+    {
+        $this->RiskPriorityIndex = $RiskPriorityIndex;
 
         return $this;
     }

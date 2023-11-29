@@ -21,12 +21,11 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addEntry('datepicker', './assets/js/datepicker.js')
     .addEntry('toast', './assets/js/toast.js')
     .addEntry('picture-preview', './assets/js/picture-preview.js')
     .addEntry('file-input-display', './assets/js/file-input-display.js')
     .addEntry('confirmation', './assets/js/confirmation.js')
-
+    .addEntry('risk-weighting-pri-calculus', './assets/js/risk-weighting-pri-calculus.js')
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
 
