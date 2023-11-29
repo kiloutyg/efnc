@@ -7,206 +7,196 @@
 
 {% block body %}
 
-	<div
-		class="card border-0 shadow rounded-3 my-5 bg-secondary">
-		<div
-			class="card-body">
-			<h3
-				class="text-white mb-5"
-				style="color:white">
+	<div class="card border-0 shadow rounded-3 my-5 bg-secondary">
+		<div class="card-body">
+			<h3 class="text-white mb-5" style="color:white">
 				<strong>
 					Modification de la Fiche de Non-Conformité
-					{{ EFNC.Title|upper }}
-
-					{{ EFNC.id|upper }}
-
+					{{ EFNC.Title|upper|split('_')|first }}
+					{{ EFNC.id|upper}}
 
 					|
-					{{ EFNC.Project|upper }}
+
+					{{ EFNC.nonConformityOrigin.name|upper }}
 
 					|
+
+					{{ EFNC.ProductDesignation|upper }}
+
+					|
+
+					{{EFNC.Project.name|upper }}
+
+					|
+
 					{{EFNC.CreatedAt|date('d/m/Y') }}
+
 					:
 
 				</strong>
 			</h3>
-			{{ form_start(form1, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_form_display_modification', {'efncID': EFNC.id}) }) }}
+			{{ form_start(form1, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_form_modification_display', {'efncID': EFNC.id}) }) }}
 
-			<div
-				class="row g-3">
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.Title, 'Titre de la eFNC :', { label_attr: { class: 'form-label', for: 'Title' } }) }}
-					{{ form_widget(form1.Title, { attr: { class: 'form-control', id: 'Title', placeholder: 'Titre de la eFNC', required: 'true' } }) }}
-				</div>
+			<div class="row g-3">
 
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.Creator, "Nom de l'émetteur :", { label_attr: { class: 'form-label', for: 'Creator' } }) }}
-					{{ form_widget(form1.Creator, { attr: { class: 'form-control', id: 'Creator', placeholder: "Nom de l'émetteur", required: 'true' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.DetectionDate, 'Date de Détection :', { label_attr: { class: 'form-label', for: 'DetectionDate' } }) }}
-					{{ form_widget(form1.DetectionDate, ) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.DetectionTime, 'Heure de Détection :', { label_attr: { class: 'form-label', for: 'DetectionTime' } }) }}
-					{{ form_widget(form1.DetectionTime, ) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.Team, 'Equipe :', { label_attr: { class: 'form-label', for: 'Team' } }) }}
-					{{ form_widget(form1.Team, { attr: { class: 'form-control', id: 'Team', placeholder: 'Equipe', required: 'true' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.DetectionPlace, 'Lieu de détection :', { label_attr: { class: 'form-label', for: 'DetectionPlace' } }) }}
-					{{ form_widget(form1.DetectionPlace, { attr: { class: 'form-control', id: 'DetectionPlace', placeholder: 'Lieu de détection', required: 'true' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.ProductDesignation, 'Désignation Produit :', { label_attr: { class: 'form-label', for: 'ProductDesignation' } }) }}
-					{{ form_widget(form1.ProductDesignation, { attr: { class: 'form-control', id: 'ProductDesignation', placeholder: 'Désignation Produit', required: 'true' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.Project, 'Projet :', { label_attr: { class: 'form-label', for: 'Project' } }) }}
-					{{ form_widget(form1.Project, { attr: { class: 'form-control', id: 'Project', placeholder: 'Projet', required: 'true' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.UAP, 'UAP :', { label_attr: { class: 'form-label', for: 'UAP' } }) }}
-					{{ form_widget(form1.UAP, { attr: { class: 'form-control', id: 'UAP', placeholder: 'UAP', required: 'true' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.NonConformityOrigin, 'Lieu de création de la Non-Conformité :', { label_attr: { class: 'form-label', for: 'NonConformityOrigin' } }) }}
-					{{ form_widget(form1.NonConformityOrigin, { attr: { class: 'form-control', id: 'NonConformityOrigin', placeholder: 'Lieu de création de la Non-Conformité', required: 'true' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.Quantity, 'Nombre de Pièces Non-Conforme :', { label_attr: { class: 'form-label', for: 'Quantity' } }) }}
-					{{ form_widget(form1.Quantity, { attr: { class: 'form-control', id: 'Quantity', placeholder: 'Nombre de Pièces Non-Conforme', required: 'true' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.AnomalyType, "Type de d'anomalie :", { label_attr: { class: 'form-label', for: 'AnomalyType' } }) }}
-					{{ form_widget(form1.AnomalyType, { attr: { class: 'form-control', id: 'AnomalyType', placeholder: "Type de d'anomalie", required: 'true' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.QuantityToBlock, 'Nombre de pièces à bloquer :', { label_attr: { class: 'form-label', for: 'QuantityToBlock' } }) }}
-					{{ form_widget(form1.QuantityToBlock, { attr: { class: 'form-control', id: 'QuantityToBlock', placeholder: 'Nombre de pièces à bloquer', required: 'true' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.DetailedDescription, 'Description détaillée :', { label_attr: { class: 'form-label', for: 'DetailedDescription' } }) }}
-					{{ form_widget(form1.DetailedDescription, { attr: { class: 'form-control', id: 'DetailedDescription', placeholder: 'Description détaillée' } }) }}
-				</div>
-				<div
-					class="col-md-auto">
-					{{ form_label(form1.SAPReference, 'Référence SAP :', { label_attr: { class: 'form-label', for: 'SAPReference' } }) }}
-					{{ form_widget(form1.SAPReference, { attr: { class: 'form-control', id: 'SAPReference', placeholder: 'Référence SAP' } }) }}
-				</div>
-
-				<div
-					class="col-md-auto">
+				<div class="row g-3">
+					<h3>
+						<strong>
+							Non-Conformity Registration :
+						</strong>
+					</h3>
+					<div class="col-auto">
+						{{ form_label(form1.Creator) }}
+						{{ form_widget(form1.Creator) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.DetectionDate) }}
+						{{ form_widget(form1.DetectionDate ) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.DetectionTime) }}
+						{{ form_widget(form1.DetectionTime ) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.Team) }}
+						{{ form_widget(form1.Team) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.DetectionPlace) }}
+						{{ form_widget(form1.DetectionPlace) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.ProductDesignation) }}
+						{{ form_widget(form1.ProductDesignation) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.Project) }}
+						{{ form_widget(form1.Project) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.UAP) }}
+						{{ form_widget(form1.UAP) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.NonConformityOrigin) }}
+						{{ form_widget(form1.NonConformityOrigin) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.SAPReference) }}
+						{{ form_widget(form1.SAPReference) }}
+					</div>
+					<h3>
+						<strong>
+							Problem Description :
+						</strong>
+					</h3>
+					<div class="col-auto">
+						{{ form_label(form1.AnomalyType) }}
+						{{ form_widget(form1.AnomalyType) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.Quantity) }}
+						{{ form_widget(form1.Quantity) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.QuantityToBlock) }}
+						{{ form_widget(form1.QuantityToBlock) }}
+					</div>
+					<div class="col-auto">
+						{{ form_label(form1.DetailedDescription) }}
+						{{ form_widget(form1.DetailedDescription) }}
+					</div>
+					<div class="col-md-auto">
 
 
-					<label
-						class="form-label"
-						for="picture_TraceabilityPicture">
-						Photo de Traçabilité Obligatoire :
-					</label>
+						<label class="form-label" for="picture_TraceabilityPicture">
+							Photo de Traçabilité Obligatoire :
+						</label>
 
-					{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
-						{% for picture in EFNC.pictures %}
-							{% if picture.category is same as('traceability') %}
-								<img
-									class="img-fluid"
-									src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
-							{% endif %}
-							{% if picture.category is same as(null) %}
-								<img
-									class="img-fluid"
-									src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
-							{% endif %}
-						{% endfor %}
-					{% endif %}
+						{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
+							{% for picture in EFNC.pictures %}
+								{% if picture.category is same as('traceability') %}
+									<img class="img-fluid" src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
+								{% endif %}
+								{% if picture.category is same as(null) %}
+									<img class="img-fluid" src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
+								{% endif %}
+							{% endfor %}
+						{% endif %}
 
-					<div
-						id="traceability-picture-container">
-						<input
-							type="file"
-							id="picture_TraceabilityPicture"
-							name="picture[TraceabilityPicture][]"
-							multiple="multiple"
-							class="form-control"
-							placeholder="Photo de Traçabilité Obligatoire">
-						<div
-							id="TraceabilityPicturePreview"></div>
+						<div id="traceability-picture-container">
+							<input type="file" id="picture_TraceabilityPicture" name="picture[TraceabilityPicture][]" multiple="multiple" class="form-control" placeholder="Photo de Traçabilité Obligatoire">
+							<div id="TraceabilityPicturePreview"></div>
+						</div>
+					</div>
+
+					<div class="col-md-auto">
+						<label class="form-label" for="picture_NCpicture">
+							Photo de non-conformité :
+						</label>
+
+						{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
+							{% for picture in EFNC.pictures %}
+								{% if picture.category is same as('NC') %}
+									<img class="img-fluid" src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+
+						<div id="nc-picture-container">
+							<input type="file" id="picture_NCpicture" name="picture[NCpicture][]" multiple="multiple" class="form-control" placeholder="Photo de non-conformité">
+							<div id="NCpicturePreview"></div>
+						</div>
 					</div>
 				</div>
+				{{ form_row(form1._token) }}
 
-				<div
-					class="col-md-auto">
-					<label
-						class="form-label"
-						for="picture_NCpicture">
-						Photo de non-conformité :
-					</label>
 
-					{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
-						{% for picture in EFNC.pictures %}
-							{% if picture.category is same as('NC') %}
-								<img
-									class="img-fluid"
-									src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
-							{% endif %}
-						{% endfor %}
-					{% endif %}
+				<h3>
+					<strong>
+						Immediate Conservatory Measures :
+					</strong>
+				</h3>
+				{% for imcomeForm in imcomeForms %}
 
-					<div
-						id="nc-picture-container">
-						<input
-							type="file"
-							id="picture_NCpicture"
-							name="picture[NCpicture][]"
-							multiple="multiple"
-							class="form-control"
-							placeholder="Photo de non-conformité">
-						<div
-							id="NCpicturePreview"></div>
+					{{ form_start(imcomeForm, { attr: {class: 'd-flex flex-column ', method: 'POST', enctype: 'multipart/form-data' }, Action: path('app_form_creation') }) }}
+					<div class="row g-3">
+						<div class="col-auto">
+							{{ form_label(imcomeForm.action) }}
+							{{ form_widget(imcomeForm.action) }}
+						</div>
+						<div class="col-auto">
+							{{ form_label(imcomeForm.customAction) }}
+							{{ form_widget(imcomeForm.customAction) }}
+						</div>
+						<div class="col-auto">
+							{{ form_label(imcomeForm.Manager) }}
+							{{ form_widget(imcomeForm.Manager) }}
+						</div>
+
+						<div class="col-auto">
+							{{ form_label(imcomeForm.status) }}
+							{{ form_widget(imcomeForm.status) }}
+						</div>
+
+						<div class="col-auto">
+							{{ form_label(imcomeForm.RealisedAt) }}
+							{{ form_widget(imcomeForm.RealisedAt) }}
+						</div>
 					</div>
+					{{ form_row(imcomeForm._token) }}
+
+
+					{{ form_end(imcomeForm) }}
+				{% endfor %}
+
+				<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+					<button type="submit" class="btn btn-primary mb-3 submit-upload-modification">
+						Modifier
+					</button>
 				</div>
+				{{ form_end(form1) }}
+
 			</div>
-
-			<div
-				class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
-				<button
-					type="submit"
-					class="btn btn-primary mb-3 submit-upload-modification">
-					Modifier
-				</button>
-			</div>
-
-			{{ form_end(form1) }}
-
-
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}

@@ -32,6 +32,7 @@ use App\Service\OriginService;
 use App\Service\UAPService;
 use App\Service\AnomalyTypeService;
 use App\Service\PlaceService;
+use App\Service\ImCoMeService;
 
 #[Route('/', name: 'app_')]
 
@@ -72,6 +73,7 @@ class BaseController extends AbstractController
     protected $uapService;
     protected $anomalyTypeService;
     protected $placeService;
+    protected $imcomeService;
 
     // Variables used in the twig templates to display all the entities
 
@@ -109,7 +111,8 @@ class BaseController extends AbstractController
         OriginService                   $originService,
         UAPService                      $uapService,
         AnomalyTypeService              $anomalyTypeService,
-        PlaceService                    $placeService
+        PlaceService                    $placeService,
+        ImCoMeService                   $imcomeService
 
 
     ) {
@@ -146,6 +149,7 @@ class BaseController extends AbstractController
         $this->uapService                   = $uapService;
         $this->anomalyTypeService           = $anomalyTypeService;
         $this->placeService                 = $placeService;
+        $this->imcomeService                = $imcomeService;
 
         // Variables used in the twig templates to display all the entities
 

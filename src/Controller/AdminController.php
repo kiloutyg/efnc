@@ -8,6 +8,7 @@ use App\Entity\Origin;
 use App\Entity\UAP;
 use App\Entity\AnomalyType;
 use App\Entity\Place;
+use App\Entity\ImmediateConservatoryMeasuresList;
 
 use App\Form\TeamType;
 use App\Form\ProjectType;
@@ -15,6 +16,7 @@ use App\Form\OriginType;
 use App\Form\UAPType;
 use App\Form\AnomalyForm;
 use App\Form\PlaceType;
+use App\Form\ImCoMeListType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -191,6 +193,33 @@ class AdminController extends FrontController
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/admin_services/place/place_creation.html.twig', [
                 'placeForm' => $placeForm->createView(),
+            ]);
+        }
+    }
+
+    #[Route('admin/services/imcomeList_creation', name: 'imcomeList_creation')]
+    public function imcomeListCreation(Request $request): Response
+    {
+        $imcomeList = new ImmediateConservatoryMeasuresList();
+        $imcomeListForm = $this->createForm(ImCoMeListType::class, $imcomeList);
+        $originUrl = $request->headers->get('referer');
+        if ($request->getMethod() == 'POST') {
+            $imcomeListForm->handleRequest($request);
+            if ($imcomeListForm->isSubmitted() && $imcomeListForm->isValid()) {
+                $this->imcomeService->imcomeListCreation(
+                    $imcomeList,
+                    $request,
+                    $imcomeListForm
+                );
+                $this->addFlash('success', 'C\'est bon khey!');
+                return $this->redirect($originUrl);
+            } else {
+                $this->addFlash('error', 'C\'est pas bon khey!');
+                return $this->redirect($originUrl);
+            }
+        } else if ($request->getMethod() == 'GET') {
+            return $this->render('services/admin_services/imcome/imcome_creation.html.twig', [
+                'imcomeForm' => $imcomeListForm->createView(),
             ]);
         }
     }

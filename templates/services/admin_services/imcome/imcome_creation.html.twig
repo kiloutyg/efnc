@@ -1,0 +1,16 @@
+{% block body %}
+	<div class="card border-0 shadow rounded-3 my-5 bg-secondary">
+		<div class="card-body ">
+			{{ form_start(imcomeForm, { attr: { class: 'd-flex flex-column ', id: 'imcomeCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_imcomeList_creation') }) }}
+			<div class="col-md-auto">
+				{{ form_label(imcomeForm.name) }}
+				{{ form_widget(imcomeForm.name) }}
+			</div>
+			<div class="d-grid col-md-auto mx-auto">
+				{{ form_label(imcomeForm.save) }}
+				{{ form_widget(imcomeForm.save) }}
+			</div>
+			{{ form_end(imcomeForm) }}
+		</div>
+	</div>
+{% endblock %}

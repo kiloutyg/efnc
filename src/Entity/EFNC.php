@@ -27,28 +27,10 @@ class EFNC
     private ?\DateTimeInterface $DetectionDate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Team = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $DetectionPlace = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
     private ?string $ProductDesignation = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Project = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $UAP = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $NonConformityOrigin = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $Quantity = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $AnomalyType = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $QuantityToBlock = null;
@@ -91,6 +73,24 @@ class EFNC
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $DetectionTime = null;
+
+    #[ORM\ManyToOne(inversedBy: 'eFNCs')]
+    private ?Team $team = null;
+
+    #[ORM\ManyToOne(inversedBy: 'eFNCs')]
+    private ?Project $project = null;
+
+    #[ORM\ManyToOne(inversedBy: 'eFNCs')]
+    private ?UAP $uap = null;
+
+    #[ORM\ManyToOne(inversedBy: 'eFNCs')]
+    private ?Place $detectionPlace = null;
+
+    #[ORM\ManyToOne(inversedBy: 'eFNCs')]
+    private ?Origin $nonConformityOrigin = null;
+
+    #[ORM\ManyToOne(inversedBy: 'eFNCs')]
+    private ?AnomalyType $anomalyType = null;
 
     public function __construct()
     {
@@ -142,29 +142,6 @@ class EFNC
         return $this;
     }
 
-    public function getTeam(): ?string
-    {
-        return $this->Team;
-    }
-
-    public function setTeam(string $Team): static
-    {
-        $this->Team = $Team;
-
-        return $this;
-    }
-
-    public function getDetectionPlace(): ?string
-    {
-        return $this->DetectionPlace;
-    }
-
-    public function setDetectionPlace(string $DetectionPlace): static
-    {
-        $this->DetectionPlace = $DetectionPlace;
-
-        return $this;
-    }
 
     public function getProductDesignation(): ?string
     {
@@ -174,42 +151,6 @@ class EFNC
     public function setProductDesignation(string $ProductDesignation): static
     {
         $this->ProductDesignation = $ProductDesignation;
-
-        return $this;
-    }
-
-    public function getProject(): ?string
-    {
-        return $this->Project;
-    }
-
-    public function setProject(string $Project): static
-    {
-        $this->Project = $Project;
-
-        return $this;
-    }
-
-    public function getUAP(): ?string
-    {
-        return $this->UAP;
-    }
-
-    public function setUAP(string $UAP): static
-    {
-        $this->UAP = $UAP;
-
-        return $this;
-    }
-
-    public function getNonConformityOrigin(): ?string
-    {
-        return $this->NonConformityOrigin;
-    }
-
-    public function setNonConformityOrigin(string $NonConformityOrigin): static
-    {
-        $this->NonConformityOrigin = $NonConformityOrigin;
 
         return $this;
     }
@@ -226,17 +167,6 @@ class EFNC
         return $this;
     }
 
-    public function getAnomalyType(): ?string
-    {
-        return $this->AnomalyType;
-    }
-
-    public function setAnomalyType(string $AnomalyType): static
-    {
-        $this->AnomalyType = $AnomalyType;
-
-        return $this;
-    }
 
     public function getQuantityToBlock(): ?int
     {
@@ -507,6 +437,78 @@ class EFNC
     public function setDetectionTime(\DateTimeInterface $DetectionTime): static
     {
         $this->DetectionTime = $DetectionTime;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): static
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    public function getUap(): ?UAP
+    {
+        return $this->uap;
+    }
+
+    public function setUap(?UAP $uap): static
+    {
+        $this->uap = $uap;
+
+        return $this;
+    }
+
+    public function getDetectionPlace(): ?Place
+    {
+        return $this->detectionPlace;
+    }
+
+    public function setDetectionPlace(?Place $detectionPlace): static
+    {
+        $this->detectionPlace = $detectionPlace;
+
+        return $this;
+    }
+
+    public function getNonConformityOrigin(): ?Origin
+    {
+        return $this->nonConformityOrigin;
+    }
+
+    public function setNonConformityOrigin(?Origin $nonConformityOrigin): static
+    {
+        $this->nonConformityOrigin = $nonConformityOrigin;
+
+        return $this;
+    }
+
+    public function getAnomalyType(): ?AnomalyType
+    {
+        return $this->anomalyType;
+    }
+
+    public function setAnomalyType(?AnomalyType $anomalyType): static
+    {
+        $this->anomalyType = $anomalyType;
 
         return $this;
     }

@@ -14,9 +14,6 @@ class ImmediateConservatoryMeasures
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Action = null;
-
     #[ORM\ManyToOne(inversedBy: 'immediateConservatoryMeasures')]
     private ?EFNC $EFNC = null;
 
@@ -29,22 +26,15 @@ class ImmediateConservatoryMeasures
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $RealisedAt = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $customAction = null;
+
+    #[ORM\ManyToOne(inversedBy: 'immediateConservatoryMeasures')]
+    private ?ImmediateConservatoryMeasuresList $action = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getAction(): ?string
-    {
-        return $this->Action;
-    }
-
-    public function setAction(string $Action): static
-    {
-        $this->Action = $Action;
-
-        return $this;
     }
 
     public function getEFNC(): ?EFNC
@@ -91,6 +81,30 @@ class ImmediateConservatoryMeasures
     public function setRealisedAt(\DateTimeInterface $RealisedAt): static
     {
         $this->RealisedAt = $RealisedAt;
+
+        return $this;
+    }
+
+    public function getCustomAction(): ?string
+    {
+        return $this->customAction;
+    }
+
+    public function setCustomAction(?string $customAction): static
+    {
+        $this->customAction = $customAction;
+
+        return $this;
+    }
+
+    public function getAction(): ?ImmediateConservatoryMeasuresList
+    {
+        return $this->action;
+    }
+
+    public function setAction(?ImmediateConservatoryMeasuresList $action): static
+    {
+        $this->action = $action;
 
         return $this;
     }
