@@ -66,57 +66,6 @@ class EFNCController extends BaseController
     }
 
 
-    // #[Route('/form{efncID}_modification_display', name: 'form_modification_display')]
-    // public function formModificationDisplay(int $efncID, Request $request): Response
-    // {
-    //     $efnc = $this->EFNCRepository->find(['id' => $efncID]);
-    //     $form1 = $this->createForm(FormCreationType::class, $efnc);
-    //     // if ($efnc->getImmediateConservatoryMeasures() === null) {
-    //     //     $imcome = new ImmediateConservatoryMeasures();
-    //     // } else {
-    //     //     $imcomes = $efnc->getImmediateConservatoryMeasures();
-    //     // }
-    //     // If getImmediateConservatoryMeasures returns a collection, convert it to a single entity
-    //     $imcome = $efnc->getImmediateConservatoryMeasures();
-
-    //     // Check if $imcome is a collection and get the first element if it is
-    //     if ($imcome instanceof \Doctrine\ORM\PersistentCollection) {
-    //         $imcome = $imcome->isEmpty() ? new ImmediateConservatoryMeasures() : $imcome->first();
-    //     } else if ($imcome === null) {
-    //         $imcome = new ImmediateConservatoryMeasures();
-    //     }
-    //     $imcomeForm = $this->createForm(ImCoMeType::class, $imcome);
-
-
-    //     if ($request->getMethod() == 'GET') {
-    //         return $this->render('/services/efnc/modification/form_modification.html.twig', [
-    //             'form1' => $form1->createView(),
-    //             'imcomeForm' => $imcomeForm->createView(),
-    //             'EFNC' => $efnc,
-    //         ]);
-    //     } else {
-    //         $form1->handleRequest($request);
-    //         $imcomeForm->handleRequest($request);
-    //         if (
-    //             $form1->isSubmitted() && $form1->isValid()
-    //             && $imcomeForm->isSubmitted() && $imcomeForm->isValid()
-    //         ) {
-    //             $result = $this->formModificationService->modifyNCForm(
-    //                 $efnc,
-    //                 $request,
-    //                 $form1,
-    //                 $imcomeForm
-    //             );
-    //             if ($result === true) {
-    //                 $this->addFlash('success', 'C\'est bon khey!');
-    //                 return $this->redirectToRoute('app_base', []);
-    //             } else {
-    //                 $this->addFlash('error', 'C\'est pas bon khey!');
-    //                 return $this->redirectToRoute('app_base', []);
-    //             }
-    //         }
-    //     }
-    // }
 
 
     #[Route('/form{efncID}_modification_display', name: 'form_modification_display')]

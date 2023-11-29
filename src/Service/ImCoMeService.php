@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\EFNC;
 use App\Entity\ImmediateConservatoryMeasures;
+use App\Entity\ImmediateConservatoryMeasuresList;
 
 
 class ImCoMeService extends AbstractController
@@ -39,7 +40,20 @@ class ImCoMeService extends AbstractController
         $this->em                           = $em;
     }
 
-    public function imcomeCreation(EFNC $efnc, ImmediateConservatoryMeasures $imcome, FormInterface $imcomeform, Request $request)
+    public function imcomeAssignation(EFNC $efnc, ImmediateConservatoryMeasures $imcome, FormInterface $imcomeform, Request $request)
+    {
+        if ($imcomeform->get('Action')->getData() === 'other_option') {
+            $imcome->setAction($imcomeform->get('CustomAction')->getData());
+        }
+        $imcome->setEFNC($efnc);
+        $this->em->persist($imcome);
+        $this->em->persist($efnc);
+        $this->em->flush();
+        return true;
+    }
+
+
+    public function imcomeCreation(EFNC $efnc, ImmediateConservatoryMeasuresList $imcome, FormInterface $imcomeform, Request $request)
     {
         if ($imcomeform->get('Action')->getData() === 'other_option') {
             $imcome->setAction($imcomeform->get('CustomAction')->getData());

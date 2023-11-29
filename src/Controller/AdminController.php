@@ -194,4 +194,31 @@ class AdminController extends FrontController
             ]);
         }
     }
+
+    #[Route('admin/services/imcome_creation', name: 'imcome_creation')]
+    public function imcomeCreation(Request $request): Response
+    {
+        $imcome = new Place();
+        $imcomeForm = $this->createForm(PlaceType::class, $imcome);
+        $originUrl = $request->headers->get('referer');
+        if ($request->getMethod() == 'POST') {
+            $imcomeForm->handleRequest($request);
+            if ($imcomeForm->isSubmitted() && $imcomeForm->isValid()) {
+                $this->imcomeService->createPlace(
+                    $imcome,
+                    $request,
+                    $imcomeForm
+                );
+                $this->addFlash('success', 'C\'est bon khey!');
+                return $this->redirect($originUrl);
+            } else {
+                $this->addFlash('error', 'C\'est pas bon khey!');
+                return $this->redirect($originUrl);
+            }
+        } else if ($request->getMethod() == 'GET') {
+            return $this->render('services/admin_services/place/place_creation.html.twig', [
+                'placeForm' => $placeForm->createView(),
+            ]);
+        }
+    }
 }
