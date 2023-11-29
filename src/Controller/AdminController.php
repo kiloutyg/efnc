@@ -8,6 +8,7 @@ use App\Entity\Origin;
 use App\Entity\UAP;
 use App\Entity\AnomalyType;
 use App\Entity\Place;
+use App\Entity\ImmediateConservatoryMeasuresList;
 
 use App\Form\TeamType;
 use App\Form\ProjectType;
@@ -15,6 +16,7 @@ use App\Form\OriginType;
 use App\Form\UAPType;
 use App\Form\AnomalyForm;
 use App\Form\PlaceType;
+use App\Form\ImCoMeListType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -195,19 +197,19 @@ class AdminController extends FrontController
         }
     }
 
-    #[Route('admin/services/imcome_creation', name: 'imcome_creation')]
-    public function imcomeCreation(Request $request): Response
+    #[Route('admin/services/imcomeList_creation', name: 'imcomeList_creation')]
+    public function imcomeListCreation(Request $request): Response
     {
-        $imcome = new Place();
-        $imcomeForm = $this->createForm(PlaceType::class, $imcome);
+        $imcomeList = new ImmediateConservatoryMeasuresList();
+        $imcomeListForm = $this->createForm(ImCoMeListType::class, $imcomeList);
         $originUrl = $request->headers->get('referer');
         if ($request->getMethod() == 'POST') {
-            $imcomeForm->handleRequest($request);
-            if ($imcomeForm->isSubmitted() && $imcomeForm->isValid()) {
-                $this->imcomeService->createPlace(
-                    $imcome,
+            $imcomeListForm->handleRequest($request);
+            if ($imcomeListForm->isSubmitted() && $imcomeListForm->isValid()) {
+                $this->imcomeService->imcomeListCreation(
+                    $imcomeList,
                     $request,
-                    $imcomeForm
+                    $imcomeListForm
                 );
                 $this->addFlash('success', 'C\'est bon khey!');
                 return $this->redirect($originUrl);
@@ -216,8 +218,8 @@ class AdminController extends FrontController
                 return $this->redirect($originUrl);
             }
         } else if ($request->getMethod() == 'GET') {
-            return $this->render('services/admin_services/place/place_creation.html.twig', [
-                'placeForm' => $placeForm->createView(),
+            return $this->render('services/admin_services/imcome/imcome_creation.html.twig', [
+                'imcomeForm' => $imcomeListForm->createView(),
             ]);
         }
     }

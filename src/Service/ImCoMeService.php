@@ -53,14 +53,9 @@ class ImCoMeService extends AbstractController
     }
 
 
-    public function imcomeCreation(EFNC $efnc, ImmediateConservatoryMeasuresList $imcome, FormInterface $imcomeform, Request $request)
+    public function imcomeListCreation(ImmediateConservatoryMeasuresList $imcomeList, Request $request, FormInterface $imcomeform)
     {
-        if ($imcomeform->get('Action')->getData() === 'other_option') {
-            $imcome->setAction($imcomeform->get('CustomAction')->getData());
-        }
-        $imcome->setEFNC($efnc);
-        $this->em->persist($imcome);
-        $this->em->persist($efnc);
+        $this->em->persist($imcomeList);
         $this->em->flush();
         return true;
     }

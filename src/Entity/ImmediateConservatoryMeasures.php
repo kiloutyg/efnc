@@ -29,6 +29,9 @@ class ImmediateConservatoryMeasures
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $customAction = null;
 
+    #[ORM\ManyToOne(inversedBy: 'immediateConservatoryMeasures')]
+    private ?ImmediateConservatoryMeasuresList $action = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +93,18 @@ class ImmediateConservatoryMeasures
     public function setCustomAction(?string $customAction): static
     {
         $this->customAction = $customAction;
+
+        return $this;
+    }
+
+    public function getAction(): ?ImmediateConservatoryMeasuresList
+    {
+        return $this->action;
+    }
+
+    public function setAction(?ImmediateConservatoryMeasuresList $action): static
+    {
+        $this->action = $action;
 
         return $this;
     }

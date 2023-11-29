@@ -18,6 +18,14 @@ class ImmediateConservatoryMeasuresList
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\OneToMany(mappedBy: 'action', targetEntity: ImmediateConservatoryMeasures::class)]
+    private Collection $immediateConservatoryMeasures;
+
+    public function __construct()
+    {
+        $this->immediateConservatoryMeasures = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -31,6 +39,36 @@ class ImmediateConservatoryMeasuresList
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ImmediateConservatoryMeasures>
+     */
+    public function getImmediateConservatoryMeasures(): Collection
+    {
+        return $this->immediateConservatoryMeasures;
+    }
+
+    public function addImmediateConservatoryMeasure(ImmediateConservatoryMeasures $immediateConservatoryMeasure): static
+    {
+        if (!$this->immediateConservatoryMeasures->contains($immediateConservatoryMeasure)) {
+            $this->immediateConservatoryMeasures->add($immediateConservatoryMeasure);
+            $immediateConservatoryMeasure->setAction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImmediateConservatoryMeasure(ImmediateConservatoryMeasures $immediateConservatoryMeasure): static
+    {
+        if ($this->immediateConservatoryMeasures->removeElement($immediateConservatoryMeasure)) {
+            // set the owning side to null (unless already changed)
+            if ($immediateConservatoryMeasure->getAction() === $this) {
+                $immediateConservatoryMeasure->setAction(null);
+            }
+        }
 
         return $this;
     }

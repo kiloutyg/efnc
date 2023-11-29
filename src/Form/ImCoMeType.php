@@ -36,8 +36,17 @@ class ImCoMeType extends AbstractType
                 ],
                 'placeholder' => false, // Remove or set to null if a placeholder isn't needed
             ])
+            // ->add('Action', ChoiceType::class, [
+            //     'placeholder' => 'Choisissez une action',
+            //     'label' => 'Actions Mises en Place',
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //         'id' => 'action',
+            //         'required' => true
+            //     ],
+            //     'placeholder' => false, // Remove or set to null if a placeholder isn't needed
+            // ])
             ->add('CustomAction', TextType::class, [
-                'mapped' => false, // Assuming this isn't directly mapped to a field in your entity
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control',
