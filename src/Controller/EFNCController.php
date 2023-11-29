@@ -48,7 +48,7 @@ class EFNCController extends BaseController
                     $request,
                     $form1
                 );
-                $this->imcomeService->imcomeCreation($efnc, $imcome, $imcomeForm, $request);
+                $this->imcomeService->imcomeAssignation($efnc, $imcome, $imcomeForm, $request);
                 if ($result === true) {
                     $this->addFlash('success', 'C\'est bon khey!');
                     return $this->redirectToRoute('app_base', []);
@@ -104,7 +104,7 @@ class EFNCController extends BaseController
                 $imcomeForm = $this->createForm(ImCoMeType::class, $imcome);
                 $imcomeForm->handleRequest($request);
                 if ($imcomeForm->isSubmitted() && $imcomeForm->isValid()) {
-                    $this->imcomeService->imcomeCreation($efnc, $imcome, $imcomeForm, $request);
+                    $this->imcomeService->imcomeAssignation($efnc, $imcome, $imcomeForm, $request);
                 }
             }
 

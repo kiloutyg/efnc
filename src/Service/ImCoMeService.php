@@ -42,8 +42,10 @@ class ImCoMeService extends AbstractController
 
     public function imcomeAssignation(EFNC $efnc, ImmediateConservatoryMeasures $imcome, FormInterface $imcomeform, Request $request)
     {
-        if ($imcomeform->get('Action')->getData() === 'other_option') {
-            $imcome->setAction($imcomeform->get('CustomAction')->getData());
+        if ($imcomeform->get('action')->getData() === 'Autre (Précisez l\'action prise)') {
+            $imcome->setCustomAction($imcomeform->get('customAction')->getData());
+        } else {
+            $imcome->setCustomAction(null);
         }
         $imcome->setEFNC($efnc);
         $this->em->persist($imcome);

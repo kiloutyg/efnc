@@ -3,12 +3,17 @@
 namespace App\Form;
 
 use App\Entity\ImmediateConservatoryMeasures;
+use App\Entity\ImmediateConservatoryMeasuresList;
+
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ImCoMeType extends AbstractType
@@ -16,19 +21,11 @@ class ImCoMeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Action', ChoiceType::class, [
-                'placeholder' => 'Choisissez une action',
+            ->add('action', EntityType::class, [
+                'class' => ImmediateConservatoryMeasuresList::class,
+                // 'placeholder' => 'Choisissez une action',
+                'choice_label' => 'name',
                 'label' => 'Actions Mises en Place',
-                'choices' => [
-                    'Alerter le manager de la zone ayant crée le problème'  => 'Alerter le manager de la zone ayant crée le problème',
-                    'Alerter la ZIF et/ou le MAF'                           => 'Alerter la ZIF et/ou le MAF',
-                    'Alerter PO FONTAINE et/ou PO GUICHEN'                  => 'Alerter PO FONTAINE et/ou PO GUICHEN',
-                    'Réalisation d\'une Alerte d\'un problème'              => 'Réalisation d\'une Alerte d\'un problème',
-                    'Compléter le formulaire de triage'                     => 'Compléter le formulaire de tri',
-                    'Mise en place d\'un mode opératoire provisoire'        => 'Mise en place d\'un mode opératoire provisoire',
-                    // Add a placeholder for other/custom action
-                    'Autre (Précisez l\'action prise)'                      => 'other_option',
-                ],
                 'attr' => [
                     'class' => 'form-control',
                     'id' => 'action',
@@ -36,17 +33,7 @@ class ImCoMeType extends AbstractType
                 ],
                 'placeholder' => false, // Remove or set to null if a placeholder isn't needed
             ])
-            // ->add('Action', ChoiceType::class, [
-            //     'placeholder' => 'Choisissez une action',
-            //     'label' => 'Actions Mises en Place',
-            //     'attr' => [
-            //         'class' => 'form-control',
-            //         'id' => 'action',
-            //         'required' => true
-            //     ],
-            //     'placeholder' => false, // Remove or set to null if a placeholder isn't needed
-            // ])
-            ->add('CustomAction', TextType::class, [
+            ->add('customAction', TextType::class, [
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -82,7 +69,6 @@ class ImCoMeType extends AbstractType
                     if ($choice === 'Non') {
                         return ['class' => 'form-check-input', 'disabled' => 'disabled'];
                     }
-
                     return ['class' => 'form-check-input'];
                 },
                 // Define attributes for the label of each choice
@@ -94,9 +80,7 @@ class ImCoMeType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => true,
                 'required' => true,
-            ])
-            // ->add('EFNC')
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
