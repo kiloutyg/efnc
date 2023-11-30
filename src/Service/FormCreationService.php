@@ -17,10 +17,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\EFNC;
 
 use App\Service\PictureService;
+use App\Service\ImCoMeServices;
 
 class FormCreationService extends AbstractController
 {
     private $PictureService;
+    private $imcomeService;
 
     private $logger;
 
@@ -31,6 +33,7 @@ class FormCreationService extends AbstractController
     public function __construct(
 
         PictureService                              $PictureService,
+        ImCoMeService                               $imcomeService,
 
         LoggerInterface                             $logger,
 
@@ -39,6 +42,7 @@ class FormCreationService extends AbstractController
         EntityManagerInterface                      $em
     ) {
         $this->PictureService                               = $PictureService;
+        $this->imcomeService                                = $imcomeService;
 
         $this->logger                                       = $logger;
 
@@ -93,10 +97,10 @@ class FormCreationService extends AbstractController
                 $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
             }
         }
+        $this->imcomeService->imcomeAssignation($efnc, $form1);
+
         $this->em->persist($efnc);
-
         $this->em->flush();
-
         return true;
     }
 

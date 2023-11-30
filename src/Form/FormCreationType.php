@@ -10,6 +10,8 @@ use App\Entity\Project;
 use App\Entity\Team;
 use App\Entity\UAP;
 
+use App\Form\ImCoMeType;
+
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,12 +21,12 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-
-use Symfony\Component\Validator\Constraints\File;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -169,6 +171,14 @@ class FormCreationType extends AbstractType
 
                     'class' => 'form-control'
                 ],
+            ])
+            ->add('immediateConservatoryMeasures', CollectionType::class, [
+                'label' => 'Mesures Conservatoires Immédiates :',
+                'entry_type' => ImCoMeType::class,
+                'allow_add'    => true,
+                'by_reference' => false,
+                'attr' => ['class' => 'form-control row ']
+                // 'allow_delete' => true, if you want to allow removing items from the collection
             ]);
 
 

@@ -1,12 +1,8 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}
 	Création de fiche
 {% endblock %}
-
-
 {% block body %}
-
 	<div class="card border-0 shadow rounded-3 my-5 bg-secondary">
 		<div class="card-body">
 			<h3 class="text-white mb-5" style="color:white">
@@ -15,7 +11,6 @@
 				</strong>
 			</h3>
 			{{ form_start(form1, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_form_creation') }) }}
-
 			<div class="row g-3">
 				<h3>
 					<strong>
@@ -108,40 +103,21 @@
 					Immediate Conservatory Measures :
 				</strong>
 			</h3>
-			{{ form_start(imcomeForm, { attr: {class: 'd-flex flex-column ', id: 'imcomeCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_form_creation') }) }}
-			<div class="row g-3">
-				<div class="col-auto">
-					{{ form_label(imcomeForm.action) }}
-					{{ form_widget(imcomeForm.action) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(imcomeForm.customAction) }}
-					{{ form_widget(imcomeForm.customAction) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(imcomeForm.Manager) }}
-					{{ form_widget(imcomeForm.Manager) }}
-				</div>
-
-				<div class="col-auto">
-					{{ form_label(imcomeForm.status) }}
-					{{ form_widget(imcomeForm.status) }}
-				</div>
-
-				<div class="col-auto">
-					{{ form_label(imcomeForm.RealisedAt) }}
-					{{ form_widget(imcomeForm.RealisedAt) }}
-				</div>
+			<div id="imcome-container" data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
+				{% for imcomeFormEntry in form1.immediateConservatoryMeasures %}
+					<div id="imcome-entry-{{ loop.index0 }}" class="imcome-entry">
+						{{ form_widget(imcomeFormEntry) }}
+					</div>
+				{% endfor %}
 			</div>
-			{{ form_row(imcomeForm._token) }}
+			<button type="button" id="add-another-imcome" class="btn btn-info">Add Another Measure</button>
 			<h3>
 				<strong>
 					Non-Conformity Prioritization :
 				</strong>
 			</h3>
-			{{ form_start(riskWeightingForm, { attr: {class: 'd-flex flex-column ', id: 'imcomeCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_form_creation') }) }}
+			{{ form_start(riskWeightingForm, { attr: {class: 'd-flex flex-column ', id: 'riskWeightingAssignationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_form_creation') }) }}
 			<div class="row g-3">
-
 				<div class="col-auto">
 					{{ form_label(riskWeightingForm.severityWeight) }}
 					{{ form_widget(riskWeightingForm.severityWeight) }}
@@ -150,15 +126,27 @@
 					{{ form_label(riskWeightingForm.frequencyWeight) }}
 					{{ form_widget(riskWeightingForm.frequencyWeight) }}
 				</div>
-
 				<div class="col-auto">
 					{{ form_label(riskWeightingForm.detectabilityWeight) }}
 					{{ form_widget(riskWeightingForm.detectabilityWeight) }}
 				</div>
-
 				<div class="col-auto">
 					{{ form_label(riskWeightingForm.RiskPriorityIndex) }}
 					{{ form_widget(riskWeightingForm.RiskPriorityIndex) }}
+					<div class="risk-priority-explanation"></div>
+					{# Explanations for each RPI level as hidden divs; they will be referenced by our JavaScript code #}
+					<div id="rpi-high-risk" style="color: #ffcccb;">
+						<strong>Risque Élevé:</strong>
+						Réaliser une analyse 8D.
+					</div>
+					<div id="rpi-medium-risk" style="color: #ffeda6;">
+						<strong>Risque Moyen:</strong>
+						Réaliser une analyse de causes potentielles.
+					</div>
+					<div id="rpi-low-risk" style="color: #c8f7c5;">
+						<strong>Risque Faible:</strong>
+						Pas d'analyse, affichage au poste : Alerte d'un Problème.
+					</div>
 				</div>
 			</div>
 			{{ form_row(riskWeightingForm._token) }}
@@ -168,12 +156,7 @@
 				</button>
 			</div>
 			{{ form_end(riskWeightingForm) }}
-
-			{{ form_end(imcomeForm) }}
-
 			{{ form_end(form1) }}
-
-
 		</div>
 	</div>
 {% endblock %}

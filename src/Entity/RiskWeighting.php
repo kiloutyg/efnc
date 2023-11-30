@@ -13,8 +13,6 @@ class RiskWeighting
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'riskWeightings')]
-    private ?EFNC $EFNC = null;
 
     #[ORM\Column]
     private ?int $severityWeight = null;
@@ -28,23 +26,14 @@ class RiskWeighting
     #[ORM\Column]
     private ?int $RiskPriorityIndex = null;
 
+    #[ORM\OneToOne(inversedBy: 'riskWeighting', cascade: ['persist', 'remove'])]
+    private ?EFNC $eFNC = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-
-    public function getEFNC(): ?EFNC
-    {
-        return $this->EFNC;
-    }
-
-    public function setEFNC(?EFNC $EFNC): static
-    {
-        $this->EFNC = $EFNC;
-
-        return $this;
-    }
 
     public function getSeverityWeight(): ?int
     {
@@ -90,6 +79,18 @@ class RiskWeighting
     public function setRiskPriorityIndex(int $RiskPriorityIndex): static
     {
         $this->RiskPriorityIndex = $RiskPriorityIndex;
+
+        return $this;
+    }
+
+    public function getEFNC(): ?EFNC
+    {
+        return $this->eFNC;
+    }
+
+    public function setEFNC(?EFNC $eFNC): static
+    {
+        $this->eFNC = $eFNC;
 
         return $this;
     }

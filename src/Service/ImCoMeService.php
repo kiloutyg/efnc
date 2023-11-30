@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-// use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormInterface;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -17,38 +17,50 @@ use App\Entity\EFNC;
 use App\Entity\ImmediateConservatoryMeasures;
 use App\Entity\ImmediateConservatoryMeasuresList;
 
+use App\Repository\ImmediateConservatoryMeasuresListRepository;
 
 class ImCoMeService extends AbstractController
 {
-    // private $logger;
+    private $logger;
 
     private $projectDir;
 
     private $em;
 
+    private $imcomeListRepo;
+
     public function __construct(
-        // LoggerInterface                     $logger,
+        LoggerInterface                     $logger,
 
         ParameterBagInterface               $params,
 
-        EntityManagerInterface              $em
+        EntityManagerInterface              $em,
+
+        ImmediateConservatoryMeasuresListRepository $imcomeListRepo
     ) {
-        // $this->logger                       = $logger;
+        $this->logger                       = $logger;
 
         $this->projectDir                   = $params->get('kernel.project_dir');
 
         $this->em                           = $em;
+
+        $this->imcomeListRepo               = $imcomeListRepo;
     }
 
-    public function imcomeAssignation(EFNC $efnc, ImmediateConservatoryMeasures $imcome, FormInterface $imcomeform, Request $request)
-    {
-        if ($imcomeform->get('action')->getData() === 'Autre (Précisez l\'action prise)') {
-            $imcome->setCustomAction($imcomeform->get('customAction')->getData());
-        } else {
-            $imcome->setCustomAction(null);
+    public function imcomeAssignation(
+        EFNC $efnc,
+        // ImmediateConservatoryMeasures $imcome,
+        FormInterface $efncform,
+        // Request $request
+    ) {
+        foreach ($efncform->get('immediateConservatoryMeasures')->getData() as $imcome) {
+            if ($imcome->getAction() === $this->imcomeListRepo->findOneBy(['name' => 'Autre (Précisez l\'action prise)'])) {
+            } else {
+                $imcome->setCustomAction(null);
+            }
+            $imcome->setEFNC($efnc);
+            $this->em->persist($imcome);
         }
-        $imcome->setEFNC($efnc);
-        $this->em->persist($imcome);
         $this->em->persist($efnc);
         $this->em->flush();
         return true;

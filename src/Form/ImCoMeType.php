@@ -27,16 +27,15 @@ class ImCoMeType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Actions Mises en Place',
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control col-auto',
                     'id' => 'action',
-                    'required' => true
                 ],
                 'placeholder' => false, // Remove or set to null if a placeholder isn't needed
             ])
             ->add('customAction', TextType::class, [
                 'required' => false,
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control col-auto',
                     'placeholder' => 'Précisez l\'action prise',
                     'id' => 'custom_action',
                 ],
@@ -44,11 +43,12 @@ class ImCoMeType extends AbstractType
             ->add('Manager', TextType::class, [
                 'label' => 'Nom du Responsable',
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control col-auto',
                     'placeholder' => 'Nom du Responsable',
                     'id' => 'name',
-                    'required' => true
-                ]
+
+                ],
+                'required' => true
             ])
             ->add('status', ChoiceType::class, [
                 'placeholder' => 'L\'action est-elle réalisée ?',
@@ -58,28 +58,28 @@ class ImCoMeType extends AbstractType
                     'Non' => false,
                 ],
                 'multiple' => false,
-                'expanded' => true,
-                'required' => false,
                 'placeholder' => false,
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control col-auto'
                 ],
                 'choice_attr' => function ($choice) {
                     // Add disabled attribute to the third choice
                     if ($choice === 'Non') {
-                        return ['class' => 'form-check-input', 'disabled' => 'disabled'];
+                        return ['class' => 'form-check-input col-auto', 'disabled' => 'disabled'];
                     }
-                    return ['class' => 'form-check-input'];
+                    return ['class' => 'form-check-input col-auto'];
                 },
                 // Define attributes for the label of each choice
-                'label_attr' => ['class' => 'form-check-label'],
+                'label_attr' => ['class' => 'form-check-label col-auto'],
                 // Enclose each radio button with a div that has Bootstrap classes
-                'row_attr' => ['class' => 'form-check form-check-inline'],
+                'row_attr' => ['class' => 'form-check form-check-inline col-auto'],
             ])
             ->add('RealisedAt', DateType::class, [
+                'attr' => [
+                    'class' => 'form-control col-auto'
+                ],
                 'widget' => 'single_text',
                 'html5' => true,
-                'required' => true,
             ]);
     }
 
