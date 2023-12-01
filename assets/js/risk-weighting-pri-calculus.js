@@ -1,8 +1,8 @@
 document.addEventListener('turbo:load', function () {
-    var severityWeight = document.querySelector('[name="risk_weighting[severityWeight]"]');
-    var frequencyWeight = document.querySelector('[name="risk_weighting[frequencyWeight]"]');
-    var detectabilityWeight = document.querySelector('[name="risk_weighting[detectabilityWeight]"]');
-    var riskPriorityIndexField = document.querySelector('[name="risk_weighting[RiskPriorityIndex]"]');
+    var severityWeight = document.querySelector('[name="form_creation[riskWeighting][severityWeight]"]');
+    var frequencyWeight = document.querySelector('[name="form_creation[riskWeighting][frequencyWeight]"]');
+    var detectabilityWeight = document.querySelector('[name="form_creation[riskWeighting][detectabilityWeight]"]');
+    var riskPriorityIndexField = document.querySelector('[name="form_creation[riskWeighting][RiskPriorityIndex]"]');
     var riskPriorityExplanation = document.querySelector('.risk-priority-explanation');
 
     function calculateAndDisplayRiskPriority() {

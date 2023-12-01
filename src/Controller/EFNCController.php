@@ -21,34 +21,24 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/', name: 'app_')]
 class EFNCController extends BaseController
 {
-
-
     #[Route('/form_creation', name: 'form_creation')]
     public function formCreation(Request $request): Response
     {
         $efnc = new EFNC();
         $imcome = new ImmediateConservatoryMeasures();
-
-        $efnc->getImmediateConservatoryMeasures()->add($imcome);
-        $form1 = $this->createForm(FormCreationType::class, $efnc);
-
         $riskWeighting = new RiskWeighting();
-        $riskWeightingForm = $this->createForm(RiskWeightingType::class, $riskWeighting);
+        $efnc->getImmediateConservatoryMeasures()->add($imcome);
+        $efnc->getRiskWeighting($riskWeighting);
+        $form1 = $this->createForm(FormCreationType::class, $efnc);
 
         if ($request->getMethod() == 'POST') {
             $form1->handleRequest($request);
-            $riskWeightingForm->handleRequest($request);
             if (
                 $form1->isSubmitted() && $form1->isValid()
-                && $riskWeightingForm->isSubmitted() && $riskWeightingForm->isValid()
             ) {
                 $result1 = $this->formCreationService->createNCForm($efnc, $request, $form1);
-                // $result2 = $this->imcomeService->imcomeAssignation($efnc, $imcome, $imcomeForm, $request);
-                $result3 = $this->riskWeightingService->riskWeightingAssignation($efnc, $riskWeighting, $riskWeightingForm, $request);
                 if (
                     $result1 === true
-                    // && $result2 === true
-                    && $result3 === true
                 ) {
                     $this->addFlash('success', 'C\'est bon khey!');
                     return $this->redirectToRoute('app_base', []);
@@ -63,8 +53,6 @@ class EFNCController extends BaseController
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/efnc/creation/form_creation.html.twig', [
                 'form1' => $form1->createView(),
-                // 'imcomeForm' => $imcomeForm->createView(),
-                'riskWeightingForm' => $riskWeightingForm->createView(),
             ]);
         }
     }
@@ -84,11 +72,7 @@ class EFNCController extends BaseController
             $efnc->getImmediateConservatoryMeasures()->add($measure);
         }
         $form1 = $this->createForm(FormCreationType::class, $efnc);
-        // Create a form for each ImmediateConservatoryMeasures entity
-        // $imcomeForms = [];
-        // foreach ($efnc->getImmediateConservatoryMeasures() as $key => $imcome) {
-        //     $imcomeForms[$key] = $this->createForm(ImCoMeType::class, $imcome)->createView();
-        // }
+
 
         $riskWeighting = $efnc->getRiskWeighting();
         $this->logger->info('riskWeighting: ' . json_encode($riskWeighting));

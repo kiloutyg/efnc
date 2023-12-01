@@ -3,159 +3,79 @@
 	Création de fiche
 {% endblock %}
 {% block body %}
-	<div class="card border-0 shadow rounded-3 my-5 bg-secondary">
-		<div class="card-body">
-			<h3 class="text-white mb-5" style="color:white">
-				<strong>
-					Création de Fiche de Non-Conformité :
-				</strong>
-			</h3>
-			{{ form_start(form1, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_form_creation') }) }}
-			<div class="row g-3">
-				<h3>
-					<strong>
-						Non-Conformity Registration :
-					</strong>
+	<div class="col-lg-8 mx-auto">
+		<div class="card border-0 shadow rounded-3 my-5 bg-secondary">
+			<div class="card-body">
+				<h3 class="text-white mb-5">
+					<strong>Création de Fiche de Non-Conformité :</strong>
 				</h3>
-				<div class="col-auto">
-					{{ form_label(form1.Creator) }}
-					{{ form_widget(form1.Creator) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.DetectionDate) }}
-					{{ form_widget(form1.DetectionDate ) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.DetectionTime) }}
-					{{ form_widget(form1.DetectionTime ) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.Team) }}
-					{{ form_widget(form1.Team) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.DetectionPlace) }}
-					{{ form_widget(form1.DetectionPlace) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.ProductDesignation) }}
-					{{ form_widget(form1.ProductDesignation) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.Project) }}
-					{{ form_widget(form1.Project) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.UAP) }}
-					{{ form_widget(form1.UAP) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.NonConformityOrigin) }}
-					{{ form_widget(form1.NonConformityOrigin) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.SAPReference) }}
-					{{ form_widget(form1.SAPReference) }}
-				</div>
-				<h3>
-					<strong>
-						Problem Description :
-					</strong>
-				</h3>
-				<div class="col-auto">
-					{{ form_label(form1.AnomalyType) }}
-					{{ form_widget(form1.AnomalyType) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.Quantity) }}
-					{{ form_widget(form1.Quantity) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.QuantityToBlock) }}
-					{{ form_widget(form1.QuantityToBlock) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(form1.DetailedDescription) }}
-					{{ form_widget(form1.DetailedDescription) }}
-				</div>
-				{{ form_row(form1._token) }}
-				<div class="col-auto">
-					<label class="form-label" for="picture_TraceabilityPicture">
-						Photo de Traçabilité Obligatoire :
-					</label>
-					<div id="traceability-picture-container">
-						<input type="file" id="picture_TraceabilityPicture" name="picture[TraceabilityPicture][]" multiple="multiple" class="form-control" placeholder="Photo de Traçabilité Obligatoire">
+				{{ form_start(form1, { 
+					attr: { 
+						id: 'formCreationForm', 
+						method: 'POST', 
+						enctype: 'multipart/form-data' }, action: path('app_form_creation') }) }}
+				<div class="row g-3">
+					<h3>
+						<strong>Enregistrement de la Non-Conformité:</strong>
+					</h3>
+					{% set fields = [
+						'Creator', 'DetectionDate', 'DetectionTime', 'Team',
+						'DetectionPlace', 'ProductDesignation', 'Project', 
+						'UAP', 'NonConformityOrigin', 'SAPReference'
+					] %}
+					{% for field in fields %}
+						{{ form_row(form1[field]) }}
+					{% endfor %}
+					<h3>
+						<strong>Problem Description :</strong>
+					</h3>
+					{% set problemDetails = ['AnomalyType', 'Quantity', 'QuantityToBlock', 'DetailedDescription'] %}
+					{% for detail in problemDetails %}
+						{{ form_row(form1[detail]) }}
+					{% endfor %}
+					<div class="mb-3" id="traceability-picture-container">
+						<label class="form-label" style="font-weight: bold; color: #ffffff;" for="picture_TraceabilityPicture">Photo de Traçabilité Obligatoire :</label>
+						<input type="file" id="picture_TraceabilityPicture" name="picture[TraceabilityPicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de Traçabilité Obligatoire">
 						<div id="TraceabilityPicturePreview"></div>
 					</div>
-				</div>
-				<div class="col-auto">
-					<label class="form-label" for="picture_NCpicture">
-						Photo de non-conformité :
-					</label>
-					<div id="nc-picture-container">
-						<input type="file" id="picture_NCpicture" name="picture[NCpicture][]" multiple="multiple" class="form-control" placeholder="Photo de non-conformité">
+					<div class="mb-3" id="nc-picture-container">
+						<label class="form-label" style="font-weight: bold; color: #ffffff;" for="picture_NCpicture">Photo de non-conformité :</label>
+						<input type="file" id="picture_NCpicture" name="picture[NCpicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de non-conformité">
 						<div id="NCpicturePreview"></div>
 					</div>
-				</div>
-			</div>
-			<h3>
-				<strong>
-					Immediate Conservatory Measures :
-				</strong>
-			</h3>
-			<div id="imcome-container" data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
-				{% for imcomeFormEntry in form1.immediateConservatoryMeasures %}
-					<div id="imcome-entry-{{ loop.index0 }}" class="imcome-entry">
-						{{ form_widget(imcomeFormEntry) }}
+					<h3>
+						<strong>Mesures Conservatoire Immediates:</strong>
+					</h3>
+					<div id="imcome-container" data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
+						{% for imcomeFormEntry in form1.immediateConservatoryMeasures %}
+							<div class="imcome-entry">
+								{{ form_widget(imcomeFormEntry) }}
+							</div>
+						{% endfor %}
 					</div>
-				{% endfor %}
-			</div>
-			<button type="button" id="add-another-imcome" class="btn btn-info">Add Another Measure</button>
-			<h3>
-				<strong>
-					Non-Conformity Prioritization :
-				</strong>
-			</h3>
-			{{ form_start(riskWeightingForm, { attr: {class: 'd-flex flex-column ', id: 'riskWeightingAssignationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_form_creation') }) }}
-			<div class="row g-3">
-				<div class="col-auto">
-					{{ form_label(riskWeightingForm.severityWeight) }}
-					{{ form_widget(riskWeightingForm.severityWeight) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(riskWeightingForm.frequencyWeight) }}
-					{{ form_widget(riskWeightingForm.frequencyWeight) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(riskWeightingForm.detectabilityWeight) }}
-					{{ form_widget(riskWeightingForm.detectabilityWeight) }}
-				</div>
-				<div class="col-auto">
-					{{ form_label(riskWeightingForm.RiskPriorityIndex) }}
-					{{ form_widget(riskWeightingForm.RiskPriorityIndex) }}
+
+					<button type="button" id="add-another-imcome" class="btn btn-info">Add Another Measure</button>
+					<h3>
+						<strong>Priorization de la non-conformité :</strong>
+					</h3>
+					{% for riskWeightingFormEntry in form1.riskWeighting %}
+						{{ form_row(riskWeightingFormEntry) }}
+					{% endfor %}
 					<div class="risk-priority-explanation"></div>
-					{# Explanations for each RPI level as hidden divs; they will be referenced by our JavaScript code #}
 					<div id="rpi-high-risk" style="color: #ffcccb;">
 						<strong>Risque Élevé:</strong>
-						Réaliser une analyse 8D.
-					</div>
+						Réaliser une analyse 8D.</div>
 					<div id="rpi-medium-risk" style="color: #ffeda6;">
 						<strong>Risque Moyen:</strong>
-						Réaliser une analyse de causes potentielles.
-					</div>
+						Réaliser une analyse de causes potentielles.</div>
 					<div id="rpi-low-risk" style="color: #c8f7c5;">
 						<strong>Risque Faible:</strong>
-						Pas d'analyse, affichage au poste : Alerte d'un Problème.
-					</div>
+						Pas d'analyse, affichage au poste : Alerte d'un Problème.</div>
 				</div>
 			</div>
-			{{ form_row(riskWeightingForm._token) }}
 			<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
-				<button type="submit" class="btn btn-primary mb-3 submit-upload-modification">
-					Créer
-				</button>
+				<button type="submit" class="btn btn-primary mb-3 submit-upload-modification">Créer</button>
 			</div>
-			{{ form_end(riskWeightingForm) }}
 			{{ form_end(form1) }}
 		</div>
 	</div>

@@ -69,11 +69,8 @@
 		<!-- End Main Navigation -->
 
 		{% if users is defined %}
-
 			{% if users is empty %}
-
 				<div class="container ">
-
 					<h5 class="my-5">
 						<strong>
 							Pour commencer à utiliser l'application, veuillez créer le superadministrateur :
@@ -82,24 +79,18 @@
 					<div class="card border-0 shadow rounded-3 my-5">
 						<div class="card-body">
 							<div class="row">
-
 								{% include "services/admin_services/accountservices/create_account.html.twig" %}
 							</div>
 						</div>
 					</div>
 				</div>
-
 			{% else %}
-
 				<div class="container flex-grow-1 d-flex flex-column ">
-
 					{% include "services/navbarservices/navbar_service.html.twig" %}
-
 					{% block body %}
 						{% if app.user %}
 							{% if  is_granted('ROLE_MANAGER', object = null, field = null)%}
 								<aside class="position-absolute end-0 mt-2 ">
-
 									<a href="{{ path('app_admin_page') }}" class="btn shadow bg-dark" style="color:white;">
 										<span class="fa fa-gear"></span>
 										<strong>
@@ -109,10 +100,8 @@
 										</strong>
 									</a>
 								</aside>
-
 							{% endif %}
 						{% endif %}
-
 						<p>
 							<h1 class="text-justify mb-2 mt-4 flex-shrink-0">
 								<strong>
@@ -133,19 +122,12 @@
 									</span>
 								</a>
 							</div>
-
 						</div>
 						<iframe class="d-flex mb-3 rounded-3 flex-grow-1" name="form_list" src="{{ path('app_form_list')}}" frameborder="0"></iframe>
-
-
 					{% endblock %}
 				</div>
-
-
 			{% endif %}
-
 		{% endif %}
-
 
 		<!-- Footer -->
 

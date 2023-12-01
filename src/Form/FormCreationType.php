@@ -32,174 +32,210 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormCreationType extends AbstractType
 {
+    private function getDefaultOptions($placeholder = '')
+    {
+        return [
+            'required' => true,
+            'attr' => [
+                'class' => 'form-control mx-auto mt-2',
+                'placeholder' => $placeholder
+            ],
+            'label_attr' => [
+                'class' => 'form-label',
+                'style' => 'font-weight: bold; color: #ffffff;'
+            ],
+            'row_attr' => [
+                'class' => 'mb-3'
+            ],
+        ];
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Creator', TextType::class, [
-                'label' => 'Créateur :',
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Prénom NOM',
-                    'class' => 'form-control'
-                ],
-            ])
-            ->add('DetectionDate', DateType::class, [
-                'label' => 'Date de Détection :',
-                'widget' => 'single_text',
-                'html5' => true,
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-            ])
-            ->add('DetectionTime', TimeType::class, [
-                'label' => 'Heure de Détection :',
-                'widget' => 'single_text',
-                'html5' => true,
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-            ])
-            ->add('Team', EntityType::class, [
-                // 'placeholder' => 'Choisir une équipe :',
-                'label' => 'Equipe :',
-                'class' => Team::class,
-                'choice_label' => 'name',
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-            ])
-            ->add('DetectionPlace', EntityType::class, [
-                // 'placeholder' => 'Choisir le lieu de détection de la Non-Conformité :',
-                'label' => 'Lieu de détection :',
-                'class' => Place::class,
-                'choice_label' => 'name',
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-            ])
-            ->add('ProductDesignation', TextType::class, [
-                'label' => 'Désignation du Produit :',
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Référence, Désignation, ...',
+            ->add(
+                'Creator',
+                TextType::class,
+                array_merge(
+                    [
+                        'label' => 'Créateur :',
+                    ],
+                    $this->getDefaultOptions('Prénom NOM')
+                )
+            )
+            ->add(
+                'DetectionDate',
+                DateType::class,
+                array_merge(
+                    [
+                        'label' => 'Date de Détection :',
+                        'widget' => 'single_text',
+                        'html5' => true,
+                    ],
+                    $this->getDefaultOptions('')
+                )
+            )
+            ->add(
+                'DetectionTime',
+                TimeType::class,
+                array_merge(
+                    [
+                        'label' => 'Heure de Détection :',
+                        'widget' => 'single_text',
+                        'html5' => true,
+                    ],
+                    $this->getDefaultOptions('')
+                )
+            )
+            ->add(
+                'Team',
+                EntityType::class,
+                array_merge(
+                    [
+                        'label' => 'Equipe :',
+                        'class' => Team::class,
+                        'choice_label' => 'name',
+                    ],
+                    $this->getDefaultOptions('Choisir une équipe :')
+                )
+            )
+            ->add(
+                'DetectionPlace',
+                EntityType::class,
+                array_merge(
+                    [
+                        'label' => 'Lieu de détection :',
+                        'class' => Place::class,
+                        'choice_label' => 'name',
+                    ],
+                    $this->getDefaultOptions('Choisir le lieu de détection de la Non-Conformité :')
+                )
+            )
+            ->add(
+                'ProductDesignation',
+                TextType::class,
+                array_merge(
+                    [
+                        'label' => 'Désignation du Produit :',
+                    ],
+                    $this->getDefaultOptions('Référence, Désignation, ...')
+                )
+            )
+            ->add(
+                'Project',
+                EntityType::class,
+                array_merge(
+                    [
+                        'label' => 'Projet :',
+                        'class' => Project::class,
+                        'choice_label' => 'name',
+                    ],
+                    $this->getDefaultOptions('Choisir le projet :')
+                )
+            )
+            ->add(
+                'UAP',
+                EntityType::class,
+                array_merge(
+                    [
+                        'label' => 'UAP :',
+                        'class' => UAP::class,
+                        'choice_label' => 'name',
+                    ],
+                    $this->getDefaultOptions('Choisir l\'UAP :')
+                )
+            )
+            ->add(
+                'NonConformityOrigin',
+                EntityType::class,
+                array_merge(
+                    [
+                        'label' => 'Lieu de création de la Non-Conformité :',
+                        'class' => Origin::class,
+                        'choice_label' => 'name'
+                    ],
+                    $this->getDefaultOptions('Choisir le lieu de création de la Non-Conformité :')
+                )
+            )
+            ->add(
+                'AnomalyType',
+                EntityType::class,
+                array_merge(
+                    [
+                        'label' => 'Type de d\'anomalie :',
+                        'class' => AnomalyType::class,
+                        'choice_label' => 'name',
+                    ],
+                    $this->getDefaultOptions('Choisir le type de Non-Conformité :')
+                )
+            )
+            ->add(
+                'Quantity',
+                NumberType::class,
+                array_merge(
+                    [
+                        'label' => 'Nombre de Pièces Non-Conforme :',
+                        'html5' => true,
+                        'input' => 'number',
+                        'attr' => [
+                            'min' => 0, 'max' => 1000000,
+                        ],
+                    ],
+                    $this->getDefaultOptions('00')
+                )
+            )
+            ->add(
+                'QuantityToBlock',
+                NumberType::class,
+                array_merge(
+                    [
+                        'label' => 'Nombre de pièces à bloquer :',
+                        'html5' => true,
+                        'input' => 'number',
+                        'attr' => [
+                            'min' => 0, 'max' => 1000000,
+                        ],
+                    ],
+                    $this->getDefaultOptions('00')
+                )
+            )
+            ->add(
+                'DetailedDescription',
+                TextareaType::class,
+                array_merge(
+                    [
+                        'label' => 'Description détaillée :',
+                    ],
+                    $this->getDefaultOptions('Description détaillée de la non-conformité')
+                )
+            )
+            ->add(
+                'SAPReference',
+                TextType::class,
+                array_merge(
+                    [
+                        'label' => 'Référence SAP :',
+                    ],
+                    $this->getDefaultOptions('Référence => XXXXXXXX')
+                )
+            )
+            ->add('immediateConservatoryMeasures', CollectionType::class, array_merge(
+                [
+                    'label' => 'Mesures Conservatoires Immédiates :',
+                    'entry_type' => ImCoMeType::class,
+                    'allow_add'    => true,
+                    'by_reference' => false,
+                    // 'allow_delete' => true, if you want to allow removing items from the collection
 
-                    'class' => 'form-control'
                 ],
-            ])
-            ->add('Project', EntityType::class, [
-                // 'placeholder' => 'Choisir le projet :',
-                'label' => 'Projet :',
-                'class' => Project::class,
-                'choice_label' => 'name',
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-control'
+                $this->getDefaultOptions('')
+            ))
+            ->add('riskWeighting', RiskWeightingType::class, array_merge(
+                [
+                    'label' => 'Pondération des risques:',
                 ],
-            ])
-            ->add('UAP', EntityType::class, [
-                // 'placeholder' => 'Choisir l\'UAP :',
-                'label' => 'UAP :',
-                'class' => UAP::class,
-                'choice_label' => 'name',
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-            ])
-            ->add('NonConformityOrigin', EntityType::class, [
-                // 'placeholder' => 'Choisir le lieu de création de la Non-Conformité :',
-                'label' => 'Lieu de création de la Non-Conformité :',
-                'class' => Origin::class,
-                'choice_label' => 'name',
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-            ])
-            ->add('AnomalyType', EntityType::class, [
-                // 'placeholder' => 'Choisir le type de Non-Conformité :',
-                'label' => 'Type de d\'anomalie :',
-                'class' => AnomalyType::class,
-                'choice_label' => 'name',
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-            ])
-            ->add('Quantity', NumberType::class, [
-                'label' => 'Nombre de Pièces Non-Conforme :',
-                'html5' => true,
-                'required' => true,
-                'input' => 'number',
-                'attr' => [
-                    'min' => 0, 'max' => 1000000,
-                    'class' => 'form-control',
-                    'placeholder' => '00',
-
-                ],
-            ])
-            ->add('QuantityToBlock', NumberType::class, [
-                'label' => 'Nombre de pièces à bloquer :',
-                'html5' => true,
-                'required' => true,
-                'input' => 'number',
-                'attr' => [
-                    'min' => 0, 'max' => 1000000,
-                    'class' => 'form-control',
-                    'placeholder' => '00',
-
-                ],
-            ])
-            ->add('DetailedDescription', TextareaType::class, [
-                'label' => 'Description détaillée :',
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Description détaillée de la non-conformité',
-                ],
-            ])
-            ->add('SAPReference', TextType::class, [
-
-                'label' => 'Référence SAP :',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Référence => XXXXXXXX',
-
-                    'class' => 'form-control'
-                ],
-            ])
-            ->add('immediateConservatoryMeasures', CollectionType::class, [
-                'label' => 'Mesures Conservatoires Immédiates :',
-                'entry_type' => ImCoMeType::class,
-                'allow_add'    => true,
-                'by_reference' => false,
-                'attr' => ['class' => 'form-control row ']
-                // 'allow_delete' => true, if you want to allow removing items from the collection
-            ]);
-
-
-        // Add an event listener for the form
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
-                $form = $event->getForm();
-                $efnc = $event->getData();
-
-                // Check if EFNC is null (when creating a new form)
-                if (!$efnc || null === $efnc->getId()) {
-                    return;
-                }
-
-                // if ($efnc->getStatus()) {
-                //     // Make PilotVisa required if Status is true
-                //     $form->add('PilotVisa', null, ['required' => true]);
-                // }
-            }
-        );
+                $this->getDefaultOptions('')
+            ));
     }
 
 
