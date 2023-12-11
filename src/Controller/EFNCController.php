@@ -30,12 +30,11 @@ class EFNCController extends BaseController
         $efnc->getImmediateConservatoryMeasures()->add($imcome);
         $efnc->getRiskWeighting($riskWeighting);
         $form1 = $this->createForm(FormCreationType::class, $efnc);
-        $this->logger->info('form1: ' . json_encode($form1));
+
         $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
         if ($request->getMethod() == 'POST') {
             $form1->handleRequest($request);
             $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
-
             if (
                 $form1->isSubmitted() && $form1->isValid()
             ) {
@@ -54,7 +53,6 @@ class EFNCController extends BaseController
                 return $this->redirectToRoute('app_base', []);
             }
         } else if ($request->getMethod() == 'GET') {
-            $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
 
             return $this->render('services/efnc/creation/form_creation.html.twig', [
                 'form1' => $form1->createView(),
