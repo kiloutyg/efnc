@@ -9,69 +9,26 @@
 	<h1>
 		Page d'Administration
 	</h1>
+	<div class="col-lg-8 col-12 mx-auto ">
 
-	<div class="card border-0 shadow rounded-3 my-5">
-		<div class="card-body">
-			<div class="row">
-				{% include "services/admin_services/accountservices/create_account.html.twig" %}
-
+		<div class="card border-0 shadow rounded-3 my-5">
+			<div class="card-body">
+				<div class="row">
+					{% include "services/admin_services/accountservices/create_account.html.twig" %}
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="card border-0 shadow rounded-3 my-5">
-		<div class="card-body">
-			<div class="row">
-				{{ render(controller('App\\Controller\\AdminController::teamCreation')) }}
+		<div class="card border-0 shadow rounded-3 my-5">
+			<div class="card-body">
+				<div class="row ">
+					{% set fields = ['teamCreation', 'projectCreation', 'originCreation', 'uapCreation', 'anomalyTypeCreation', 'placeCreation', 'imcomeListCreation'] %}
+					{% for field in fields %}
+						<div class="card border-0 shadow rounded-3 my-2 bg-secondary">
+							{{ render(controller('App\\Controller\\AdminController::' ~ field )) }}
+						</div>
+					{% endfor %}
 
-			</div>
-		</div>
-	</div>
-	<div class="card border-0 shadow rounded-3 my-5">
-		<div class="card-body">
-			<div class="row">
-				{{ render(controller('App\\Controller\\AdminController::projectCreation')) }}
-
-			</div>
-		</div>
-	</div>
-	<div class="card border-0 shadow rounded-3 my-5">
-		<div class="card-body">
-			<div class="row">
-				{{ render(controller('App\\Controller\\AdminController::originCreation')) }}
-
-			</div>
-		</div>
-	</div>
-	<div class="card border-0 shadow rounded-3 my-5">
-		<div class="card-body">
-			<div class="row">
-				{{ render(controller('App\\Controller\\AdminController::uapCreation')) }}
-
-			</div>
-		</div>
-	</div>
-	<div class="card border-0 shadow rounded-3 my-5">
-		<div class="card-body">
-			<div class="row">
-				{{ render(controller('App\\Controller\\AdminController::anomalyTypeCreation')) }}
-
-
-			</div>
-		</div>
-	</div>
-	<div class="card border-0 shadow rounded-3 my-5">
-		<div class="card-body">
-			<div class="row">
-				{{ render(controller('App\\Controller\\AdminController::placeCreation')) }}
-
-			</div>
-		</div>
-	</div>
-	<div class="card border-0 shadow rounded-3 my-5">
-		<div class="card-body">
-			<div class="row">
-				{{ render(controller('App\\Controller\\AdminController::imcomeListCreation')) }}
-
+				</div>
 			</div>
 		</div>
 	</div>
