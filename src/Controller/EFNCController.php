@@ -30,9 +30,12 @@ class EFNCController extends BaseController
         $efnc->getImmediateConservatoryMeasures()->add($imcome);
         $efnc->getRiskWeighting($riskWeighting);
         $form1 = $this->createForm(FormCreationType::class, $efnc);
-
+        $this->logger->info('form1: ' . json_encode($form1));
+        $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
         if ($request->getMethod() == 'POST') {
             $form1->handleRequest($request);
+            $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
+
             if (
                 $form1->isSubmitted() && $form1->isValid()
             ) {
@@ -51,6 +54,8 @@ class EFNCController extends BaseController
                 return $this->redirectToRoute('app_base', []);
             }
         } else if ($request->getMethod() == 'GET') {
+            $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
+
             return $this->render('services/efnc/creation/form_creation.html.twig', [
                 'form1' => $form1->createView(),
             ]);
@@ -71,39 +76,28 @@ class EFNCController extends BaseController
             $measure = new ImmediateConservatoryMeasures();
             $efnc->getImmediateConservatoryMeasures()->add($measure);
         }
-        $form1 = $this->createForm(FormCreationType::class, $efnc);
 
 
         $riskWeighting = $efnc->getRiskWeighting();
-        $this->logger->info('riskWeighting: ' . json_encode($riskWeighting));
-        $riskWeightingForm = $this->createForm(RiskWeightingType::class, $riskWeighting);
+        $efnc->getRiskWeighting($riskWeighting);
+
+        $form1 = $this->createForm(FormCreationType::class, $efnc);
 
         if ($request->getMethod() == 'GET') {
             return $this->render('/services/efnc/modification/form_modification.html.twig', [
                 'form1' => $form1->createView(),
-                // 'imcomeForms' => $imcomeForms,
-                'riskWeightingForm' => $riskWeightingForm->createView(),
                 'EFNC' => $efnc,
             ]);
-        } else {
-            // Handle request for each imcomeForm
-            // foreach ($efnc->getImmediateConservatoryMeasures() as $key => $imcome) {
-            //     $imcomeForm = $this->createForm(ImCoMeType::class, $imcome);
-            //     $imcomeForm->handleRequest($request);
-            //     if ($imcomeForm->isSubmitted() && $imcomeForm->isValid()) {
-            //         $this->imcomeService->imcomeAssignation($efnc, $imcome, $imcomeForm, $request);
-            //     }
-            // }
-            $riskWeightingForm->handleRequest($request);
-            if ($riskWeightingForm->isSubmitted() && $riskWeightingForm->isValid()) {
-                $this->riskWeightingService->riskWeightingAssignation($efnc, $riskWeighting, $riskWeightingForm, $request);
-            }
+        } else if ($request->getMethod() == 'POST') {
+
             $form1->handleRequest($request);
-            $result = $this->formModificationService->modifyNCForm(
-                $efnc,
-                $request,
-                $form1
-            );
+            if ($form1->isValid() && $form1->isSubmitted()) {
+                $result = $this->formModificationService->modifyNCForm(
+                    $efnc,
+                    $request,
+                    $form1
+                );
+            }
             if ($result === true) {
                 $this->addFlash('success', 'C\'est bon khey!');
                 return $this->redirectToRoute('app_base', []);

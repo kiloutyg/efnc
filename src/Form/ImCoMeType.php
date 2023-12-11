@@ -48,8 +48,20 @@ class ImCoMeType extends AbstractType
                 $this->getDefaultOptions('Choisissez une action')
             ))
             ->add('customAction', TextType::class, array_merge(
-                [],
-                $this->getDefaultOptions('Précisez l\'action prise')
+                [
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'form-control mx-auto mt-2',
+                        'placeholder' => 'Précisez l\'action prise'
+                    ],
+                    'label_attr' => [
+                        'class' => 'form-label',
+                        'style' => 'font-weight: bold; color: #ffffff;'
+                    ],
+                    'row_attr' => [
+                        'class' => 'mb-3'
+                    ],
+                ]
             ))
             ->add('Manager', TextType::class, array_merge(
                 [

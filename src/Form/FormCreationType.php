@@ -214,9 +214,20 @@ class FormCreationType extends AbstractType
                 TextType::class,
                 array_merge(
                     [
+                        'required' => false,
                         'label' => 'Référence SAP :',
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => 'Référence => XXXXXXXX'
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'mb-3'
+                        ],
                     ],
-                    $this->getDefaultOptions('Référence => XXXXXXXX')
                 )
             )
             ->add('immediateConservatoryMeasures', CollectionType::class, array_merge(
