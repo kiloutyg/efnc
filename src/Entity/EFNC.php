@@ -50,11 +50,9 @@ class EFNC
     #[ORM\OneToMany(mappedBy: 'EFNC', targetEntity: Picture::class)]
     private Collection $pictures;
 
-    #[ORM\OneToMany(mappedBy: 'EFNC', targetEntity: ImmediateConservatoryMeasures::class)]
+    #[ORM\OneToMany(mappedBy: 'EFNC', targetEntity: ImmediateConservatoryMeasures::class, cascade: ['persist', 'remove'])]
     private Collection $immediateConservatoryMeasures;
 
-    #[ORM\OneToMany(mappedBy: 'EFNC', targetEntity: RiskWeighting::class)]
-    private Collection $riskWeightings;
 
     #[ORM\OneToMany(mappedBy: 'EFNC', targetEntity: BoughtComponent::class)]
     private Collection $boughtComponents;
@@ -92,11 +90,14 @@ class EFNC
     #[ORM\ManyToOne(inversedBy: 'eFNCs')]
     private ?AnomalyType $anomalyType = null;
 
+    #[ORM\OneToOne(mappedBy: 'eFNC', cascade: ['persist', 'remove'])]
+    private ?RiskWeighting $riskWeighting = null;
+
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
         $this->immediateConservatoryMeasures = new ArrayCollection();
-        $this->riskWeightings = new ArrayCollection();
         $this->boughtComponents = new ArrayCollection();
         $this->rootCausesAnalyses = new ArrayCollection();
     }
@@ -301,36 +302,6 @@ class EFNC
     }
 
     /**
-     * @return Collection<int, RiskWeighting>
-     */
-    public function getRiskWeightings(): Collection
-    {
-        return $this->riskWeightings;
-    }
-
-    public function addRiskWeighting(RiskWeighting $riskWeighting): static
-    {
-        if (!$this->riskWeightings->contains($riskWeighting)) {
-            $this->riskWeightings->add($riskWeighting);
-            $riskWeighting->setEFNC($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRiskWeighting(RiskWeighting $riskWeighting): static
-    {
-        if ($this->riskWeightings->removeElement($riskWeighting)) {
-            // set the owning side to null (unless already changed)
-            if ($riskWeighting->getEFNC() === $this) {
-                $riskWeighting->setEFNC(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, BoughtComponent>
      */
     public function getBoughtComponents(): Collection
@@ -509,6 +480,28 @@ class EFNC
     public function setAnomalyType(?AnomalyType $anomalyType): static
     {
         $this->anomalyType = $anomalyType;
+
+        return $this;
+    }
+
+    public function getRiskWeighting(): ?RiskWeighting
+    {
+        return $this->riskWeighting;
+    }
+
+    public function setRiskWeighting(?RiskWeighting $riskWeighting): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($riskWeighting === null && $this->riskWeighting !== null) {
+            $this->riskWeighting->setEFNC(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($riskWeighting !== null && $riskWeighting->getEFNC() !== $this) {
+            $riskWeighting->setEFNC($this);
+        }
+
+        $this->riskWeighting = $riskWeighting;
 
         return $this;
     }

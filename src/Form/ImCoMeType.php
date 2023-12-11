@@ -18,69 +18,84 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ImCoMeType extends AbstractType
 {
+    private function getDefaultOptions($placeholder = '')
+    {
+        return [
+            'required' => true,
+            'attr' => [
+                'class' => 'form-control mx-auto mt-2',
+                'placeholder' => $placeholder
+            ],
+            'label_attr' => [
+                'class' => 'form-label',
+                'style' => 'font-weight: bold; color: #ffffff;'
+            ],
+            'row_attr' => [
+                'class' => 'mb-3'
+            ],
+        ];
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('action', EntityType::class, [
-                'class' => ImmediateConservatoryMeasuresList::class,
-                // 'placeholder' => 'Choisissez une action',
-                'choice_label' => 'name',
-                'label' => 'Actions Mises en Place',
-                'attr' => [
-                    'class' => 'form-control',
-                    'id' => 'action',
-                    'required' => true
+            ->add('action', EntityType::class, array_merge(
+                [
+                    'class' => ImmediateConservatoryMeasuresList::class,
+                    'choice_label' => 'name',
+                    'label' => 'Actions Mises en Place',
                 ],
-                'placeholder' => false, // Remove or set to null if a placeholder isn't needed
-            ])
-            ->add('customAction', TextType::class, [
-                'required' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Précisez l\'action prise',
-                    'id' => 'custom_action',
-                ],
-            ])
-            ->add('Manager', TextType::class, [
-                'label' => 'Nom du Responsable',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Nom du Responsable',
-                    'id' => 'name',
-                    'required' => true
+                $this->getDefaultOptions('Choisissez une action')
+            ))
+            ->add('customAction', TextType::class, array_merge(
+                [
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'form-control mx-auto mt-2',
+                        'placeholder' => 'Précisez l\'action prise'
+                    ],
+                    'label_attr' => [
+                        'class' => 'form-label',
+                        'style' => 'font-weight: bold; color: #ffffff;'
+                    ],
+                    'row_attr' => [
+                        'class' => 'mb-3'
+                    ],
                 ]
-            ])
-            ->add('status', ChoiceType::class, [
-                'placeholder' => 'L\'action est-elle réalisée ?',
-                'label' => 'Fait ?',
-                'choices' => [
-                    'Oui' => true,
-                    'Non' => false,
+            ))
+            ->add('Manager', TextType::class, array_merge(
+                [
+                    'label' => 'Nom du Responsable',
                 ],
-                'multiple' => false,
-                'expanded' => true,
-                'required' => false,
-                'placeholder' => false,
-                'attr' => [
-                    'class' => 'form-control'
+                $this->getDefaultOptions('Nom du Responsable')
+            ))
+            ->add('status', ChoiceType::class, array_merge(
+                [
+                    'placeholder' => 'L\'action est-elle réalisée ?',
+                    'label' => 'Fait ?',
+                    'choices' => [
+                        'Oui' => true,
+                        'Non' => false,
+                    ],
+                    'multiple' => false,
+                    'placeholder' => false,
+                    'choice_attr' => function ($choice) {
+                        // Add disabled attribute to the third choice
+                        if ($choice === 'Non') {
+                            return ['class' => 'form-check-input col-auto', 'disabled' => 'disabled'];
+                        }
+                        return ['class' => 'form-check-input col-auto'];
+                    },
                 ],
-                'choice_attr' => function ($choice) {
-                    // Add disabled attribute to the third choice
-                    if ($choice === 'Non') {
-                        return ['class' => 'form-check-input', 'disabled' => 'disabled'];
-                    }
-                    return ['class' => 'form-check-input'];
-                },
-                // Define attributes for the label of each choice
-                'label_attr' => ['class' => 'form-check-label'],
-                // Enclose each radio button with a div that has Bootstrap classes
-                'row_attr' => ['class' => 'form-check form-check-inline'],
-            ])
-            ->add('RealisedAt', DateType::class, [
-                'widget' => 'single_text',
-                'html5' => true,
-                'required' => true,
-            ]);
+                $this->getDefaultOptions('')
+            ))
+            ->add('RealisedAt', DateType::class, array_merge(
+                [
+                    'widget' => 'single_text',
+                    'html5' => true,
+                ],
+                $this->getDefaultOptions('')
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

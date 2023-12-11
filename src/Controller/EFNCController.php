@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\EFNC;
 use App\Entity\ImmediateConservatoryMeasures;
+use App\Entity\RiskWeighting;
 
 use App\Form\FormCreationType;
 use App\Form\ImCoMeType;
+use App\Form\RiskWeightingType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,42 +17,36 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 use Symfony\Component\Routing\Annotation\Route;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 
 #[Route('/', name: 'app_')]
 class EFNCController extends BaseController
 {
-
-
     #[Route('/form_creation', name: 'form_creation')]
     public function formCreation(Request $request): Response
     {
         $efnc = new EFNC();
-        $form1 = $this->createForm(FormCreationType::class, $efnc);
-
         $imcome = new ImmediateConservatoryMeasures();
-        $imcomeForm = $this->createForm(ImCoMeType::class, $imcome);
-
+        $riskWeighting = new RiskWeighting();
+        $efnc->getImmediateConservatoryMeasures()->add($imcome);
+        $efnc->getRiskWeighting($riskWeighting);
+        $form1 = $this->createForm(FormCreationType::class, $efnc);
+        $this->logger->info('form1: ' . json_encode($form1));
+        $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
         if ($request->getMethod() == 'POST') {
-
             $form1->handleRequest($request);
-            $this->logger->info('full request from the form1: ' . json_encode($request->request->all()));
-            $imcomeForm->handleRequest($request);
-            $this->logger->info('full request from the imcomeform: ' . json_encode($request->request->all()));
+            $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
 
             if (
                 $form1->isSubmitted() && $form1->isValid()
-                && $imcomeForm->isSubmitted() && $imcomeForm->isValid()
             ) {
-                $result = $this->formCreationService->createNCForm(
-                    $efnc,
-                    $request,
-                    $form1
-                );
-                $this->imcomeService->imcomeAssignation($efnc, $imcome, $imcomeForm, $request);
-                if ($result === true) {
+                $result1 = $this->formCreationService->createNCForm($efnc, $request, $form1);
+                if (
+                    $result1 === true
+                ) {
                     $this->addFlash('success', 'C\'est bon khey!');
+                    return $this->redirectToRoute('app_base', []);
+                } else {
+                    $this->addFlash('error', 'C\'est pas bon khey!');
                     return $this->redirectToRoute('app_base', []);
                 }
             } else {
@@ -58,9 +54,10 @@ class EFNCController extends BaseController
                 return $this->redirectToRoute('app_base', []);
             }
         } else if ($request->getMethod() == 'GET') {
+            $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
+
             return $this->render('services/efnc/creation/form_creation.html.twig', [
                 'form1' => $form1->createView(),
-                'imcomeForm' => $imcomeForm->createView(),
             ]);
         }
     }
@@ -75,45 +72,32 @@ class EFNCController extends BaseController
         if (!$efnc) {
             throw $this->createNotFoundException('No EFNC found for id ' . $efncID);
         }
-
-        $originalImcomes = new ArrayCollection();
-        // Create an ArrayCollection of the current ImmediateConservatoryMeasures objects in the database
-        foreach ($efnc->getImmediateConservatoryMeasures() as $imcome) {
-            $originalImcomes->add($imcome);
+        if ($efnc->getImmediateConservatoryMeasures()->isEmpty()) {
+            $measure = new ImmediateConservatoryMeasures();
+            $efnc->getImmediateConservatoryMeasures()->add($measure);
         }
+
+
+        $riskWeighting = $efnc->getRiskWeighting();
+        $efnc->getRiskWeighting($riskWeighting);
 
         $form1 = $this->createForm(FormCreationType::class, $efnc);
-
-        // Create a form for each ImmediateConservatoryMeasures entity
-        $imcomeForms = [];
-        foreach ($efnc->getImmediateConservatoryMeasures() as $key => $imcome) {
-            $imcomeForms[$key] = $this->createForm(ImCoMeType::class, $imcome)->createView();
-        }
 
         if ($request->getMethod() == 'GET') {
             return $this->render('/services/efnc/modification/form_modification.html.twig', [
                 'form1' => $form1->createView(),
-                'imcomeForms' => $imcomeForms,
                 'EFNC' => $efnc,
             ]);
-        } else {
+        } else if ($request->getMethod() == 'POST') {
+
             $form1->handleRequest($request);
-
-            // Handle request for each imcomeForm
-            foreach ($efnc->getImmediateConservatoryMeasures() as $key => $imcome) {
-                $imcomeForm = $this->createForm(ImCoMeType::class, $imcome);
-                $imcomeForm->handleRequest($request);
-                if ($imcomeForm->isSubmitted() && $imcomeForm->isValid()) {
-                    $this->imcomeService->imcomeAssignation($efnc, $imcome, $imcomeForm, $request);
-                }
+            if ($form1->isValid() && $form1->isSubmitted()) {
+                $result = $this->formModificationService->modifyNCForm(
+                    $efnc,
+                    $request,
+                    $form1
+                );
             }
-
-
-            $result = $this->formModificationService->modifyNCForm(
-                $efnc,
-                $request,
-                $form1
-            );
             if ($result === true) {
                 $this->addFlash('success', 'C\'est bon khey!');
                 return $this->redirectToRoute('app_base', []);

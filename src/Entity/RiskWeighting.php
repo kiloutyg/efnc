@@ -13,52 +13,84 @@ class RiskWeighting
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Type = null;
 
     #[ORM\Column]
-    private ?int $Weight = null;
+    private ?int $severityWeight = null;
 
-    #[ORM\ManyToOne(inversedBy: 'riskWeightings')]
-    private ?EFNC $EFNC = null;
+    #[ORM\Column]
+    private ?int $frequencyWeight = null;
+
+    #[ORM\Column]
+    private ?int $detectabilityWeight = null;
+
+    #[ORM\Column]
+    private ?int $RiskPriorityIndex = null;
+
+    #[ORM\OneToOne(inversedBy: 'riskWeighting', cascade: ['persist', 'remove'])]
+    private ?EFNC $eFNC = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getType(): ?string
+
+    public function getSeverityWeight(): ?int
     {
-        return $this->Type;
+        return $this->severityWeight;
     }
 
-    public function setType(string $Type): static
+    public function setSeverityWeight(int $severityWeight): static
     {
-        $this->Type = $Type;
+        $this->severityWeight = $severityWeight;
 
         return $this;
     }
 
-    public function getWeight(): ?int
+    public function getFrequencyWeight(): ?int
     {
-        return $this->Weight;
+        return $this->frequencyWeight;
     }
 
-    public function setWeight(int $Weight): static
+    public function setFrequencyWeight(int $frequencyWeight): static
     {
-        $this->Weight = $Weight;
+        $this->frequencyWeight = $frequencyWeight;
+
+        return $this;
+    }
+
+    public function getDetectabilityWeight(): ?int
+    {
+        return $this->detectabilityWeight;
+    }
+
+    public function setDetectabilityWeight(int $detectabilityWeight): static
+    {
+        $this->detectabilityWeight = $detectabilityWeight;
+
+        return $this;
+    }
+
+    public function getRiskPriorityIndex(): ?int
+    {
+        return $this->RiskPriorityIndex;
+    }
+
+    public function setRiskPriorityIndex(int $RiskPriorityIndex): static
+    {
+        $this->RiskPriorityIndex = $RiskPriorityIndex;
 
         return $this;
     }
 
     public function getEFNC(): ?EFNC
     {
-        return $this->EFNC;
+        return $this->eFNC;
     }
 
-    public function setEFNC(?EFNC $EFNC): static
+    public function setEFNC(?EFNC $eFNC): static
     {
-        $this->EFNC = $EFNC;
+        $this->eFNC = $eFNC;
 
         return $this;
     }

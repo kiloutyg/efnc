@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-// use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -22,7 +22,7 @@ class FormModificationService extends AbstractController
 {
     private $PictureService;
 
-    // private $logger;
+    private $logger;
 
     protected $projectDir;
 
@@ -32,7 +32,7 @@ class FormModificationService extends AbstractController
 
         PictureService                              $PictureService,
 
-        // LoggerInterface                             $logger,
+        LoggerInterface                             $logger,
 
         ParameterBagInterface                       $params,
 
@@ -40,7 +40,7 @@ class FormModificationService extends AbstractController
     ) {
         $this->PictureService                               = $PictureService;
 
-        // $this->logger                                       = $logger;
+        $this->logger                                       = $logger;
 
         $this->projectDir                                   = $params->get('kernel.project_dir');
 
