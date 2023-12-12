@@ -1,0 +1,77 @@
+{# templates/services/email_templates/notificationEmail.html.twig #}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{{ EFNC.Title }}</title>
+	</head>
+	<body>
+		<h1>Notification de Non-Conformité</h1>
+		<p>
+			<strong>Créateur :</strong>
+			{{ EFNC.Creator }}</p>
+		<p>
+			<strong>Date de Détection :</strong>
+			{{ EFNC.DetectionDate|date('d/m/Y') }}</p>
+		<p>
+			<strong>Heure de Détection :</strong>
+			{{ EFNC.DetectionTime|date('H:i') }}</p>
+		<p>
+			<strong>Équipe :</strong>
+			{{ EFNC.team.name }}</p>
+		<p>
+			<strong>Lieu de détection :</strong>
+			{{ EFNC.detectionPlace.name }}</p>
+		<p>
+			<strong>Désignation du Produit :</strong>
+			{{ EFNC.ProductDesignation }}</p>
+		<p>
+			<strong>Projet :</strong>
+			{{ EFNC.project.name }}</p>
+		<p>
+			<strong>UAP :</strong>
+			{{ EFNC.uap.name }}</p>
+		<p>
+			<strong>Origine de la Non-Conformité :</strong>
+			{{ EFNC.nonConformityOrigin.name }}</p>
+		<p>
+			<strong>Type d'anomalie :</strong>
+			{{ EFNC.anomalyType.name }}</p>
+		<p>
+			<strong>Quantité Non-Conforme :</strong>
+			{{ EFNC.Quantity }}</p>
+		<p>
+			<strong>Quantité à Bloquer :</strong>
+			{{ EFNC.QuantityToBlock }}</p>
+		<p>
+			<strong>Description Détaillée :</strong>
+			{{ EFNC.DetailedDescription }}</p>
+		<p>
+			<strong>Référence SAP :</strong>
+			{{ EFNC.SAPReference }}</p>
+
+		{# <h2>Photos de Traçabilité:</h2>
+				{% for traceabilityPicturePath, cid in traceabilityPictureCids %}
+					<img src="cid:{{ cid }}" alt="Photo de traçabilité">
+				{% endfor %}
+		
+				<h2>Photos de Non-Conformité:</h2>
+				{% for NcPicturePath, cid in NcPictureCids %}
+					<img src="cid:{{ cid }}" alt="Photo de non-conformité">
+				{% endfor %} #}
+
+
+		<h2>Photos de Traçabilité:</h2>
+		{% for cid in traceabilityPictureCids %}
+			<img src="cid:{{ cid }}" alt="Photo de traçabilité">
+		{% endfor %}
+
+		<h2>Photos de Non-Conformité:</h2>
+		{% for cid in NcPictureCids %}
+			<img src="cid:{{ cid }}" alt="Photo de non-conformité">
+		{% endfor %}
+		<!-- Include other fields as needed -->
+
+	</body>
+</html>
