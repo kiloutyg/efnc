@@ -3,11 +3,16 @@
 namespace App\Service;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+
+use Symfony\Component\Mime\Email;
+
+use Symfony\Bundle\SecurityBundle\Security;;
+
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+
 use Doctrine\Common\Collections\Collection;
 
 
@@ -23,11 +28,9 @@ class MailerService extends AbstractController
 
     public function __construct(
         Security $security,
-
+        MailerInterface $mailer
     ) {
         $this->security             = $security;
-
+        $this->mailer               = $mailer;
     }
-
-    
 }

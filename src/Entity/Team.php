@@ -3,11 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\TeamRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
+#[UniqueEntity(fields: 'name', message: 'Le nom d\'équipe {{ value }} est déja utilisé.')]
 class Team
 {
     #[ORM\Id]
@@ -15,7 +22,8 @@ class Team
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
+    #[Assert\Type(['type' => 'string'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'team', targetEntity: EFNC::class)]

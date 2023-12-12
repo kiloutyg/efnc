@@ -3,11 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\AnomalyTypeRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnomalyTypeRepository::class)]
+#[UniqueEntity(fields: 'name', message: 'Le nom du type d\'Anomalie {{ value }} est déja utilisé.')]
 class AnomalyType
 {
     #[ORM\Id]
@@ -16,6 +23,7 @@ class AnomalyType
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Type(['type' => 'string'])]
     private ?string $Name = null;
 
     #[ORM\OneToMany(mappedBy: 'anomalyType', targetEntity: EFNC::class)]

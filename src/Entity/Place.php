@@ -3,11 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\PlaceRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaceRepository::class)]
+#[UniqueEntity(fields: 'name', message: 'Le nom de Lieu {{ value }} est déja utilisé.')]
 class Place
 {
     #[ORM\Id]
@@ -16,6 +23,7 @@ class Place
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Type(['type' => 'string'])]
     private ?string $Name = null;
 
     #[ORM\OneToMany(mappedBy: 'detectionPlace', targetEntity: EFNC::class)]
