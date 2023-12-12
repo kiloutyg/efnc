@@ -4,12 +4,13 @@
 {% endblock %}
 
 {% block body %}
+	<h3 class="text-white mb-5">
+		<strong>Création de la Fiche de Non-Conformité :</strong>
+	</h3>
 	<div class="col-lg-8 mx-auto">
 		<div class="card border-0 shadow rounded-3 my-5 bg-secondary">
 			<div class="card-body">
-				<h3 class="text-white mb-5">
-					<strong>Création de Fiche de Non-Conformité :</strong>
-				</h3>
+
 				{{ form_start(form1, { 
 					attr: { 
 						id: 'formCreationForm', 
@@ -55,7 +56,7 @@
 						{% endfor %}
 					</div>
 
-					<button type="button" id="add-another-imcome" class="btn btn-info">Add Another Measure</button>
+					<button type="button" id="add-another-imcome" class="btn btn-info">Ajouter une autre Mesure</button>
 					<h3>
 						<strong>Priorization de la non-conformité :</strong>
 					</h3>
