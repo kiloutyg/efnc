@@ -3,11 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\ImmediateConservatoryMeasuresListRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ImmediateConservatoryMeasuresListRepository::class)]
+#[UniqueEntity(fields: 'name', message: 'Cette Mesure, {{ value }} existe déja.')]
 class ImmediateConservatoryMeasuresList
 {
     #[ORM\Id]
@@ -16,6 +23,7 @@ class ImmediateConservatoryMeasuresList
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Type(['type' => 'string'])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'action', targetEntity: ImmediateConservatoryMeasures::class)]

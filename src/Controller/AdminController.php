@@ -43,15 +43,18 @@ class AdminController extends FrontController
         if ($request->getMethod() == 'POST') {
             $teamForm->handleRequest($request);
             if ($teamForm->isSubmitted() && $teamForm->isValid()) {
+                // Validation passed, you can proceed to save the entity
                 $this->teamService->createTeam(
                     $team,
                     $request,
                     $teamForm
                 );
-                $this->addFlash('success', 'C\'est bon khey!');
+                $this->addFlash('success', 'L\'équipe a bien été créée!');
                 return $this->redirect($originUrl);
             } else {
-                $this->addFlash('error', 'C\'est pas bon khey!');
+                // Validation failed, get the error message and display it
+                $errorMessage = $teamForm->getErrors(true)->current()->getMessage();
+                $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
         } else if ($request->getMethod() == 'GET') {
@@ -77,10 +80,12 @@ class AdminController extends FrontController
                     $request,
                     $projectForm
                 );
-                $this->addFlash('success', 'C\'est bon khey!');
+                $this->addFlash('success', 'Le Projet a bien été ajouté.');
                 return $this->redirect($originUrl);
             } else {
-                $this->addFlash('error', 'C\'est pas bon khey!');
+                // Validation failed, get the error message and display it
+                $errorMessage = $projectForm->getErrors(true)->current()->getMessage();
+                $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
         } else if ($request->getMethod() == 'GET') {
@@ -105,10 +110,12 @@ class AdminController extends FrontController
                     $request,
                     $originForm
                 );
-                $this->addFlash('success', 'C\'est bon khey!');
+                $this->addFlash('success', 'Le lieu d\'origine a bien été ajouté');
                 return $this->redirect($originUrl);
             } else {
-                $this->addFlash('error', 'C\'est pas bon khey!');
+                // Validation failed, get the error message and display it
+                $errorMessage = $originForm->getErrors(true)->current()->getMessage();
+                $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
         } else if ($request->getMethod() == 'GET') {
@@ -133,10 +140,12 @@ class AdminController extends FrontController
                     $request,
                     $uapForm
                 );
-                $this->addFlash('success', 'C\'est bon khey!');
+                $this->addFlash('success', 'L\'UAP a bien été ajoutée');
                 return $this->redirect($originUrl);
             } else {
-                $this->addFlash('error', 'C\'est pas bon khey!');
+                // Validation failed, get the error message and display it
+                $errorMessage = $uapForm->getErrors(true)->current()->getMessage();
+                $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
         } else if ($request->getMethod() == 'GET') {
@@ -161,10 +170,12 @@ class AdminController extends FrontController
                     $request,
                     $anomalyTypeForm
                 );
-                $this->addFlash('success', 'C\'est bon khey!');
+                $this->addFlash('success', 'Le Type d\'Anomalie a bien été ajouté');
                 return $this->redirect($originUrl);
             } else {
-                $this->addFlash('error', 'C\'est pas bon khey!');
+                // Validation failed, get the error message and display it
+                $errorMessage = $anomalyTypeForm->getErrors(true)->current()->getMessage();
+                $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
         } else if ($request->getMethod() == 'GET') {
@@ -189,10 +200,12 @@ class AdminController extends FrontController
                     $request,
                     $placeForm
                 );
-                $this->addFlash('success', 'C\'est bon khey!');
+                $this->addFlash('success', 'Le lieu a bien été ajouté');
                 return $this->redirect($originUrl);
             } else {
-                $this->addFlash('error', 'C\'est pas bon khey!');
+                // Validation failed, get the error message and display it
+                $errorMessage = $placeForm->getErrors(true)->current()->getMessage();
+                $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
         } else if ($request->getMethod() == 'GET') {
@@ -217,10 +230,12 @@ class AdminController extends FrontController
                     $request,
                     $imcomeListForm
                 );
-                $this->addFlash('success', 'C\'est bon khey!');
+                $this->addFlash('success', 'La Mesure Conservatoire Immédiate a bien été ajoutée');
                 return $this->redirect($originUrl);
             } else {
-                $this->addFlash('error', 'C\'est pas bon khey!');
+                // Validation failed, get the error message and display it
+                $errorMessage = $imcomeListForm->getErrors(true)->current()->getMessage();
+                $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
         } else if ($request->getMethod() == 'GET') {

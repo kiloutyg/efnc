@@ -3,11 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\UAPRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UAPRepository::class)]
+#[UniqueEntity(fields: 'name', message: 'Le nom d\'UAP {{ value }} est déja utilisé.')]
 class UAP
 {
     #[ORM\Id]
@@ -16,6 +23,7 @@ class UAP
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Type(['type' => 'string'])]
     private ?string $Name = null;
 
     #[ORM\OneToMany(mappedBy: 'uap', targetEntity: EFNC::class)]
