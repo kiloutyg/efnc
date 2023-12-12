@@ -57,6 +57,7 @@ class AdminController extends FrontController
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/admin_services/team/team_creation.html.twig', [
                 'teamForm' => $teamForm->createView(),
+                'teams' => $this->teamRepository->findAll(),
             ]);
         }
     }
@@ -85,6 +86,7 @@ class AdminController extends FrontController
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/admin_services/project/project_creation.html.twig', [
                 'projectForm' => $projectForm->createView(),
+                'projects' => $this->projectRepository->findAll(),
             ]);
         }
     }
@@ -112,6 +114,7 @@ class AdminController extends FrontController
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/admin_services/origin/origin_creation.html.twig', [
                 'originForm' => $originForm->createView(),
+                'origins' => $this->originRepository->findAll(),
             ]);
         }
     }
@@ -139,6 +142,7 @@ class AdminController extends FrontController
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/admin_services/uap/uap_creation.html.twig', [
                 'uapForm' => $uapForm->createView(),
+                'uaps' => $this->uapRepository->findAll(),
             ]);
         }
     }
@@ -166,6 +170,7 @@ class AdminController extends FrontController
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/admin_services/anomalyType/anomalyType_creation.html.twig', [
                 'anomalyTypeForm' => $anomalyTypeForm->createView(),
+                'anomalyTypes' => $this->anomalyTypeRepository->findAll(),
             ]);
         }
     }
@@ -193,6 +198,7 @@ class AdminController extends FrontController
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/admin_services/place/place_creation.html.twig', [
                 'placeForm' => $placeForm->createView(),
+                'places' => $this->placeRepository->findAll(),
             ]);
         }
     }
@@ -220,7 +226,15 @@ class AdminController extends FrontController
         } else if ($request->getMethod() == 'GET') {
             return $this->render('services/admin_services/imcome/imcome_creation.html.twig', [
                 'imcomeForm' => $imcomeListForm->createView(),
+                'imcomes' => $this->imcomeRepository->findAll(),
             ]);
         }
+    }
+
+    #[Route('admin/delete/{entityType}/{id}', name: 'delete_entity')]
+    public function deleteEntity(string $entityType, int $id): Response
+    {
+        $this->entityDeletionService->deleteEntity($entityType, $id);
+        return $this->redirectToRoute('app_admin_page');
     }
 }

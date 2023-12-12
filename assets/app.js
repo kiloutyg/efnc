@@ -10,7 +10,8 @@ import './bootstrap.js';
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 // start the Stimulus application
-import './bootstrap';
+// import './bootstrap';
+import 'bootstrap';
 
 const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
@@ -20,3 +21,4 @@ const $ = require('jquery');
 // Make jQuery and Popper.js available globally
 global.$ = global.jQuery = $;
 // global.createPopper = createPopper;
+

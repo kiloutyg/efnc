@@ -10,6 +10,13 @@ use Psr\Log\LoggerInterface;
 
 
 use App\Repository\UserRepository;
+use App\Repository\TeamRepository;
+use App\Repository\ProjectRepository;
+use App\Repository\UAPRepository;
+use App\Repository\OriginRepository;
+use App\Repository\PlaceRepository;
+use App\Repository\AnomalyTypeRepository;
+use App\Repository\ImmediateConservatoryMeasuresRepository;
 
 
 
@@ -18,8 +25,15 @@ use App\Repository\UserRepository;
 class EntityDeletionService
 {
     private $em;
-    
+
     private $userRepository;
+    private $teamRepository;
+    private $projectRepository;
+    private $uapRepository;
+    private $originRepository;
+    private $placeRepository;
+    private $anomalyTypeRepository;
+    private $imcomeRepository;
 
     private $logger;
 
@@ -28,12 +42,26 @@ class EntityDeletionService
         EntityManagerInterface          $em,
 
         UserRepository                  $userRepository,
+        TeamRepository                  $teamRepository,
+        ProjectRepository               $projectRepository,
+        UapRepository                   $uapRepository,
+        OriginRepository                $originRepository,
+        PlaceRepository                 $placeRepository,
+        AnomalyTypeRepository           $anomalyTypeRepository,
+        ImmediateConservatoryMeasuresRepository $imcomeRepository,
 
         LoggerInterface                 $logger
     ) {
         $this->em                           = $em;
 
         $this->userRepository               = $userRepository;
+        $this->teamRepository               = $teamRepository;
+        $this->projectRepository            = $projectRepository;
+        $this->uapRepository                = $uapRepository;
+        $this->originRepository             = $originRepository;
+        $this->placeRepository              = $placeRepository;
+        $this->anomalyTypeRepository        = $anomalyTypeRepository;
+        $this->imcomeRepository             = $imcomeRepository;
 
         $this->logger                       = $logger;
     }
@@ -48,7 +76,27 @@ class EntityDeletionService
             case 'user':
                 $repository = $this->userRepository;
                 break;
-
+            case 'team':
+                $repository = $this->teamRepository;
+                break;
+            case 'project':
+                $repository = $this->projectRepository;
+                break;
+            case 'uap':
+                $repository = $this->uapRepository;
+                break;
+            case 'origin':
+                $repository = $this->originRepository;
+                break;
+            case 'place':
+                $repository = $this->placeRepository;
+                break;
+            case 'anomalyType':
+                $repository = $this->anomalyTypeRepository;
+                break;
+            case 'imcome':
+                $repository = $this->imcomeRepository;
+                break;
         }
         // If the repository is not found or the entity is not found in the database, return false
         if (!$repository) {
@@ -61,10 +109,9 @@ class EntityDeletionService
         }
 
         // Deletion logic for related entities, folder and files
-            if ($entityType === 'user') {
+        if ($entityType === 'user') {
 
             $this->logger->info('user name: ' . $entity->getUsername());
-       
         }
 
         $this->logger->info('entity Type: ' . $entityType);

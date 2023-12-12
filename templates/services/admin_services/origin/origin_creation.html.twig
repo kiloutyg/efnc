@@ -1,20 +1,41 @@
 {% block body %}
-	<div
-		class="card border-0 shadow rounded-3 my-5 bg-secondary">
-		<div
-			class="card-body ">
-			{{ form_start(originForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_origin_creation') }) }}
-			<div
-				class="col-md-auto">
+	<div class="card-body ">
+		{{ form_start(originForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_origin_creation') }) }}
+		<div class="row">
+			<div class="col-6">
 				{{ form_label(originForm.name) }}
 				{{ form_widget(originForm.name) }}
 			</div>
-			<div
-				class="d-grid col-md-auto mx-auto">
-				{{ form_label(originForm.save) }}
-				{{ form_widget(originForm.save) }}
-			</div>
-			{{ form_end(originForm) }}
+			{% if origins is not empty %}
+				<div class="col-6 mt-auto accordion" id="accordionOriginList">
+					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
+						<h2 class="accordion-header" id="headingOriginList">
+							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOriginList" aria-expanded="false" aria-controls="collapseOriginList">
+								Liste des Origines
+							</button>
+						</h2>
+						<div id="collapseOriginList" class="accordion-collapse collapse" aria-labelledby="headingOriginList" data-bs-parent="#accordionOriginList">
+							<div class="accordion-body">
+								<ul class="list-group">
+									{% for origin in origins %}
+										<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+											{{ origin.name }}
+											<div class="ml-auto">
+												<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'origin', id: origin.id})}}">Supprimer</a>
+											</div>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endif %}
 		</div>
+		<div class="d-grid col-auto mx-auto">
+			{{ form_label(originForm.save) }}
+			{{ form_widget(originForm.save) }}
+		</div>
+		{{ form_end(originForm) }}
 	</div>
 {% endblock %}

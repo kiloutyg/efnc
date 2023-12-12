@@ -37,7 +37,7 @@ document.addEventListener('turbo:load', function () {
     function addRemoveButton(item) {
         // Create the remove button
         var removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
+        removeButton.textContent = 'Supprimer';
         removeButton.className = 'remove-item-button'; // You can set your class for styling
 
         // Append it to the item

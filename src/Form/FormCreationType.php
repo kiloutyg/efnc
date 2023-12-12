@@ -227,7 +227,7 @@ class FormCreationType extends AbstractType
                         'row_attr' => [
                             'class' => 'mb-3'
                         ],
-                    ],
+                    ]
                 )
             )
             ->add('immediateConservatoryMeasures', CollectionType::class, array_merge(

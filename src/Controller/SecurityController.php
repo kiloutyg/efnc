@@ -21,7 +21,7 @@ class SecurityController extends FrontController
         $error        = $authenticationUtils->getLastAuthenticationError(); // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('services/admin_services/security/login.html.twig', [
+        return $this->render('services/security/login.html.twig', [
             'last_username' => $lastUsername,
             'error'         => $error,
             'user'          => $this->getUser()

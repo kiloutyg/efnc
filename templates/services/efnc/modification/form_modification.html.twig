@@ -2,7 +2,11 @@
 {% block title %}
 	Création de fiche
 {% endblock %}
+
 {% block body %}
+	<h3 class="text-white mb-5">
+		<strong>Modification de la Fiche de Non-Conformité :</strong>
+	</h3>
 	<div class="col-lg-8 mx-auto">
 		<div class="card border-0 shadow rounded-3 my-5 bg-secondary">
 			<div class="card-body">
@@ -27,7 +31,7 @@
 						{{ form_row(form1[field]) }}
 					{% endfor %}
 					<h3>
-						<strong>Problem Description :</strong>
+						<strong>Description du Problème :</strong>
 					</h3>
 					{% set problemDetails = ['AnomalyType', 'Quantity', 'QuantityToBlock', 'DetailedDescription'] %}
 					{% for detail in problemDetails %}
@@ -71,7 +75,7 @@
 						{% endfor %}
 					</div>
 
-					<button type="button" id="add-another-imcome" class="btn btn-info">Add Another Measure</button>
+					<button type="button" id="add-another-imcome" class="btn btn-info">Ajouter une autre Mesure</button>
 					<h3>
 						<strong>Priorization de la non-conformité :</strong>
 					</h3>
@@ -92,8 +96,14 @@
 				<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
 					<button type="submit" class="btn btn-primary mb-3 submit-upload-modification">Modifier</button>
 				</div>
+				{% if is_granted('ROLE_ADMIN') %}
+					<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+						<a class="btn btn-danger delete-incident" href="{{path('app_delete_entity', {entityType: 'efnc', id: EFNC.id})}}">Supprimer</a>
+					</div>
+				{% endif %}
 			</div>
 			{{ form_end(form1) }}
+
 		</div>
 	</div>
 {% endblock %}

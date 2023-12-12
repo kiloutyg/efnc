@@ -1,20 +1,41 @@
 {% block body %}
-	<div
-		class="card border-0 shadow rounded-3 my-5 bg-secondary">
-		<div
-			class="card-body ">
-			{{ form_start(uapForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_uap_creation') }) }}
-			<div
-				class="col-md-auto">
+	<div class="card-body ">
+		{{ form_start(uapForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_uap_creation') }) }}
+		<div class="row">
+			<div class="col-6">
 				{{ form_label(uapForm.name) }}
 				{{ form_widget(uapForm.name) }}
 			</div>
-			<div
-				class="d-grid col-md-auto mx-auto">
-				{{ form_label(uapForm.save) }}
-				{{ form_widget(uapForm.save) }}
-			</div>
-			{{ form_end(uapForm) }}
+			{% if uaps is not empty %}
+				<div class="col-6 mt-auto accordion" id="accordionUapList">
+					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
+						<h2 class="accordion-header" id="headingUapList">
+							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUapList" aria-expanded="false" aria-controls="collapseUapList">
+								Liste des UAPs
+							</button>
+						</h2>
+						<div id="collapseUapList" class="accordion-collapse collapse" aria-labelledby="headingUapList" data-bs-parent="#accordionUapList">
+							<div class="accordion-body">
+								<ul class="list-group">
+									{% for uap in uaps %}
+										<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+											{{ uap.name }}
+											<div class="ml-auto">
+												<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'uap', id: uap.id})}}">Supprimer</a>
+											</div>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endif %}
 		</div>
+		<div class="d-grid col-auto mx-auto">
+			{{ form_label(uapForm.save) }}
+			{{ form_widget(uapForm.save) }}
+		</div>
+		{{ form_end(uapForm) }}
 	</div>
 {% endblock %}

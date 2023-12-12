@@ -50,6 +50,7 @@ class ImCoMeType extends AbstractType
             ->add('customAction', TextType::class, array_merge(
                 [
                     'required' => false,
+                    'label' => 'Autre Action',
                     'attr' => [
                         'class' => 'form-control mx-auto mt-2',
                         'placeholder' => 'Précisez l\'action prise'

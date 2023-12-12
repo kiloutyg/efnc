@@ -18,6 +18,13 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use App\Repository\UserRepository;
 use App\Repository\EFNCRepository;
 use App\Repository\PictureRepository;
+use App\Repository\TeamRepository;
+use App\Repository\ProjectRepository;
+use App\Repository\OriginRepository;
+use App\Repository\UAPRepository;
+use App\Repository\AnomalyTypeRepository;
+use App\Repository\PlaceRepository;
+use App\Repository\ImmediateConservatoryMeasuresListRepository;
 
 use App\Service\AccountService;
 use App\Service\MailerService;
@@ -58,6 +65,13 @@ class BaseController extends AbstractController
     protected $userRepository;
     protected $EFNCRepository;
     protected $pictureRepository;
+    protected $teamRepository;
+    protected $projectRepository;
+    protected $originRepository;
+    protected $uapRepository;
+    protected $anomalyTypeRepository;
+    protected $placeRepository;
+    protected $imcomeRepository;
 
     // Services methods
 
@@ -98,6 +112,13 @@ class BaseController extends AbstractController
         UserRepository                  $userRepository,
         EFNCRepository                  $EFNCRepository,
         PictureRepository               $pictureRepository,
+        TeamRepository                  $teamRepository,
+        ProjectRepository               $projectRepository,
+        OriginRepository                $originRepository,
+        UAPRepository                   $uapRepository,
+        AnomalyTypeRepository           $anomalyTypeRepository,
+        PlaceRepository                 $placeRepository,
+        ImmediateConservatoryMeasuresListRepository $imcomeRepository,
 
         // Services methods
 
@@ -136,6 +157,13 @@ class BaseController extends AbstractController
         $this->userRepository               = $userRepository;
         $this->EFNCRepository               = $EFNCRepository;
         $this->pictureRepository            = $pictureRepository;
+        $this->teamRepository               = $teamRepository;
+        $this->projectRepository            = $projectRepository;
+        $this->originRepository             = $originRepository;
+        $this->uapRepository                = $uapRepository;
+        $this->anomalyTypeRepository        = $anomalyTypeRepository;
+        $this->placeRepository              = $placeRepository;
+        $this->imcomeRepository             = $imcomeRepository;
 
         // Variables related to the services
 
