@@ -41,6 +41,12 @@ class PictureService extends AbstractController
 
     public function pictureUpload(UploadedFile $file, EFNC $efnc, $efncFolderName, string $category, $newFileName = null)
     {
+        $maxSize = 4194304; // bytes
+
+        // Check file size
+        if ($file->getSize() > $maxSize) {
+            return $this->addFlash('error', 'Le fichier doit être inférieur à 4MB');
+        }
 
         $public_dir = $this->projectDir . '/public';
         $folderPath = $public_dir . '/doc';

@@ -110,7 +110,6 @@ class EntityDeletionService
 
         // Deletion logic for related entities, folder and files
         if ($entityType === 'user') {
-
             $this->logger->info('user name: ' . $entity->getUsername());
         }
 

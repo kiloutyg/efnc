@@ -92,6 +92,7 @@ class ImCoMeType extends AbstractType
             ))
             ->add('RealisedAt', DateType::class, array_merge(
                 [
+                    'label' => 'Date de réalisation',
                     'widget' => 'single_text',
                     'html5' => true,
                 ],

@@ -17,6 +17,7 @@
         "symfony/form": "7.*",
         "symfony/framework-bundle": "7.*",
         "symfony/http-foundation": "7.*",
+        "symfony/mailer": "7.*",
         "symfony/mime": "7.*",
         "symfony/monolog-bundle": "^3.8",
         "symfony/notifier": "7.*",
@@ -77,7 +78,8 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.*"
+            "require": "7.*",
+            "docker": true
         }
     },
     "require-dev": {
