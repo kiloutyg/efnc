@@ -29,22 +29,25 @@
 						{{ form_row(form1[field]) }}
 					{% endfor %}
 					<h3>
-						<strong>Problem Description :</strong>
+						<strong>Description du Probléme :</strong>
 					</h3>
 					{% set problemDetails = ['AnomalyType', 'Quantity', 'QuantityToBlock', 'DetailedDescription'] %}
 					{% for detail in problemDetails %}
 						{{ form_row(form1[detail]) }}
 					{% endfor %}
+					<div id="TraceabilityPictureSizeWarning" style="color: red; display: none;">File size must be less than 4MB.</div>
 					<div class="mb-3" id="traceability-picture-container">
 						<label class="form-label" style="font-weight: bold; color: #ffffff;" for="picture_TraceabilityPicture">Photo de Traçabilité Obligatoire :</label>
-						<input type="file" id="picture_TraceabilityPicture" name="picture[TraceabilityPicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de Traçabilité Obligatoire">
+						<input required type="file" accept="image/*" size="4194304" id="picture_TraceabilityPicture" name="picture[TraceabilityPicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de Traçabilité Obligatoire">
 						<div id="TraceabilityPicturePreview"></div>
 					</div>
+					<div id="NCpictureSizeWarning" style="color: red; display: none;">File size must be less than 4MB.</div>
 					<div class="mb-3" id="nc-picture-container">
 						<label class="form-label" style="font-weight: bold; color: #ffffff;" for="picture_NCpicture">Photo de non-conformité :</label>
-						<input type="file" id="picture_NCpicture" name="picture[NCpicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de non-conformité">
+						<input required type="file" accept="image/*" size="4194304" id="picture_NCpicture" name="picture[NCpicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de non-conformité">
 						<div id="NCpicturePreview"></div>
 					</div>
+
 					<h3>
 						<strong>Mesures Conservatoire Immediates:</strong>
 					</h3>
@@ -58,7 +61,7 @@
 
 					<button type="button" id="add-another-imcome" class="btn btn-info">Ajouter une autre Mesure</button>
 					<h3>
-						<strong>Priorization de la non-conformité :</strong>
+						<strong>Priorisation de la non-conformité :</strong>
 					</h3>
 					{% for riskWeightingFormEntry in form1.riskWeighting %}
 						{{ form_row(riskWeightingFormEntry) }}

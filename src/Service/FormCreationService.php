@@ -88,17 +88,19 @@ class FormCreationService extends AbstractController
         if (isset($traceabilityPictures)) {
             foreach ($traceabilityPictures as $picture) {
                 // Save or process $pictures
-                $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'traceability');
+                $result = $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'traceability');
             }
         }
         if (isset($ncPictures)) {
             foreach ($ncPictures as $picture) {
                 // Save or process $picture
-                $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
+                $result = $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
             }
         }
+        if ($result != true) {
+            return false;
+        }
         $this->imcomeService->imcomeAssignation($efnc, $form1);
-
         $this->em->persist($efnc);
         $this->em->flush();
         return true;

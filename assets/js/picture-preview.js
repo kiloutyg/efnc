@@ -32,4 +32,30 @@ document.addEventListener('turbo:load', () => {
             previewImage.call(event.target, '#TraceabilityPicturePreview');
         }
     });
+    document.getElementById('picture_TraceabilityPicture').addEventListener('change', function () {
+        var fileSize = this.files[0].size;
+        var maxSize = 4 * 1024 * 1024; // Maximum size in bytes (4MB in this example)
+
+        if (fileSize > maxSize) {
+            alert('The file size must be less than 4MB.');
+            this.value = ''; // Clear the file input
+            document.getElementById('TraceabilityPictureSizeWarning').style.display = 'block';
+        } else {
+            document.getElementById('TraceabilityPictureSizeWarning').style.display = 'none';
+        }
+    });
+    document.getElementById('picture_NCpicture').addEventListener('change', function () {
+        var fileSize = this.files[0].size;
+        var maxSize = 4 * 1024 * 1024; // Maximum size in bytes (4MB in this example)
+
+        if (fileSize > maxSize) {
+            alert('The file size must be less than 4MB.');
+            this.value = ''; // Clear the file input
+            document.getElementById('NCpictureSizeWarning').style.display = 'block';
+        } else {
+            document.getElementById('NCpictureSizeWarning').style.display = 'none';
+        }
+    });
 });
+
+

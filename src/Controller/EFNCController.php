@@ -42,6 +42,7 @@ class EFNCController extends BaseController
                 if (
                     $result1 === true
                 ) {
+                    $this->mailerService->notificationEmail($efnc);
                     $this->addFlash('success', 'C\'est bon khey!');
                     return $this->redirectToRoute('app_base', []);
                 } else {
@@ -74,7 +75,6 @@ class EFNCController extends BaseController
             $measure = new ImmediateConservatoryMeasures();
             $efnc->getImmediateConservatoryMeasures()->add($measure);
         }
-
 
         $riskWeighting = $efnc->getRiskWeighting();
         $efnc->getRiskWeighting($riskWeighting);

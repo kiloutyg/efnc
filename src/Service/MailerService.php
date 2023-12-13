@@ -41,7 +41,6 @@ class MailerService extends AbstractController
     public function notificationEmail(EFNC $EFNC)
     {
 
-        $EFNCTitle = $EFNC->getTitle();
 
         $users = $this->userRepository->findAll();
         $recipientsEmail = [];
@@ -51,21 +50,8 @@ class MailerService extends AbstractController
             }
         }
 
-
-
-
         $pictures = $EFNC->getPictures();
         // Let's assume $NcPictures is an array of file paths for your NcPictures
-        $NcPicturePaths = [];
-        $traceabilityPicturePaths = [];
-
-        // foreach ($pictures as $picture) {
-        //     if ($picture->getCategory() == 'NC') {
-        //         $NcPicturePaths[] = $picture->getPath();
-        //     } else {
-        //         $traceabilityPicturePaths = $picture->getPath();
-        //     }
-        // }
 
         $NcPictureCids = [];
         $traceabilityPictureCids = [];
@@ -75,29 +61,6 @@ class MailerService extends AbstractController
             ->to(...$recipientsEmail)
             ->subject('Nouvelle Fiche de Non-Conformité');
 
-        // foreach ($NcPicturePaths as $NcPicturePath) {
-        //     // Create a unique content ID for each NcPicture
-        //     $cid = bin2hex(random_bytes(16)) . $EFNCTitle;
-        //     $NcPicture = DataPart::fromPath($NcPicturePath);
-        //     // Attach the NcPicture to the email and store the CID in an array
-        //     $NcPictureCids[$NcPicturePath] = $email->embed($NcPicture, $cid);
-        // }
-        // foreach ($traceabilityPicturePaths as $traceabilityPicturePath) {
-        //     // Create a unique content ID for each NcPicture
-        //     $cid = bin2hex(random_bytes(16)) . $EFNCTitle;
-        //     $traceabilityPicture = DataPart::fromPath($traceabilityPicturePath);
-        //     // Attach the NcPicture to the email and store the CID in an array
-        //     $traceabilityPictureCids[$traceabilityPicturePath] = $email->embed($traceabilityPicture, $cid);
-        // }
-
-        // foreach ($EFNC->getPictures() as $picture) {
-        //     $cid = $email->embedFromPath($picture->getPath(), $picture->getFilename());
-        //     if ($picture->getCategory() === 'NC') {
-        //         $NcPictureCids[] = $cid;
-        //     } else {
-        //         $traceabilityPictureCids[] = $cid;
-        //     }
-        // }
 
         foreach ($pictures as $picture) {
             // Generate a CID string for the embedded image

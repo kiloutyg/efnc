@@ -93,6 +93,9 @@ class EFNC
     #[ORM\OneToOne(mappedBy: 'eFNC', cascade: ['persist', 'remove'])]
     private ?RiskWeighting $riskWeighting = null;
 
+    #[ORM\OneToOne(mappedBy: 'EFNC', cascade: ['persist', 'remove'])]
+    private ?Product $product = null;
+
 
     public function __construct()
     {
@@ -502,6 +505,23 @@ class EFNC
         }
 
         $this->riskWeighting = $riskWeighting;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(Product $product): static
+    {
+        // set the owning side of the relation if necessary
+        if ($product->getEFNC() !== $this) {
+            $product->setEFNC($this);
+        }
+
+        $this->product = $product;
 
         return $this;
     }
