@@ -73,7 +73,19 @@ class FormCreationType extends AbstractType
                         'widget' => 'single_text',
                         'html5' => true,
                     ],
-                    $this->getDefaultOptions('')
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-6 mb-3'
+                        ],
+                    ]
                 )
             )
             ->add(
@@ -85,7 +97,19 @@ class FormCreationType extends AbstractType
                         'widget' => 'single_text',
                         'html5' => true,
                     ],
-                    $this->getDefaultOptions('')
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-6 mb-3'
+                        ],
+                    ]
                 )
             )
             ->add(
@@ -97,7 +121,21 @@ class FormCreationType extends AbstractType
                         'class' => Team::class,
                         'choice_label' => 'name',
                     ],
-                    $this->getDefaultOptions('Choisir une équipe :')
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => 'Choisir une équipe :'
+
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-4 mb-3'
+                        ],
+                    ]
                 )
             )
             ->add(
@@ -109,7 +147,21 @@ class FormCreationType extends AbstractType
                         'class' => Place::class,
                         'choice_label' => 'name',
                     ],
-                    $this->getDefaultOptions('Choisir le lieu de détection de la Non-Conformité :')
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => 'Choisir le lieu de détection de la Non-Conformité :'
+
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-4 mb-3'
+                        ],
+                    ]
                 )
             )
             ->add('product', ProductType::class, array_merge(
@@ -150,7 +202,21 @@ class FormCreationType extends AbstractType
                         'class' => UAP::class,
                         'choice_label' => 'name',
                     ],
-                    $this->getDefaultOptions('Choisir l\'UAP :')
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => 'Choisir l\'UAP :'
+
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-4 mb-3'
+                        ],
+                    ]
                 )
             )
             ->add(
@@ -174,7 +240,21 @@ class FormCreationType extends AbstractType
                         'class' => AnomalyType::class,
                         'choice_label' => 'name',
                     ],
-                    $this->getDefaultOptions('Choisir le type de Non-Conformité :')
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => 'Choisir le type de Non-Conformité :'
+
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-4 mb-3'
+                        ],
+                    ]
                 )
             )
             ->add(
@@ -189,7 +269,21 @@ class FormCreationType extends AbstractType
                             'min' => 0, 'max' => 1000000,
                         ],
                     ],
-                    $this->getDefaultOptions('00')
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => '00'
+
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-4 mb-3'
+                        ],
+                    ]
                 )
             )
             ->add(
@@ -204,7 +298,21 @@ class FormCreationType extends AbstractType
                             'min' => 0, 'max' => 1000000,
                         ],
                     ],
-                    $this->getDefaultOptions('00')
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => '00'
+
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-4 mb-3'
+                        ],
+                    ]
                 )
             )
             ->add(

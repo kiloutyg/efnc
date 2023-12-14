@@ -46,14 +46,14 @@ class EFNCController extends BaseController
                     $result1 === true
                 ) {
                     $this->mailerService->notificationEmail($efnc);
-                    $this->addFlash('success', 'C\'est bon khey!');
+                    $this->addFlash('success', 'Fiche correctement créée et envoyée par mail!');
                     return $this->redirectToRoute('app_base', []);
                 } else {
-                    $this->addFlash('error', 'C\'est pas bon khey!');
+                    $this->addFlash('error', 'Erreur lors de l\'enregistrement de la fiche!');
                     return $this->redirectToRoute('app_base', []);
                 }
             } else {
-                $this->addFlash('error', 'C\'est pas bon khey!');
+                $this->addFlash('error', 'Erreur lors de la création de la fiche!');
                 return $this->redirectToRoute('app_base', []);
             }
         } else if ($request->getMethod() == 'GET') {
@@ -100,10 +100,10 @@ class EFNCController extends BaseController
                 );
             }
             if ($result === true) {
-                $this->addFlash('success', 'C\'est bon khey!');
+                $this->addFlash('success', 'Fiche correctement modifiée!');
                 return $this->redirectToRoute('app_base', []);
             } else {
-                $this->addFlash('error', 'C\'est pas bon khey!');
+                $this->addFlash('error', 'Erreur lors de la modification de la fiche!');
                 return $this->redirectToRoute('app_base', []);
             }
         }

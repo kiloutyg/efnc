@@ -33,7 +33,7 @@ class AccountController extends FrontController
             $error
         );
         if ($result) {
-            $this->addFlash('success', 'Le compte de Super-Administrateur a bien été créé.');
+            $this->addFlash('success', 'Le compte a bien été créé.');
         }
         if ($error) {
             $this->addFlash('error', $error);

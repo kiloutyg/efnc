@@ -29,9 +29,6 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?ProductColor $color = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -81,18 +78,6 @@ class Product
     public function setColor(?ProductColor $color): static
     {
         $this->color = $color;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
 
         return $this;
     }

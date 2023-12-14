@@ -23,9 +23,9 @@
 						<strong>Enregistrement de la Non-Conformité:</strong>
 					</h3>
 					{% set fields = [
-						'Creator', 'DetectionDate', 'DetectionTime', 'Team',
-						'DetectionPlace', 'ProductDesignation', 'Project', 
-						'UAP', 'NonConformityOrigin', 'SAPReference'
+						'Creator', 'DetectionDate', 'DetectionTime', 'Team','UAP',
+						'DetectionPlace', 'Project', 'product',
+						 'NonConformityOrigin', 'SAPReference'
 					] %}
 					{% for field in fields %}
 						{{ form_row(form1[field]) }}

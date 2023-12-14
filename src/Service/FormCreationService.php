@@ -109,7 +109,7 @@ class FormCreationService extends AbstractController
 
     public function efncTitleBuilding(EFNC $efnc)
     {
-        $efncTitle = 'FNC' . '_' . $efnc->getDetectionPlace()->getName() . '_' . $efnc->getProject()->getName() . '_' . $efnc->getProductDesignation() . '_' . $efnc->getAnomalyType()->getName();
+        $efncTitle = 'FNC' . '_' . $efnc->getDetectionPlace()->getName() . '_' . $efnc->getProject()->getName() . '_' . $efnc->getProduct()->getCategory()->getName() . '_' . $efnc->getProduct()->getVersion()->getName() . '_' . $efnc->getProduct()->getColor()->getName() . '_' . $efnc->getAnomalyType()->getName();
         $this->logger->info('fnc id for title:' . $efnc->getId());
         // return $this->slugify($efncTitle);
         return $efncTitle;
