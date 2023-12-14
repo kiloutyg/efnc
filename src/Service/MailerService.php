@@ -87,5 +87,6 @@ class MailerService extends AbstractController
 
         // Send the email as usual
         $this->mailer->send($email);
+        return true;
     }
 }

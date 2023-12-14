@@ -45,9 +45,14 @@ class EFNCController extends BaseController
                 if (
                     $result1 === true
                 ) {
-                    $this->mailerService->notificationEmail($efnc);
-                    $this->addFlash('success', 'Fiche correctement créée et envoyée par mail!');
-                    return $this->redirectToRoute('app_base', []);
+                    $result2 = $this->mailerService->notificationEmail($efnc);
+                    if ($result2 === true) {
+                        $this->addFlash('success', 'Fiche correctement créée et envoyée par mail!');
+                        return $this->redirectToRoute('app_base', []);
+                    } else {
+                        $this->addFlash('error', 'Erreur lors de l\'envoi du mail!');
+                        return $this->redirectToRoute('app_base', []);
+                    }
                 } else {
                     $this->addFlash('error', 'Erreur lors de l\'enregistrement de la fiche!');
                     return $this->redirectToRoute('app_base', []);
