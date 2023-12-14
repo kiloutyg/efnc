@@ -11,6 +11,7 @@ use App\Entity\Team;
 use App\Entity\UAP;
 
 use App\Form\ImCoMeType;
+use App\Form\ProductType;
 
 use Symfony\Component\Form\AbstractType;
 
@@ -111,16 +112,23 @@ class FormCreationType extends AbstractType
                     $this->getDefaultOptions('Choisir le lieu de détection de la Non-Conformité :')
                 )
             )
-            ->add(
-                'ProductDesignation',
-                TextType::class,
-                array_merge(
-                    [
-                        'label' => 'Désignation du Produit :',
+            ->add('product', ProductType::class, array_merge(
+                [
+                    'label' => 'Désignation du Produit :',
+                    'required' => true,
+                    'attr' => [
+                        'class' => ' mt-2 row',
+                        'placeholder' => 'Désignation du Produit',
                     ],
-                    $this->getDefaultOptions('Référence, Désignation, ...')
-                )
-            )
+                    'label_attr' => [
+                        'class' => 'form-label',
+                        'style' => 'font-weight: bold; color: #ffffff;'
+                    ],
+                    'row_attr' => [
+                        'class' => 'mb-3'
+                    ],
+                ]
+            ))
             ->add(
                 'Project',
                 EntityType::class,

@@ -37,7 +37,11 @@ class AdminController extends FrontController
     #[Route('/admin/view', name: 'admin_page')]
     public function adminPage(): Response
     {
-        return $this->render('services/admin/admin_page.html.twig', []);
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('app_login');
+        } else {
+            return $this->render('services/admin/admin_page.html.twig', []);
+        }
     }
 
     #[Route('admin/services/team_creation', name: 'team_creation')]
@@ -70,7 +74,6 @@ class AdminController extends FrontController
             ]);
         }
     }
-
 
     #[Route('admin/services/project_creation', name: 'project_creation')]
     public function projectCreation(Request $request): Response
@@ -266,7 +269,7 @@ class AdminController extends FrontController
                     $request,
                     $productCategoryForm
                 );
-                $this->addFlash('success', 'La Mesure Conservatoire Immédiate a bien été ajoutée');
+                $this->addFlash('success', 'Le Type de Produit a bien été ajoutée');
                 return $this->redirect($originUrl);
             } else {
                 // Validation failed, get the error message and display it
@@ -296,7 +299,7 @@ class AdminController extends FrontController
                     $request,
                     $productColorForm
                 );
-                $this->addFlash('success', 'La Mesure Conservatoire Immédiate a bien été ajoutée');
+                $this->addFlash('success', 'La Couleur Produit a bien été ajoutée');
                 return $this->redirect($originUrl);
             } else {
                 // Validation failed, get the error message and display it
@@ -326,7 +329,7 @@ class AdminController extends FrontController
                     $request,
                     $productVersionForm
                 );
-                $this->addFlash('success', 'La Mesure Conservatoire Immédiate a bien été ajoutée');
+                $this->addFlash('success', 'La Version Produit a bien été ajoutée');
                 return $this->redirect($originUrl);
             } else {
                 // Validation failed, get the error message and display it
@@ -341,7 +344,6 @@ class AdminController extends FrontController
             ]);
         }
     }
-
 
     #[Route('admin/delete/{entityType}/{id}', name: 'delete_entity')]
     public function deleteEntity(string $entityType, int $id): Response

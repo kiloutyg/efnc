@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-	Création de fiche
+	Création de FNC
 {% endblock %}
 
 {% block body %}
@@ -22,7 +22,7 @@
 					</h3>
 					{% set fields = [
 						'Creator', 'DetectionDate', 'DetectionTime', 'Team',
-						'DetectionPlace', 'ProductDesignation', 'Project', 
+						'DetectionPlace', 'Project', 'product',
 						'UAP', 'NonConformityOrigin', 'SAPReference'
 					] %}
 					{% for field in fields %}
@@ -35,19 +35,18 @@
 					{% for detail in problemDetails %}
 						{{ form_row(form1[detail]) }}
 					{% endfor %}
-					<div id="TraceabilityPictureSizeWarning" style="color: red; display: none;">File size must be less than 4MB.</div>
+					<div id="TraceabilityPictureSizeWarning" style="color: red; display: none;">La taille du fichier doit être inferieur à 4Mo.</div>
 					<div class="mb-3" id="traceability-picture-container">
 						<label class="form-label" style="font-weight: bold; color: #ffffff;" for="picture_TraceabilityPicture">Photo de Traçabilité Obligatoire :</label>
 						<input required type="file" accept="image/*" size="4194304" id="picture_TraceabilityPicture" name="picture[TraceabilityPicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de Traçabilité Obligatoire">
 						<div id="TraceabilityPicturePreview"></div>
 					</div>
-					<div id="NCpictureSizeWarning" style="color: red; display: none;">File size must be less than 4MB.</div>
+					<div id="NCpictureSizeWarning" style="color: red; display: none;">La taille du fichier doit être inferieur à 4Mo.</div>
 					<div class="mb-3" id="nc-picture-container">
 						<label class="form-label" style="font-weight: bold; color: #ffffff;" for="picture_NCpicture">Photo de non-conformité :</label>
 						<input required type="file" accept="image/*" size="4194304" id="picture_NCpicture" name="picture[NCpicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de non-conformité">
 						<div id="NCpicturePreview"></div>
 					</div>
-
 					<h3>
 						<strong>Mesures Conservatoire Immediates:</strong>
 					</h3>
@@ -58,7 +57,6 @@
 							</div>
 						{% endfor %}
 					</div>
-
 					<button type="button" id="add-another-imcome" class="btn btn-info">Ajouter une autre Mesure</button>
 					<h3>
 						<strong>Priorisation de la non-conformité :</strong>

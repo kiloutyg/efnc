@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EFNC;
 use App\Entity\ImmediateConservatoryMeasures;
 use App\Entity\RiskWeighting;
+use App\Entity\Product;
 
 use App\Form\FormCreationType;
 use App\Form\ImCoMeType;
@@ -27,7 +28,9 @@ class EFNCController extends BaseController
         $efnc = new EFNC();
         $imcome = new ImmediateConservatoryMeasures();
         $riskWeighting = new RiskWeighting();
+        $product = new Product();
         $efnc->getImmediateConservatoryMeasures()->add($imcome);
+        $efnc->getProduct($product);
         $efnc->getRiskWeighting($riskWeighting);
         $form1 = $this->createForm(FormCreationType::class, $efnc);
 
