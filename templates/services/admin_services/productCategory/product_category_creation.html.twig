@@ -1,0 +1,41 @@
+{% block body %}
+	<div class="card-body ">
+		{{ form_start(productCategoryForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_productCategory_creation') }) }}
+		<div class="row">
+			<div class="col-6">
+				{{ form_label(productCategoryForm.name) }}
+				{{ form_widget(productCategoryForm.name) }}
+			</div>
+			{% if productCategories is not empty %}
+				<div class="col-6 mt-auto accordion" id="accordionproductCategoryList">
+					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
+						<h2 class="accordion-header" id="headingproductCategoryList">
+							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseproductCategoryList" aria-expanded="false" aria-controls="collapseproductCategoryList">
+								Liste des productCategories
+							</button>
+						</h2>
+						<div id="collapseproductCategoryList" class="accordion-collapse collapse" aria-labelledby="headingproductCategoryList" data-bs-parent="#accordionproductCategoryList">
+							<div class="accordion-body">
+								<ul class="list-group">
+									{% for productCategory in productCategories %}
+										<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+											{{ productCategory.name }}
+											<div class="ml-auto">
+												<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'productCategory', id: productCategory.id})}}">Supprimer</a>
+											</div>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+		<div class="d-grid col-auto mx-auto">
+			{{ form_label(productCategoryForm.save) }}
+			{{ form_widget(productCategoryForm.save) }}
+		</div>
+		{{ form_end(productCategoryForm) }}
+	</div>
+{% endblock %}

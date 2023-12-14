@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Modifcation du compte de
+	{{user.username|split('.')|first|upper}}
+	|
+	{{ parent() }}
+{% endblock %}
+{% block body %}
+	<div
+		class="card border-0 shadow rounded-3 my-5">
+		<div
+			class="card-body">
+			<div
+				class="row">
+				<div
+					class="card border-0 shadow rounded-3 my-5 bg-secondary">
+					<div
+						class="card-body ">
+						<div
+							class=" row d-flex align-items-center gy-lg-0 gy-5">
+
+
+							<div
+								class="col-1"></div>
+							<div
+								class="col-10">
+
+								<h3
+									class="card-title text-center mb-5"
+									style="color:white">
+									<strong>
+										Modification de compte de
+										{{user.username|capitalize|split('.')|first }}
+										{{user.username|upper|split('.')|last }}
+									</strong>
+
+								</h3>
+								<form
+									class="form row"
+									method="post"
+									action="{{path('app_modify_account', {userid: user.id})}}">
+									{% if error is defined %}
+										{% if error %}
+											<div
+												class="alert alert-danger">
+												{{ error.messageKey|trans(error.messageData, 'security') }}
+											</div>
+										{% endif %}
+									{% endif %}
+									<div
+										class="form-control mb-3">
+										<label
+											for="username">
+											Nom d'utilisateur
+										</label>
+										<input
+											type="text"
+											name="username"
+											placeholder="Nom d'utilisateur"
+											class="form-control"
+											id="username">
+									</div>
+									<div
+										class="form-control mb-3">
+										<label
+											for="floatingPassword">
+											Mot de passe
+										</label>
+										<input
+											type="password"
+											id="floatingPassword"
+											placeholder="Mot de passe"
+											name="password"
+											class="form-control">
+									</div>
+									<div
+										class="form-control mb-3">
+										<label
+											for="emailAddress">
+											Adresse Mail
+										</label>
+										<input
+											type="email"
+											id="emailAddress"
+											placeholder="Adresse Mail"
+											name="emailAddress"
+											class="form-control">
+									</div>
+									<div
+										class="form-control mb-3">
+										{% include 'services/admin_services/accountservices/role_affectation_modification.html.twig' %}
+									</div>
+									<input
+										type="hidden"
+										name="_csrf_token"
+										value="{{ csrf_token('authenticate') }}">
+									<div
+										class="d-grid">
+										<button
+											class="btn btn-primary btn-login text-uppercase fw-bold"
+											type="submit">
+											Modification du compte
+										</button>
+									</div>
+
+								</form>
+
+							</div>
+
+							<div
+								class="col-1"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

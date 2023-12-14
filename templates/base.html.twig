@@ -89,7 +89,7 @@
 					{% include "services/navbarservices/navbar_service.html.twig" %}
 					{% block body %}
 						{% if app.user %}
-							{% if  is_granted('ROLE_MANAGER', object = null, field = null)%}
+							{% if  is_granted('ROLE_ADMIN', object = null, field = null)%}
 								<aside class="position-absolute end-0 mt-2 ">
 									<a href="{{ path('app_admin_page') }}" class="btn shadow bg-dark" style="color:white;">
 										<span class="fa fa-gear"></span>

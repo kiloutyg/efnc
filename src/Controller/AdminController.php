@@ -9,6 +9,9 @@ use App\Entity\UAP;
 use App\Entity\AnomalyType;
 use App\Entity\Place;
 use App\Entity\ImmediateConservatoryMeasuresList;
+use App\Entity\ProductCategory;
+use App\Entity\ProductColor;
+use App\Entity\ProductVersion;
 
 use App\Form\TeamType;
 use App\Form\ProjectType;
@@ -17,6 +20,9 @@ use App\Form\UAPType;
 use App\Form\AnomalyForm;
 use App\Form\PlaceType;
 use App\Form\ImCoMeListType;
+use App\Form\ProductCategoryType;
+use App\Form\ProductColorType;
+use App\Form\ProductVersionType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +37,11 @@ class AdminController extends FrontController
     #[Route('/admin/view', name: 'admin_page')]
     public function adminPage(): Response
     {
-        return $this->render('services/admin/admin_page.html.twig', []);
+        if ($this->getUser() == null) {
+            return $this->redirectToRoute('app_login');
+        } else {
+            return $this->render('services/admin/admin_page.html.twig', []);
+        }
     }
 
     #[Route('admin/services/team_creation', name: 'team_creation')]
@@ -64,7 +74,6 @@ class AdminController extends FrontController
             ]);
         }
     }
-
 
     #[Route('admin/services/project_creation', name: 'project_creation')]
     public function projectCreation(Request $request): Response
@@ -242,6 +251,96 @@ class AdminController extends FrontController
             return $this->render('services/admin_services/imcome/imcome_creation.html.twig', [
                 'imcomeForm' => $imcomeListForm->createView(),
                 'imcomes' => $this->imcomeRepository->findAll(),
+            ]);
+        }
+    }
+
+    #[Route('admin/services/productCategory_creation', name: 'productCategory_creation')]
+    public function productCategoryCreation(Request $request): Response
+    {
+        $productCategory = new productCategory();
+        $productCategoryForm = $this->createForm(productCategoryType::class, $productCategory);
+        $originUrl = $request->headers->get('referer');
+        if ($request->getMethod() == 'POST') {
+            $productCategoryForm->handleRequest($request);
+            if ($productCategoryForm->isSubmitted() && $productCategoryForm->isValid()) {
+                $this->productCategoryService->createProductCategory(
+                    $productCategory,
+                    $request,
+                    $productCategoryForm
+                );
+                $this->addFlash('success', 'Le Type de Produit a bien été ajoutée');
+                return $this->redirect($originUrl);
+            } else {
+                // Validation failed, get the error message and display it
+                $errorMessage = $productCategoryForm->getErrors(true)->current()->getMessage();
+                $this->addFlash('danger', $errorMessage);
+                return $this->redirect($originUrl);
+            }
+        } else if ($request->getMethod() == 'GET') {
+            return $this->render('services/admin_services/productCategory/product_category_creation.html.twig', [
+                'productCategoryForm' => $productCategoryForm->createView(),
+                'productCategories' => $this->productCategoryRepository->findAll(),
+            ]);
+        }
+    }
+
+    #[Route('admin/services/productColor_creation', name: 'productColor_creation')]
+    public function productColorCreation(Request $request): Response
+    {
+        $productColor = new productColor();
+        $productColorForm = $this->createForm(productColorType::class, $productColor);
+        $originUrl = $request->headers->get('referer');
+        if ($request->getMethod() == 'POST') {
+            $productColorForm->handleRequest($request);
+            if ($productColorForm->isSubmitted() && $productColorForm->isValid()) {
+                $this->productColorService->createProductColor(
+                    $productColor,
+                    $request,
+                    $productColorForm
+                );
+                $this->addFlash('success', 'La Couleur Produit a bien été ajoutée');
+                return $this->redirect($originUrl);
+            } else {
+                // Validation failed, get the error message and display it
+                $errorMessage = $productColorForm->getErrors(true)->current()->getMessage();
+                $this->addFlash('danger', $errorMessage);
+                return $this->redirect($originUrl);
+            }
+        } else if ($request->getMethod() == 'GET') {
+            return $this->render('services/admin_services/productColor/product_color_creation.html.twig', [
+                'productColorForm' => $productColorForm->createView(),
+                'productColors' => $this->productColorRepository->findAll(),
+            ]);
+        }
+    }
+
+    #[Route('admin/services/productVersion_creation', name: 'productVersion_creation')]
+    public function productVersionCreation(Request $request): Response
+    {
+        $productVersion = new productVersion();
+        $productVersionForm = $this->createForm(productVersionType::class, $productVersion);
+        $originUrl = $request->headers->get('referer');
+        if ($request->getMethod() == 'POST') {
+            $productVersionForm->handleRequest($request);
+            if ($productVersionForm->isSubmitted() && $productVersionForm->isValid()) {
+                $this->productVersionService->createProductVersion(
+                    $productVersion,
+                    $request,
+                    $productVersionForm
+                );
+                $this->addFlash('success', 'La Version Produit a bien été ajoutée');
+                return $this->redirect($originUrl);
+            } else {
+                // Validation failed, get the error message and display it
+                $errorMessage = $productVersionForm->getErrors(true)->current()->getMessage();
+                $this->addFlash('danger', $errorMessage);
+                return $this->redirect($originUrl);
+            }
+        } else if ($request->getMethod() == 'GET') {
+            return $this->render('services/admin_services/productVersion/product_version_creation.html.twig', [
+                'productVersionForm' => $productVersionForm->createView(),
+                'productVersions' => $this->productVersionRepository->findAll(),
             ]);
         }
     }

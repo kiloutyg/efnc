@@ -26,9 +26,6 @@ class EFNC
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $DetectionDate = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $ProductDesignation = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $Quantity = null;
 
@@ -142,19 +139,6 @@ class EFNC
     public function setDetectionDate(\DateTimeInterface $DetectionDate): static
     {
         $this->DetectionDate = $DetectionDate;
-
-        return $this;
-    }
-
-
-    public function getProductDesignation(): ?string
-    {
-        return $this->ProductDesignation;
-    }
-
-    public function setProductDesignation(string $ProductDesignation): static
-    {
-        $this->ProductDesignation = $ProductDesignation;
 
         return $this;
     }

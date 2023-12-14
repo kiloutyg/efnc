@@ -21,24 +21,32 @@ class AccountController extends FrontController
     #[Route('/createAccount', name: 'create_account')]
     public function createAccount(Request $request): Response
     {
-        $superAdmin = $this->userRepository->findOneBy(['roles' => 'ROLE_SUPER_ADMIN']);
-        $requestedRole = $request->request->get('role');
-        if ($requestedRole == 'ROLE_SUPER_ADMIN' && $superAdmin != null) {
-            $this->addFlash('danger', 'Le compte ne peut être créé');
+        if ($request->isMethod('GET')) {
+            if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
+                return $this->render('services/admin_services/accountservices/superadmin_create_account.html.twig');
+            } else {
+                return $this->render('services/admin_services/accountservices/create_account.html.twig');
+            }
+        } else {
+            $superAdmin = $this->userRepository->findOneBy(['roles' => 'ROLE_SUPER_ADMIN']);
+            $requestedRole = $request->request->get('role');
+            if ($requestedRole == 'ROLE_SUPER_ADMIN' && $superAdmin != null) {
+                $this->addFlash('danger', 'Le compte ne peut être créé');
+                return $this->redirectToRoute('app_base');
+            }
+            $error = null;
+            $result = $this->accountService->createAccount(
+                $request,
+                $error
+            );
+            if ($result) {
+                $this->addFlash('success', 'Le compte a bien été créé.');
+            }
+            if ($error) {
+                $this->addFlash('error', $error);
+            }
             return $this->redirectToRoute('app_base');
         }
-        $error = null;
-        $result = $this->accountService->createAccount(
-            $request,
-            $error
-        );
-        if ($result) {
-            $this->addFlash('success', 'Le compte de Super-Administrateur a bien été créé.');
-        }
-        if ($error) {
-            $this->addFlash('error', $error);
-        }
-        return $this->redirectToRoute('app_base');
     }
 
 

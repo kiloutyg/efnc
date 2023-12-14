@@ -25,6 +25,10 @@ use App\Repository\UAPRepository;
 use App\Repository\AnomalyTypeRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\ImmediateConservatoryMeasuresListRepository;
+use App\Repository\ProductRepository;
+use App\Repository\ProductCategoryRepository;
+use App\Repository\ProductColorRepository;
+use App\Repository\ProductVersionRepository;
 
 use App\Service\AccountService;
 use App\Service\MailerService;
@@ -41,6 +45,9 @@ use App\Service\AnomalyTypeService;
 use App\Service\PlaceService;
 use App\Service\ImCoMeService;
 use App\Service\RiskWeightingService;
+use App\Service\ProductCategoryService;
+use App\Service\ProductColorService;
+use App\Service\ProductVersionService;
 
 #[Route('/', name: 'app_')]
 
@@ -72,6 +79,10 @@ class BaseController extends AbstractController
     protected $anomalyTypeRepository;
     protected $placeRepository;
     protected $imcomeRepository;
+    protected $productRepository;
+    protected $productCategoryRepository;
+    protected $productColorRepository;
+    protected $productVersionRepository;
 
     // Services methods
 
@@ -90,6 +101,10 @@ class BaseController extends AbstractController
     protected $placeService;
     protected $imcomeService;
     protected $riskWeightingService;
+    protected $productCategoryService;
+    protected $productColorService;
+    protected $productVersionService;
+
 
     // Variables used in the twig templates to display all the entities
 
@@ -119,6 +134,10 @@ class BaseController extends AbstractController
         AnomalyTypeRepository           $anomalyTypeRepository,
         PlaceRepository                 $placeRepository,
         ImmediateConservatoryMeasuresListRepository $imcomeRepository,
+        ProductRepository               $productRepository,
+        ProductCategoryRepository       $productCategoryRepository,
+        ProductColorRepository          $productColorRepository,
+        ProductVersionRepository        $productVersionRepository,
 
         // Services methods
 
@@ -136,7 +155,10 @@ class BaseController extends AbstractController
         AnomalyTypeService              $anomalyTypeService,
         PlaceService                    $placeService,
         ImCoMeService                   $imcomeService,
-        RiskWeightingService            $riskWeightingService
+        RiskWeightingService            $riskWeightingService,
+        ProductCategoryService          $productCategoryService,
+        ProductColorService             $productColorService,
+        ProductVersionService           $productVersionService
 
 
     ) {
@@ -164,6 +186,10 @@ class BaseController extends AbstractController
         $this->anomalyTypeRepository        = $anomalyTypeRepository;
         $this->placeRepository              = $placeRepository;
         $this->imcomeRepository             = $imcomeRepository;
+        $this->productRepository            = $productRepository;
+        $this->productCategoryRepository    = $productCategoryRepository;
+        $this->productColorRepository       = $productColorRepository;
+        $this->productVersionRepository     = $productVersionRepository;
 
         // Variables related to the services
 
@@ -182,6 +208,9 @@ class BaseController extends AbstractController
         $this->placeService                 = $placeService;
         $this->imcomeService                = $imcomeService;
         $this->riskWeightingService         = $riskWeightingService;
+        $this->productCategoryService       = $productCategoryService;
+        $this->productColorService          = $productColorService;
+        $this->productVersionService        = $productVersionService;
 
         // Variables used in the twig templates to display all the entities
 

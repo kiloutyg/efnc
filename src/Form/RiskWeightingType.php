@@ -24,7 +24,7 @@ class RiskWeightingType extends AbstractType
                 'style' => 'font-weight: bold; color: #ffffff;'
             ],
             'row_attr' => [
-                'class' => 'mb-3'
+                'class' => 'col-4 mb-3'
             ],
         ];
     }
