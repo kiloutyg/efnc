@@ -50,9 +50,12 @@ class AccountService
             } else {
                 // create the user
                 $user = new User();
-                $password = $this->passwordHasher->hashPassword($user, $password);
+                if ($password == '') {
+                } else {
+                    $password = $this->passwordHasher->hashPassword($user, $password);
+                    $user->setPassword($password);
+                }
                 $user->setUsername($name);
-                $user->setPassword($password);
                 $user->setRoles([$role]);
                 $user->setEmailAddress($emailAddress);
                 $this->manager->persist($user);
@@ -83,9 +86,12 @@ class AccountService
                             return 'Ce nom d\'utilisateur est déja utilisé.';
                         } else {
                             $password = $user->getPassword();
-                            $password = $this->passwordHasher->hashPassword($user, $password);
+                            if ($password == '') {
+                            } else {
+                                $password = $this->passwordHasher->hashPassword($user, $password);
+                                $user->setPassword($password);
+                            }
                             $user->setUsername($newName); // Set the new username
-                            $user->setPassword($password);
                         }
                     };
                     if ($request->request->get('password') != '') {

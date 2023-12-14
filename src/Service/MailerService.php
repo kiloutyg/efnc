@@ -45,7 +45,7 @@ class MailerService extends AbstractController
         $users = $this->userRepository->findAll();
         $recipientsEmail = [];
         foreach ($users as $user) {
-            if ($user !== $this->getUser() && filter_var($user->getEmailAddress(), FILTER_VALIDATE_EMAIL)) {
+            if ($user !== $this->getUser() && filter_var($user->getEmailAddress(), FILTER_VALIDATE_EMAIL) && in_array('ROLE_SUPER_ADMIN', $user->getRoles()) === false) {
                 $recipientsEmail[] = $user->getEmailAddress();
             }
         }

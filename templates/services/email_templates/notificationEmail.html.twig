@@ -75,6 +75,50 @@
 				<td colspan="5">{{ EFNC.DetailedDescription }}</td>
 			</tr>
 			<tr>
+				<th colspan="6">Mesures Conservatoire Immediates</th>
+			</tr>
+			{% for imcome in EFNC.immediateConservatoryMeasures %}
+				<tr>
+					{% if imcome.action.name == 'Autre (Précisez l\'action prise)' %}
+			<th>Action Mise en Place </th>
+			<td>{{ imcome.customAction }}</td>
+			{% else %}
+			<th>Action Mise en Place </th>
+			<td>{{ imcome.action.name|replace({"\\": ""}) }}</td>
+			{% endif %}
+			<th>Nom du Responsable</th>
+			<td>{{ imcome.Manager }}</td>
+			<th>Date de réalisation</th>
+			<td>{{ imcome.RealisedAt|date('d/m/Y') }}</td>
+			</tr>	
+		{% endfor %}
+		<tr>
+		<th colspan="6">Priorisation de la Non-Conformité</th>
+		</tr>
+		<tr>
+		<th>Gravité</th>
+		<td>{{ EFNC.riskWeighting.severityWeight }}</td>
+		<th>Fréquence</th>
+		<td>{{ EFNC.riskWeighting.frequencyWeight }}</td>
+		<th>Detectabilité (en interne)</th>
+		<td>{{ EFNC.riskWeighting.detectabilityWeight }}</td>
+		</tr>
+		<tr>
+		{% if EFNC.riskWeighting.RiskPriorityIndex > 300 %}
+		<th colspan="2" style="background-color: #ffcccb;">
+		Indice de Priorité du Risque</th> 
+		<td colspan="4" style="background-color: #ffcccb;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
+		{% elseif EFNC.riskWeighting.RiskPriorityIndex > 100 %}
+		<th colspan="2" style="background-color: #ffeda6;">
+		Indice de Priorité du Risque</th>
+		<td colspan="4" style="background-color: #ffeda6;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
+		{% else %}
+		<th colspan="2" style="background-color: #c8f7c5;">
+		Indice de Priorité du Risque</th>
+		<td colspan="4" style="background-color: #c8f7c5;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
+		{% endif %}
+		</tr>
+			<tr>
 				<th colspan="6">Photos de Traçabilité</th>
 			</tr>
 			<tr>
@@ -94,50 +138,7 @@
 					{% endfor %}
 				</td>
 			</tr>
-			<tr>
-				<th colspan="6">Mesures Conservatoire Immediates</th>
-			</tr>
-			{% for imcome in EFNC.immediateConservatoryMeasures %}
-				<tr>
-					{% if imcome.action.name == 'Autre (Précisez l\'action prise)' %}
-				<th>Action Mise en Place </th>
-				<td>{{ imcome.customAction }}</td>
-				{% else %}
-				<th>Action Mise en Place </th>
-				<td>{{ imcome.action.name|replace({"\\": ""}) }}</td>
-				{% endif %}
-				<th>Nom du Responsable</th>
-				<td>{{ imcome.Manager }}</td>
-				<th>Date de réalisation</th>
-				<td>{{ imcome.RealisedAt|date('d/m/Y') }}</td>
-				</tr>	
-			{% endfor %}
-			<tr>
-			<th colspan="6">Priorisation de la Non-Conformité</th>
-			</tr>
-			<tr>
-			<th>Gravité</th>
-			<td>{{ EFNC.riskWeighting.severityWeight }}</td>
-			<th>Fréquence</th>
-			<td>{{ EFNC.riskWeighting.frequencyWeight }}</td>
-			<th>Detectabilité (en interne)</th>
-			<td>{{ EFNC.riskWeighting.detectabilityWeight }}</td>
-			</tr>
-			<tr>
-			{% if EFNC.riskWeighting.RiskPriorityIndex > 300 %}
-			<th colspan="2" style="background-color: #ffcccb;">
-			Indice de Priorité du Risque</th> 
-			<td colspan="4" style="background-color: #ffcccb;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
-			{% elseif EFNC.riskWeighting.RiskPriorityIndex > 100 %}
-			<th colspan="2" style="background-color: #ffeda6;">
-			Indice de Priorité du Risque</th>
-			<td colspan="4" style="background-color: #ffeda6;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
-			{% else %}
-			<th colspan="2" style="background-color: #c8f7c5;">
-			Indice de Priorité du Risque</th>
-			<td colspan="4" style="background-color: #c8f7c5;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
-			{% endif %}
-			</tr>
+			
 		</table>
 	</body>
 </html>

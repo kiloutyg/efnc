@@ -14,7 +14,7 @@
 		<div class="card border-0 shadow rounded-3 my-5">
 			<div class="card-body">
 				<div class="row">
-					{% include "services/admin_services/accountservices/create_account.html.twig" %}
+					{{render(controller('App\\Controller\\AccountController::createAccount'))}}
 				</div>
 			</div>
 		</div>
