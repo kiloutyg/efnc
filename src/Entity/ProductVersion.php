@@ -21,6 +21,9 @@ class ProductVersion
     #[ORM\OneToMany(mappedBy: 'version', targetEntity: Product::class)]
     private Collection $products;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $archived = null;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -69,6 +72,18 @@ class ProductVersion
                 $product->setVersion(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(?bool $archived): static
+    {
+        $this->archived = $archived;
 
         return $this;
     }

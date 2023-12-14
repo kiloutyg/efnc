@@ -29,6 +29,9 @@ class Place
     #[ORM\OneToMany(mappedBy: 'detectionPlace', targetEntity: EFNC::class)]
     private Collection $eFNCs;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $archived = null;
+
 
     public function __construct()
     {
@@ -78,6 +81,18 @@ class Place
                 $eFNC->setDetectionPlace(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(?bool $archived): static
+    {
+        $this->archived = $archived;
 
         return $this;
     }

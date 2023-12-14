@@ -21,7 +21,18 @@
 		<div class="card border-0 shadow rounded-3 my-5">
 			<div class="card-body">
 				<div class="row ">
-					{% set fields = ['teamCreation', 'projectCreation', 'originCreation', 'uapCreation', 'anomalyTypeCreation', 'placeCreation', 'imcomeListCreation','productVersionCreation', 'productColorCreation', 'productCategoryCreation'] %}
+					{% set fields = [
+					'teamCreation', 
+					'projectCreation', 
+					'originCreation', 
+					'uapCreation', 
+					'anomalyTypeCreation', 
+					'placeCreation', 
+					'imcomeListCreation', 
+					'productVersionCreation', 
+					'productColorCreation', 
+					'productCategoryCreation'
+					] %}
 					{% for field in fields %}
 						<div class="card border-0 shadow rounded-3 my-2 bg-secondary">
 							{{ render(controller('App\\Controller\\AdminController::' ~ field )) }}

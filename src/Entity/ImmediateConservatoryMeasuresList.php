@@ -29,6 +29,9 @@ class ImmediateConservatoryMeasuresList
     #[ORM\OneToMany(mappedBy: 'action', targetEntity: ImmediateConservatoryMeasures::class)]
     private Collection $immediateConservatoryMeasures;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $archived = null;
+
     public function __construct()
     {
         $this->immediateConservatoryMeasures = new ArrayCollection();
@@ -77,6 +80,18 @@ class ImmediateConservatoryMeasuresList
                 $immediateConservatoryMeasure->setAction(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(?bool $archived): static
+    {
+        $this->archived = $archived;
 
         return $this;
     }

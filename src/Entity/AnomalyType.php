@@ -29,6 +29,9 @@ class AnomalyType
     #[ORM\OneToMany(mappedBy: 'anomalyType', targetEntity: EFNC::class)]
     private Collection $eFNCs;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $archived = null;
+
     public function __construct()
     {
         $this->eFNCs = new ArrayCollection();
@@ -77,6 +80,18 @@ class AnomalyType
                 $eFNC->setAnomalyType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(?bool $archived): static
+    {
+        $this->archived = $archived;
 
         return $this;
     }
