@@ -20,4 +20,9 @@ class FrontController extends BaseController
     {
         return $this->render('/services/efnc/display/efnc_list.html.twig', []);
     }
+    #[Route('/archived_form_list', name: 'archived_form_list')]
+    public function archivedFormList(): Response
+    {
+        return $this->render('/services/efnc/display/archived_efnc_list.html.twig', []);
+    }
 }

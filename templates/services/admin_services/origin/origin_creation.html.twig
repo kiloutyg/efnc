@@ -18,12 +18,15 @@
 							<div class="accordion-body">
 								<ul class="list-group">
 									{% for origin in origins %}
-										<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
-											{{ origin.name }}
-											<div class="ml-auto">
-												<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'origin', id: origin.id})}}">Supprimer</a>
-											</div>
-										</li>
+										{% if origin.archived == false or origin.archived == null %}
+
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ origin.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'origin', id: origin.id})}}">Supprimer</a>
+												</div>
+											</li>
+										{% endif %}
 									{% endfor %}
 								</ul>
 							</div>

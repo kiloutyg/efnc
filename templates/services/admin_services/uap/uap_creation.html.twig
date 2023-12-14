@@ -18,12 +18,15 @@
 							<div class="accordion-body">
 								<ul class="list-group">
 									{% for uap in uaps %}
-										<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
-											{{ uap.name }}
-											<div class="ml-auto">
-												<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'uap', id: uap.id})}}">Supprimer</a>
-											</div>
-										</li>
+										{% if uap.archived == false or uap.archived == null %}
+
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ uap.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'uap', id: uap.id})}}">Supprimer</a>
+												</div>
+											</li>
+										{% endif %}
 									{% endfor %}
 								</ul>
 							</div>

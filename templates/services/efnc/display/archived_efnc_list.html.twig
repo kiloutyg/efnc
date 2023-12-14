@@ -8,7 +8,7 @@
 	<ul class="list-group" style="background-color:azure">
 
 		{% for EFNC in EFNCs|sort((a,b) => b.id <=> a.id) %}
-			{% if EFNC.archived == false or EFNC.archived == null %}
+			{% if EFNC.archived == true %}
 
 				<div class="ml-auto">
 					<strong>
