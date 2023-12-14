@@ -93,6 +93,9 @@ class EFNC
     #[ORM\OneToOne(mappedBy: 'EFNC', cascade: ['persist', 'remove'])]
     private ?Product $product = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $archived = null;
+
 
     public function __construct()
     {
@@ -506,6 +509,18 @@ class EFNC
         }
 
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(?bool $archived): static
+    {
+        $this->archived = $archived;
 
         return $this;
     }

@@ -29,6 +29,9 @@ class Origin
     #[ORM\OneToMany(mappedBy: 'nonConformityOrigin', targetEntity: EFNC::class)]
     private Collection $eFNCs;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $archived = null;
+
     public function __construct()
     {
         $this->eFNCs = new ArrayCollection();
@@ -77,6 +80,18 @@ class Origin
                 $eFNC->setNonConformityOrigin(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(?bool $archived): static
+    {
+        $this->archived = $archived;
 
         return $this;
     }
