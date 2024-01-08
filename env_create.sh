@@ -65,8 +65,12 @@ ${PROXY_ENV}
       APP_TIMEZONE: "${TIMEZONE}"
     volumes:
       - ./:/var/www
-    ports:
-      - "8080:80"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.webefnc.rule=PathPrefix(`/efnc`)
+      - traefik.http.routers.webefnc.middlewares=strip-webefnc-prefix
+      - traefik.http.middlewares.strip-webefnc-prefix.stripprefix.prefixes=/efnc
+      - traefik.http.routers.webefnc.entrypoints=web
     depends_on:
       - databaseefnc
     networks:
@@ -159,8 +163,12 @@ ${PROXY_ENV}
       APP_TIMEZONE: "${TIMEZONE}"
     volumes:
       - ./:/var/www
-    ports:
-      - "8080:80"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.webefnc.rule=PathPrefix(`/efnc`)
+      - traefik.http.routers.webefnc.middlewares=strip-webefnc-prefix
+      - traefik.http.middlewares.strip-webefnc-prefix.stripprefix.prefixes=/efnc
+      - traefik.http.routers.webefnc.entrypoints=web
     depends_on:
       - databaseefnc
     networks:
@@ -195,8 +203,12 @@ ${PROXY_ENV}
       APP_TIMEZONE: "${TIMEZONE}"
     volumes:
       - ./:/var/www
-    ports:
-      - "8080:80"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.webefnc.rule=PathPrefix(`/efnc`)
+      - traefik.http.routers.webefnc.middlewares=strip-webefnc-prefix
+      - traefik.http.middlewares.strip-webefnc-prefix.stripprefix.prefixes=/efnc
+      - traefik.http.routers.webefnc.entrypoints=web
     depends_on:
       - databaseefnc
     networks:
