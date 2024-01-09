@@ -124,53 +124,52 @@
 							</div>
 						</div>
 						<iframe class="d-flex mb-3 rounded-3 flex-grow-1" name="form_list" src="{{ path('app_form_list')}}" frameborder="0"></iframe>
-						{% set archive = '' %}
+						{% set archive = 0 %}
 						{% for efnc in EFNCs %}
 							{% if efnc.isArchived == true %}
-								{% set archive = true %}
+								{% set archive = archive + 1 %}
 							{% else %}
-								{% set archive = false %}
-								{% endif%}
-							{% endfor %}
-							{% if is_granted('ROLE_ADMIN') and archive == true %}
-								<strong>FNC ARCHIVÉES</strong>
-								<iframe class="d-flex mb-3 rounded-3 flex-grow-1" name="form_list" src="{{ path('app_archived_form_list')}}" frameborder="0"></iframe>
+								{% set archive = archive + 0 %}
 							{% endif %}
-						{% endblock %}
-					</div>
-				{% endif %}
-			{% endif %}
-
-			<!-- Footer -->
-
-			<footer class="container py-3 border-top  flex-shrink-0">
-				<div class="d-flex flex-wrap justify-content-between">
-					<div class="col-md-5 d-flex align-items-center">
-						<span class="me-1" style="color: red">
-							<i class="fas fa-copyright"></i>
-						</span>
-						<a target="_blank" href="http://topnet.corp.ponet/" style="color: #25a1dd" class="mb-3  mb-md-0 text-decoration-none lh-1">
-							PlasticOmnium Langres
-						</a>
-					</div>
-					<div>
-						<a href="javascript:void(0)" onclick="event.preventDefault(); window.history.back();">
-							<i class="fa fa-arrow-circle-o-left" 'aria-hidden="false"'>
-								Retour
-							</i>
-						</a>
-					</div>
-					<ul class="nav col-md-5 justify-content-end list-unstyled d-flex">
-						<li class="ms-3">
-							<a class="text-muted" target="_blank" href="https://github.com/kiloutyg/">
-								<i class="fab fa-github"></i>
-							</a>
-						</li>
-					</ul>
+						{% endfor %}
+						{% if is_granted('ROLE_USER') and archive > 1  %}
+							<strong>FNC ARCHIVÉES</strong>
+							<iframe class="d-flex mb-3 rounded-3 flex-grow-1" name="form_list" src="{{ path('app_archived_form_list')}}" frameborder="0"></iframe>
+						{% endif %}
+					{% endblock %}
 				</div>
-			</footer>
+			{% endif %}
+		{% endif %}
 
-			<!-- End Footer -->
-		</body>
+		<!-- Footer -->
+
+		<footer class="container py-3 border-top  flex-shrink-0">
+			<div class="d-flex flex-wrap justify-content-between">
+				<div class="col-md-5 d-flex align-items-center">
+					<span class="me-1" style="color: red">
+						<i class="fas fa-copyright"></i>
+					</span>
+					<a target="_blank" href="http://topnet.corp.ponet/" style="color: #25a1dd" class="mb-3  mb-md-0 text-decoration-none lh-1">
+						PlasticOmnium Langres
+					</a>
+				</div>
+				<div>
+					<a href="javascript:void(0)" onclick="event.preventDefault(); window.history.back();">
+						<i class="fa fa-arrow-circle-o-left" 'aria-hidden="false"'>
+							Retour
+						</i>
+					</a>
+				</div>
+				<ul class="nav col-md-5 justify-content-end list-unstyled d-flex">
+					<li class="ms-3">
+						<a class="text-muted" target="_blank" href="https://github.com/kiloutyg/">
+							<i class="fab fa-github"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</footer>
+
+		<!-- End Footer -->
 	</body>
-</html>
+</html></body></html>
