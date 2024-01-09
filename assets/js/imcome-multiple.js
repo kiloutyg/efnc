@@ -1,4 +1,3 @@
-
 document.addEventListener('turbo:load', function () {
     // Get the container that holds the collection and the add-item button
     var collectionHolder = document.querySelector('#imcome-container');
@@ -26,6 +25,9 @@ document.addEventListener('turbo:load', function () {
         tempDiv.innerHTML = newItem;
 
         var formGroup = tempDiv.firstChild; // Change this if your newItem is nested
+
+        // Set the row attribute on the formGroup
+        formGroup.setAttribute('class', 'row');
 
         // Append the new form group to the collectionHolder
         collectionHolder.appendChild(formGroup);

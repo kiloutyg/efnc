@@ -68,7 +68,21 @@ class ImCoMeType extends AbstractType
                 [
                     'label' => 'Nom du Responsable',
                 ],
-                $this->getDefaultOptions('Nom du Responsable')
+                [
+                    'required' => true,
+                    'attr' => [
+                        'class' => 'form-control mx-auto mt-2',
+                        'placeholder' => 'Nom du Responsable'
+
+                    ],
+                    'label_attr' => [
+                        'class' => 'form-label',
+                        'style' => 'font-weight: bold; color: #ffffff;'
+                    ],
+                    'row_attr' => [
+                        'class' => 'col-4 mb-3'
+                    ],
+                ]
             ))
             ->add('status', ChoiceType::class, array_merge(
                 [
@@ -88,7 +102,21 @@ class ImCoMeType extends AbstractType
                         return ['class' => 'form-check-input col-auto'];
                     },
                 ],
-                $this->getDefaultOptions('')
+                [
+                    'required' => true,
+                    'attr' => [
+                        'class' => 'form-control mx-auto mt-2',
+                        'placeholder' => ''
+
+                    ],
+                    'label_attr' => [
+                        'class' => 'form-label',
+                        'style' => 'font-weight: bold; color: #ffffff;'
+                    ],
+                    'row_attr' => [
+                        'class' => 'col-4 mb-3'
+                    ],
+                ]
             ))
             ->add('RealisedAt', DateType::class, array_merge(
                 [
@@ -96,7 +124,21 @@ class ImCoMeType extends AbstractType
                     'widget' => 'single_text',
                     'html5' => true,
                 ],
-                $this->getDefaultOptions('')
+                [
+                    'required' => true,
+                    'attr' => [
+                        'class' => 'form-control mx-auto mt-2',
+                        'placeholder' => ''
+
+                    ],
+                    'label_attr' => [
+                        'class' => 'form-label',
+                        'style' => 'font-weight: bold; color: #ffffff;'
+                    ],
+                    'row_attr' => [
+                        'class' => 'col-4 mb-3'
+                    ],
+                ]
             ));
     }
 

@@ -61,7 +61,21 @@ class FormCreationType extends AbstractType
                     [
                         'label' => 'Créateur :',
                     ],
-                    $this->getDefaultOptions('Prénom NOM')
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => 'Prénom NOM'
+
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-4 mb-3'
+                        ],
+                    ]
                 )
             )
             ->add(
@@ -83,7 +97,7 @@ class FormCreationType extends AbstractType
                             'style' => 'font-weight: bold; color: #ffffff;'
                         ],
                         'row_attr' => [
-                            'class' => 'col-6 mb-3'
+                            'class' => 'col-4 mb-3'
                         ],
                     ]
                 )
@@ -107,7 +121,7 @@ class FormCreationType extends AbstractType
                             'style' => 'font-weight: bold; color: #ffffff;'
                         ],
                         'row_attr' => [
-                            'class' => 'col-6 mb-3'
+                            'class' => 'col-4 mb-3'
                         ],
                     ]
                 )
@@ -228,7 +242,21 @@ class FormCreationType extends AbstractType
                         'class' => Origin::class,
                         'choice_label' => 'name'
                     ],
-                    $this->getDefaultOptions('Choisir le lieu de création de la Non-Conformité :')
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => 'Choisir le lieu de création de la Non-Conformité :'
+
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-6 mb-3'
+                        ],
+                    ]
                 )
             )
             ->add(
@@ -341,7 +369,7 @@ class FormCreationType extends AbstractType
                             'style' => 'font-weight: bold; color: #ffffff;'
                         ],
                         'row_attr' => [
-                            'class' => 'mb-3'
+                            'class' => 'col-6 mb-3'
                         ],
                     ]
                 )
