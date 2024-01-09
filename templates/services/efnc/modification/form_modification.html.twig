@@ -94,7 +94,7 @@
 				</div>
 				{% if is_granted('ROLE_ADMIN') %}
 					<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
-						<a class="btn btn-danger delete-incident" href="{{path('app_delete_entity', {entityType: 'efnc', id: EFNC.id})}}">Supprimer</a>
+						<a class="btn btn-danger delete-incident" href="{{path('app_archive_entity', {entityType: 'efnc', id: EFNC.id})}}">Supprimer</a>
 					</div>
 				{% endif %}
 			</div>

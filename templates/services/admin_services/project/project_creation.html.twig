@@ -23,7 +23,7 @@
 											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
 												{{ project.name }}
 												<div class="ml-auto">
-													<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'project', id: project.id})}}">Supprimer</a>
+													<a class="btn btn-danger shadow delete-incident" href="{{path('app_archive_entity', {entityType: 'project', id: project.id})}}">Supprimer</a>
 												</div>
 											</li>
 										{% endif %}

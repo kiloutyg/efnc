@@ -9,40 +9,81 @@
 			<div class="col-6">
 				{{ form_label(teamForm.name) }}
 				{{ form_widget(teamForm.name) }}
+				<div class="d-grid col-auto mx-5 ">
+					{{ form_label(teamForm.save) }}
+					{{ form_widget(teamForm.save) }}
+				</div>
 			</div>
+
 			{% if teams is not empty %}
 				<div class="col-6 mt-auto accordion" id="accordionTeamList">
 					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
-						<h2 class="accordion-header" id="headingTeamList">
-							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTeamList" aria-expanded="false" aria-controls="collapseTeamList">
-								Liste des Equipes
-							</button>
-						</h2>
-						<div id="collapseTeamList" class="accordion-collapse collapse" aria-labelledby="headingTeamList" data-bs-parent="#accordionTeamList">
-							<div class="accordion-body">
-								<ul class="list-group">
-									{% for team in teams %}
-										{% if team.archived == false or team.archived == null %}
+						{% set archivedTeams = false %}
+						{% set nonArchivedTeams = false %}
 
-											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
-												{{ team.name }}
-												<div class="ml-auto">
-													<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'team', id: team.id})}}">Supprimer</a>
-												</div>
-											</li>
-										{% endif %}
-									{% endfor %}
-								</ul>
+						{% for team in teams %}
+							{% if team.archived == true %}
+								{% set archivedTeams = true %}
+							{% elseif team.archived == false or team.archived is null %}
+								{% set nonArchivedTeams = true %}
+							{% endif %}
+						{% endfor %}
+
+						{% if nonArchivedTeams %}
+							<h2 class="accordion-header" id="headingTeamList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTeamList" aria-expanded="false" aria-controls="collapseTeamList">
+									Liste des Equipes
+								</button>
+							</h2>
+							<div id="collapseTeamList" class="accordion-collapse collapse" aria-labelledby="headingTeamList" data-bs-parent="#accordionTeamList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for team in teams %}
+											{% if team.archived == false or team.archived == null %}
+
+												<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+													{{ team.name }}
+													<div class="ml-auto">
+														<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'team', id: team.id})}}">Archiver</a>
+													</div>
+												</li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+								</div>
 							</div>
-						</div>
+						{% endif %}
+
+						{% if archivedTeams %}
+							<h2 class="accordion-header" id="headingArchivedTeamsList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivedTeamsList" aria-expanded="false" aria-controls="collapseArchivedTeamsList">
+									Liste des Equipes Achivées
+								</button>
+							</h2>
+							<div id="collapseArchivedTeamsList" class="accordion-collapse collapse" aria-labelledby="headingArchivedTeamsList" data-bs-parent="#accordionArchivedTeamsList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for team in teams %}
+											{% if team.archived == true %}
+
+												<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+													{{ team.name }}
+													<div class="ml-auto">
+														<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'team', id: team.id})}}">Restorer</a>
+													</div>
+												</li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+
 					</div>
 				</div>
 			{% endif %}
 		</div>
+		{{ form_end(teamForm) }}
 	</div>
-	<div class="d-grid col-auto mx-auto">
-		{{ form_label(teamForm.save) }}
-		{{ form_widget(teamForm.save) }}
-	</div>
-	{{ form_end(teamForm) }}
+
 {% endblock %}
