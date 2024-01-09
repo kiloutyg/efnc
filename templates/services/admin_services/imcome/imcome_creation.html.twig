@@ -1,43 +1,86 @@
 {% block body %}
-	<div class="card-body ">
-		{{ form_start(imcomeForm, { attr: { class: 'd-flex flex-column ', id: 'imcomeCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_imcomeList_creation') }) }}
+	<div class="card-body">
+		{{ form_start(imcomeForm, { attr: { class: 'd-flex flex-column', 
+		id: 'imcomeCreationForm', 
+		method: 'POST', 
+		enctype: 'multipart/form-data' }, 
+		action: path('app_imcomeList_creation') }) }}
 		<div class="row">
 			<div class="col-6">
 				{{ form_label(imcomeForm.name) }}
 				{{ form_widget(imcomeForm.name) }}
+				<div class="d-grid col-auto mx-5 ">
+					{{ form_label(imcomeForm.save) }}
+					{{ form_widget(imcomeForm.save) }}
+				</div>
 			</div>
+
 			{% if imcomes is not empty %}
-				<div class="col-6 mt-auto accordion" id="accordionImcomeList">
+				<div class="col-6 mt-auto mb-auto accordion" id="accordionImcomeList">
 					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
-						<h2 class="accordion-header" id="headingImcomeList">
-							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseImcomeList" aria-expanded="false" aria-controls="collapseImcomeList">
-								Liste des Mesures Conservatrices Immediates
-							</button>
-						</h2>
-						<div id="collapseImcomeList" class="accordion-collapse collapse" aria-labelledby="headingImcomeList" data-bs-parent="#accordionImcomeList">
-							<div class="accordion-body">
-								<ul class="list-group">
-									{% for imcome in imcomes %}
-										{% if imcome.archived == false or imcome.archived == null %}
+						{% set archivedImcomes = [] %}
+						{% set nonArchivedImcomes = [] %}
+
+						{% for imcome in imcomes %}
+							{% if imcome.archived == true %}
+								{% set archivedImcomes = archivedImcomes|merge([imcome]) %}
+							{% elseif imcome.archived == false or imcome.archived is null %}
+								{% set nonArchivedImcomes = nonArchivedImcomes|merge([imcome]) %}
+							{% endif %}
+						{% endfor %}
+
+
+						{% if nonArchivedImcomes is not empty %}
+							<h2 class="accordion-header" id="headingImcomeList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseImcomeList" aria-expanded="false" aria-controls="collapseImcomeList">
+									Liste des Mesures Conservatrices Immediates
+								</button>
+							</h2>
+							<div id="collapseImcomeList" class="accordion-collapse collapse" aria-labelledby="headingImcomeList" data-bs-parent="#accordionImcomeList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for imcome in nonArchivedImcomes %}
+
 											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
 												{{ imcome.name }}
 												<div class="ml-auto">
-													<a class="btn btn-danger shadow delete-incident" href="{{path('app_archive_entity', {entityType: 'imcome', id: imcome.id})}}">Supprimer</a>
+													<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'imcome', id: imcome.id})}}">Archiver</a>
 												</div>
 											</li>
-										{% endif %}
-									{% endfor %}
-								</ul>
+										{% endfor %}
+									</ul>
+								</div>
 							</div>
-						</div>
+						{% endif %}
+
+						{% if archivedImcomes is not empty %}
+							<h2 class="accordion-header" id="headingArchivedImcomesList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivedImcomesList" aria-expanded="false" aria-controls="collapseArchivedImcomesList">
+									Liste des Mesures Conservatrices Immediates Achivées
+								</button>
+							</h2>
+							<div id="collapseArchivedImcomesList" class="accordion-collapse collapse" aria-labelledby="headingArchivedImcomesList" data-bs-parent="#accordionArchivedImcomesList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for imcome in archivedImcomes %}
+
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ imcome.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'imcome', id: imcome.id})}}">Restorer</a>
+												</div>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+
 					</div>
 				</div>
 			{% endif %}
 		</div>
-		<div class="d-grid col-auto mx-auto">
-			{{ form_label(imcomeForm.save) }}
-			{{ form_widget(imcomeForm.save) }}
-		</div>
 		{{ form_end(imcomeForm) }}
 	</div>
+
 {% endblock %}

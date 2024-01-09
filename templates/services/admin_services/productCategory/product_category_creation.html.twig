@@ -1,44 +1,86 @@
 {% block body %}
-	<div class="card-body ">
-		{{ form_start(productCategoryForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_productCategory_creation') }) }}
+	<div class="card-body">
+		{{ form_start(productCategoryForm, { attr: { class: 'd-flex flex-column', 
+		id: 'productCategoryCreationForm', 
+		method: 'POST', 
+		enctype: 'multipart/form-data' }, 
+		action: path('app_productCategory_creation') }) }}
 		<div class="row">
 			<div class="col-6">
 				{{ form_label(productCategoryForm.name) }}
 				{{ form_widget(productCategoryForm.name) }}
+				<div class="d-grid col-auto mx-5 ">
+					{{ form_label(productCategoryForm.save) }}
+					{{ form_widget(productCategoryForm.save) }}
+				</div>
 			</div>
+
 			{% if productCategories is not empty %}
-				<div class="col-6 mt-auto accordion" id="accordionproductCategoryList">
+				<div class="col-6 mt-auto mb-auto accordion" id="accordionProductCategoryList">
 					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
-						<h2 class="accordion-header" id="headingproductCategoryList">
-							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseproductCategoryList" aria-expanded="false" aria-controls="collapseproductCategoryList">
-								Liste des productCategories
-							</button>
-						</h2>
-						<div id="collapseproductCategoryList" class="accordion-collapse collapse" aria-labelledby="headingproductCategoryList" data-bs-parent="#accordionproductCategoryList">
-							<div class="accordion-body">
-								<ul class="list-group">
-									{% for productCategory in productCategories %}
-										{% if productCategory.archived == false or productCategory.archived == null %}
+						{% set archivedProductCategories = [] %}
+						{% set nonArchivedProductCategories = [] %}
+
+						{% for productCategory in productCategories %}
+							{% if productCategory.archived == true %}
+								{% set archivedProductCategories = archivedProductCategories|merge([productCategory]) %}
+							{% elseif productCategory.archived == false or productCategory.archived is null %}
+								{% set nonArchivedProductCategories = nonArchivedProductCategories|merge([productCategory]) %}
+							{% endif %}
+						{% endfor %}
+
+
+						{% if nonArchivedProductCategories is not empty %}
+							<h2 class="accordion-header" id="headingProductCategoryList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProductCategoryList" aria-expanded="false" aria-controls="collapseProductCategoryList">
+									Liste des Catégories de Produits
+								</button>
+							</h2>
+							<div id="collapseProductCategoryList" class="accordion-collapse collapse" aria-labelledby="headingProductCategoryList" data-bs-parent="#accordionProductCategoryList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for productCategory in nonArchivedProductCategories %}
 
 											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
 												{{ productCategory.name }}
 												<div class="ml-auto">
-													<a class="btn btn-danger shadow delete-incident" href="{{path('app_archive_entity', {entityType: 'productCategory', id: productCategory.id})}}">Supprimer</a>
+													<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'productCategory', id: productCategory.id})}}">Archiver</a>
 												</div>
 											</li>
-										{% endif %}
-									{% endfor %}
-								</ul>
+										{% endfor %}
+									</ul>
+								</div>
 							</div>
-						</div>
+						{% endif %}
+
+						{% if archivedProductCategories is not empty %}
+							<h2 class="accordion-header" id="headingArchivedProductCategoriesList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivedProductCategoriesList" aria-expanded="false" aria-controls="collapseArchivedProductCategoriesList">
+									Liste des Catégories de Produits Achivées
+								</button>
+							</h2>
+							<div id="collapseArchivedProductCategoriesList" class="accordion-collapse collapse" aria-labelledby="headingArchivedProductCategoriesList" data-bs-parent="#accordionArchivedProductCategoriesList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for productCategory in archivedProductCategories %}
+
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ productCategory.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'productCategory', id: productCategory.id})}}">Restorer</a>
+												</div>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+
 					</div>
 				</div>
 			{% endif %}
 		</div>
-		<div class="d-grid col-auto mx-auto">
-			{{ form_label(productCategoryForm.save) }}
-			{{ form_widget(productCategoryForm.save) }}
-		</div>
 		{{ form_end(productCategoryForm) }}
 	</div>
+
 {% endblock %}

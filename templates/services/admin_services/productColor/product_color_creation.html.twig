@@ -1,44 +1,86 @@
 {% block body %}
-	<div class="card-body ">
-		{{ form_start(productColorForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_productColor_creation') }) }}
+	<div class="card-body">
+		{{ form_start(productColorForm, { attr: { class: 'd-flex flex-column', 
+		id: 'productColorCreationForm', 
+		method: 'POST', 
+		enctype: 'multipart/form-data' }, 
+		action: path('app_productColor_creation') }) }}
 		<div class="row">
 			<div class="col-6">
 				{{ form_label(productColorForm.name) }}
 				{{ form_widget(productColorForm.name) }}
+				<div class="d-grid col-auto mx-5 ">
+					{{ form_label(productColorForm.save) }}
+					{{ form_widget(productColorForm.save) }}
+				</div>
 			</div>
+
 			{% if productColors is not empty %}
-				<div class="col-6 mt-auto accordion" id="accordionproductColorList">
+				<div class="col-6 mt-auto mb-auto accordion" id="accordionProductColorList">
 					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
-						<h2 class="accordion-header" id="headingproductColorList">
-							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseproductColorList" aria-expanded="false" aria-controls="collapseproductColorList">
-								Liste des productColors
-							</button>
-						</h2>
-						<div id="collapseproductColorList" class="accordion-collapse collapse" aria-labelledby="headingproductColorList" data-bs-parent="#accordionproductColorList">
-							<div class="accordion-body">
-								<ul class="list-group">
-									{% for productColor in productColors %}
-										{% if productColor.archived == false or productColor.archived == null %}
+						{% set archivedProductColors = [] %}
+						{% set nonArchivedProductColors = [] %}
+
+						{% for productColor in productColors %}
+							{% if productColor.archived == true %}
+								{% set archivedProductColors = archivedProductColors|merge([productColor]) %}
+							{% elseif productColor.archived == false or productColor.archived is null %}
+								{% set nonArchivedProductColors = nonArchivedProductColors|merge([productColor]) %}
+							{% endif %}
+						{% endfor %}
+
+
+						{% if nonArchivedProductColors is not empty %}
+							<h2 class="accordion-header" id="headingProductColorList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProductColorList" aria-expanded="false" aria-controls="collapseProductColorList">
+									Liste des Couleurs Produits
+								</button>
+							</h2>
+							<div id="collapseProductColorList" class="accordion-collapse collapse" aria-labelledby="headingProductColorList" data-bs-parent="#accordionProductColorList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for productColor in nonArchivedProductColors %}
 
 											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
 												{{ productColor.name }}
 												<div class="ml-auto">
-													<a class="btn btn-danger shadow delete-incident" href="{{path('app_archive_entity', {entityType: 'productColor', id: productColor.id})}}">Supprimer</a>
+													<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'productColor', id: productColor.id})}}">Archiver</a>
 												</div>
 											</li>
-										{% endif %}
-									{% endfor %}
-								</ul>
+										{% endfor %}
+									</ul>
+								</div>
 							</div>
-						</div>
+						{% endif %}
+
+						{% if archivedProductColors is not empty %}
+							<h2 class="accordion-header" id="headingArchivedProductColorsList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivedProductColorsList" aria-expanded="false" aria-controls="collapseArchivedProductColorsList">
+									Liste des Couleurs Produits Achivées
+								</button>
+							</h2>
+							<div id="collapseArchivedProductColorsList" class="accordion-collapse collapse" aria-labelledby="headingArchivedProductColorsList" data-bs-parent="#accordionArchivedProductColorsList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for productColor in archivedProductColors %}
+
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ productColor.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'productColor', id: productColor.id})}}">Restorer</a>
+												</div>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+
 					</div>
 				</div>
 			{% endif %}
 		</div>
-		<div class="d-grid col-auto mx-auto">
-			{{ form_label(productColorForm.save) }}
-			{{ form_widget(productColorForm.save) }}
-		</div>
 		{{ form_end(productColorForm) }}
 	</div>
+
 {% endblock %}

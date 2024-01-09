@@ -1,44 +1,86 @@
 {% block body %}
-	<div class="card-body ">
-		{{ form_start(productVersionForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_productVersion_creation') }) }}
+	<div class="card-body">
+		{{ form_start(productVersionForm, { attr: { class: 'd-flex flex-column', 
+		id: 'productVersionCreationForm', 
+		method: 'POST', 
+		enctype: 'multipart/form-data' }, 
+		action: path('app_productVersion_creation') }) }}
 		<div class="row">
 			<div class="col-6">
 				{{ form_label(productVersionForm.name) }}
 				{{ form_widget(productVersionForm.name) }}
+				<div class="d-grid col-auto mx-5 ">
+					{{ form_label(productVersionForm.save) }}
+					{{ form_widget(productVersionForm.save) }}
+				</div>
 			</div>
+
 			{% if productVersions is not empty %}
-				<div class="col-6 mt-auto accordion" id="accordionproductVersionList">
+				<div class="col-6 mt-auto mb-auto accordion" id="accordionProductVersionList">
 					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
-						<h2 class="accordion-header" id="headingproductVersionList">
-							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseproductVersionList" aria-expanded="false" aria-controls="collapseproductVersionList">
-								Liste des productVersions
-							</button>
-						</h2>
-						<div id="collapseproductVersionList" class="accordion-collapse collapse" aria-labelledby="headingproductVersionList" data-bs-parent="#accordionproductVersionList">
-							<div class="accordion-body">
-								<ul class="list-group">
-									{% for productVersion in productVersions %}
-										{% if productVersion.archived == false or productVersion.archived == null %}
+						{% set archivedProductVersions = [] %}
+						{% set nonArchivedProductVersions = [] %}
+
+						{% for productVersion in productVersions %}
+							{% if productVersion.archived == true %}
+								{% set archivedProductVersions = archivedProductVersions|merge([productVersion]) %}
+							{% elseif productVersion.archived == false or productVersion.archived is null %}
+								{% set nonArchivedProductVersions = nonArchivedProductVersions|merge([productVersion]) %}
+							{% endif %}
+						{% endfor %}
+
+
+						{% if nonArchivedProductVersions is not empty %}
+							<h2 class="accordion-header" id="headingProductVersionList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProductVersionList" aria-expanded="false" aria-controls="collapseProductVersionList">
+									Liste des Versions Produits
+								</button>
+							</h2>
+							<div id="collapseProductVersionList" class="accordion-collapse collapse" aria-labelledby="headingProductVersionList" data-bs-parent="#accordionProductVersionList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for productVersion in nonArchivedProductVersions %}
 
 											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
 												{{ productVersion.name }}
 												<div class="ml-auto">
-													<a class="btn btn-danger shadow delete-incident" href="{{path('app_archive_entity', {entityType: 'productVersion', id: productVersion.id})}}">Supprimer</a>
+													<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'productVersion', id: productVersion.id})}}">Archiver</a>
 												</div>
 											</li>
-										{% endif %}
-									{% endfor %}
-								</ul>
+										{% endfor %}
+									</ul>
+								</div>
 							</div>
-						</div>
+						{% endif %}
+
+						{% if archivedProductVersions is not empty %}
+							<h2 class="accordion-header" id="headingArchivedProductVersionsList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivedProductVersionsList" aria-expanded="false" aria-controls="collapseArchivedProductVersionsList">
+									Liste des Versions Produits Achivées
+								</button>
+							</h2>
+							<div id="collapseArchivedProductVersionsList" class="accordion-collapse collapse" aria-labelledby="headingArchivedProductVersionsList" data-bs-parent="#accordionArchivedProductVersionsList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for productVersion in archivedProductVersions %}
+
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ productVersion.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'productVersion', id: productVersion.id})}}">Restorer</a>
+												</div>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+
 					</div>
 				</div>
 			{% endif %}
 		</div>
-		<div class="d-grid col-auto mx-auto">
-			{{ form_label(productVersionForm.save) }}
-			{{ form_widget(productVersionForm.save) }}
-		</div>
 		{{ form_end(productVersionForm) }}
 	</div>
+
 {% endblock %}

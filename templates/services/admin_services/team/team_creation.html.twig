@@ -16,20 +16,21 @@
 			</div>
 
 			{% if teams is not empty %}
-				<div class="col-6 mt-auto accordion" id="accordionTeamList">
+				<div class="col-6 mt-auto mb-auto accordion" id="accordionTeamList">
 					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
-						{% set archivedTeams = false %}
-						{% set nonArchivedTeams = false %}
+						{% set archivedTeams = [] %}
+						{% set nonArchivedTeams = [] %}
 
 						{% for team in teams %}
 							{% if team.archived == true %}
-								{% set archivedTeams = true %}
+								{% set archivedTeams = archivedTeams|merge([team]) %}
 							{% elseif team.archived == false or team.archived is null %}
-								{% set nonArchivedTeams = true %}
+								{% set nonArchivedTeams = nonArchivedTeams|merge([team]) %}
 							{% endif %}
 						{% endfor %}
 
-						{% if nonArchivedTeams %}
+
+						{% if nonArchivedTeams is not empty %}
 							<h2 class="accordion-header" id="headingTeamList">
 								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTeamList" aria-expanded="false" aria-controls="collapseTeamList">
 									Liste des Equipes
@@ -38,23 +39,21 @@
 							<div id="collapseTeamList" class="accordion-collapse collapse" aria-labelledby="headingTeamList" data-bs-parent="#accordionTeamList">
 								<div class="accordion-body">
 									<ul class="list-group">
-										{% for team in teams %}
-											{% if team.archived == false or team.archived == null %}
+										{% for team in nonArchivedTeams %}
 
-												<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
-													{{ team.name }}
-													<div class="ml-auto">
-														<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'team', id: team.id})}}">Archiver</a>
-													</div>
-												</li>
-											{% endif %}
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ team.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'team', id: team.id})}}">Archiver</a>
+												</div>
+											</li>
 										{% endfor %}
 									</ul>
 								</div>
 							</div>
 						{% endif %}
 
-						{% if archivedTeams %}
+						{% if archivedTeams is not empty %}
 							<h2 class="accordion-header" id="headingArchivedTeamsList">
 								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivedTeamsList" aria-expanded="false" aria-controls="collapseArchivedTeamsList">
 									Liste des Equipes Achivées
@@ -63,16 +62,14 @@
 							<div id="collapseArchivedTeamsList" class="accordion-collapse collapse" aria-labelledby="headingArchivedTeamsList" data-bs-parent="#accordionArchivedTeamsList">
 								<div class="accordion-body">
 									<ul class="list-group">
-										{% for team in teams %}
-											{% if team.archived == true %}
+										{% for team in archivedTeams %}
 
-												<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
-													{{ team.name }}
-													<div class="ml-auto">
-														<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'team', id: team.id})}}">Restorer</a>
-													</div>
-												</li>
-											{% endif %}
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ team.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'team', id: team.id})}}">Restorer</a>
+												</div>
+											</li>
 										{% endfor %}
 									</ul>
 								</div>

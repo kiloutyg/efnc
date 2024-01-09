@@ -1,43 +1,86 @@
 {% block body %}
-	<div class="card-body ">
-		{{ form_start(anomalyTypeForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_anomalyType_creation') }) }}
+	<div class="card-body">
+		{{ form_start(anomalyTypeForm, { attr: { class: 'd-flex flex-column', 
+		id: 'anomalyTypeCreationForm', 
+		method: 'POST', 
+		enctype: 'multipart/form-data' }, 
+		action: path('app_anomalyType_creation') }) }}
 		<div class="row">
 			<div class="col-6">
 				{{ form_label(anomalyTypeForm.name) }}
 				{{ form_widget(anomalyTypeForm.name) }}
+				<div class="d-grid col-auto mx-5 ">
+					{{ form_label(anomalyTypeForm.save) }}
+					{{ form_widget(anomalyTypeForm.save) }}
+				</div>
 			</div>
+
 			{% if anomalyTypes is not empty %}
-				<div class="col-6 mt-auto accordion" id="accordionAnomalyTypeList">
+				<div class="col-6 mt-auto mb-auto accordion" id="accordionAnomalyTypeList">
 					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
-						<h2 class="accordion-header" id="headingAnomalyTypeList">
-							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnomalyTypeList" aria-expanded="false" aria-controls="collapseAnomalyTypeList">
-								Liste des Types d'Anomalies
-							</button>
-						</h2>
-						<div id="collapseAnomalyTypeList" class="accordion-collapse collapse" aria-labelledby="headingAnomalyTypeList" data-bs-parent="#accordionAnomalyTypeList">
-							<div class="accordion-body">
-								<ul class="list-group">
-									{% for anomalyType in anomalyTypes %}
-										{% if anomalyType.archived == false or anomalyType.archived == null %}
+						{% set archivedAnomalyTypes = [] %}
+						{% set nonArchivedAnomalyTypes = [] %}
+
+						{% for anomalyType in anomalyTypes %}
+							{% if anomalyType.archived == true %}
+								{% set archivedAnomalyTypes = archivedAnomalyTypes|merge([anomalyType]) %}
+							{% elseif anomalyType.archived == false or anomalyType.archived is null %}
+								{% set nonArchivedAnomalyTypes = nonArchivedAnomalyTypes|merge([anomalyType]) %}
+							{% endif %}
+						{% endfor %}
+
+
+						{% if nonArchivedAnomalyTypes is not empty %}
+							<h2 class="accordion-header" id="headingAnomalyTypeList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnomalyTypeList" aria-expanded="false" aria-controls="collapseAnomalyTypeList">
+									Liste des Types d'Anomalies
+								</button>
+							</h2>
+							<div id="collapseAnomalyTypeList" class="accordion-collapse collapse" aria-labelledby="headingAnomalyTypeList" data-bs-parent="#accordionAnomalyTypeList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for anomalyType in nonArchivedAnomalyTypes %}
+
 											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
 												{{ anomalyType.name }}
 												<div class="ml-auto">
-													<a class="btn btn-danger shadow delete-incident" href="{{path('app_archive_entity', {entityType: 'anomalyType', id: anomalyType.id})}}">Supprimer</a>
+													<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'anomalyType', id: anomalyType.id})}}">Archiver</a>
 												</div>
 											</li>
-										{% endif %}
-									{% endfor %}
-								</ul>
+										{% endfor %}
+									</ul>
+								</div>
 							</div>
-						</div>
+						{% endif %}
+
+						{% if archivedAnomalyTypes is not empty %}
+							<h2 class="accordion-header" id="headingArchivedAnomalyTypesList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivedAnomalyTypesList" aria-expanded="false" aria-controls="collapseArchivedAnomalyTypesList">
+									Liste des Types d'Anomalies Achivées
+								</button>
+							</h2>
+							<div id="collapseArchivedAnomalyTypesList" class="accordion-collapse collapse" aria-labelledby="headingArchivedAnomalyTypesList" data-bs-parent="#accordionArchivedAnomalyTypesList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for anomalyType in archivedAnomalyTypes %}
+
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ anomalyType.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'anomalyType', id: anomalyType.id})}}">Restorer</a>
+												</div>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+
 					</div>
 				</div>
 			{% endif %}
 		</div>
-		<div class="d-grid col-auto mx-auto">
-			{{ form_label(anomalyTypeForm.save) }}
-			{{ form_widget(anomalyTypeForm.save) }}
-		</div>
 		{{ form_end(anomalyTypeForm) }}
 	</div>
+
 {% endblock %}
