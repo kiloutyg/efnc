@@ -1,5 +1,4 @@
 when@dev:
     _errors:
         resource: '@FrameworkBundle/Resources/config/routing/errors.xml'
-        # prefix: /efnc/_error
         prefix: /_error

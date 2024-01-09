@@ -1,4 +1,4 @@
-function previewImage(previewSelector, fileInputId) {
+function previewImage(previewSelector) {
     var preview = document.querySelector(previewSelector);
     preview.innerHTML = ''; // Clear the existing content
 

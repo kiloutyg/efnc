@@ -67,7 +67,15 @@ class MailerService extends AbstractController
             $cid = 'cid_' . bin2hex(random_bytes(16)); // This creates a unique CID for each picture.
 
             // Attach the picture to the email
-            $email->attachFromPath($picture->getPath(), $picture->getFilename())->embed(fopen($picture->getPath(), 'r'), $cid);
+            $email
+                // ->attachFromPath(
+                //     $picture->getPath(),
+                //     $picture->getFilename()
+                // )
+                ->embed(
+                    fopen($picture->getPath(), 'r'),
+                    $cid
+                );
 
             // Depending on the category, add the CID to the appropriate array.
             if ($picture->getCategory() === 'NC') {

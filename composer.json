@@ -10,26 +10,26 @@
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
-        "symfony/console": "7.*",
-        "symfony/debug-bundle": "7.*",
-        "symfony/dotenv": "7.*",
+        "symfony/console": "^7",
+        "symfony/debug-bundle": "^7",
+        "symfony/dotenv": "^7",
         "symfony/flex": "^2",
-        "symfony/form": "7.*",
-        "symfony/framework-bundle": "7.*",
-        "symfony/http-foundation": "7.*",
-        "symfony/mailer": "7.*",
-        "symfony/mime": "7.*",
+        "symfony/form": "^7",
+        "symfony/framework-bundle": "^7",
+        "symfony/http-foundation": "^7",
+        "symfony/mailer": "^7",
+        "symfony/mime": "^7",
         "symfony/monolog-bundle": "^3.8",
-        "symfony/notifier": "7.*",
-        "symfony/runtime": "7.*",
-        "symfony/security-bundle": "7.*",
+        "symfony/notifier": "^7",
+        "symfony/runtime": "^7",
+        "symfony/security-bundle": "^7",
         "symfony/stimulus-bundle": "^2.12",
-        "symfony/templating": "7.*",
-        "symfony/twig-bundle": "7.*",
+        "symfony/templating": "^7",
+        "symfony/twig-bundle": "^7",
         "symfony/ux-turbo": "^2.13",
-        "symfony/validator": "7.*",
+        "symfony/validator": "^7",
         "symfony/webpack-encore-bundle": "^2.1",
-        "symfony/yaml": "7.*",
+        "symfony/yaml": "^7",
         "twig/extra-bundle": "^3.7",
         "twig/twig": "^3.7"
     },
@@ -78,13 +78,13 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.*",
+            "require": "^7",
             "docker": true
         }
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.51",
-        "symfony/stopwatch": "7.*",
-        "symfony/web-profiler-bundle": "7.*"
+        "symfony/stopwatch": "^7",
+        "symfony/web-profiler-bundle": "^7"
     }
 }

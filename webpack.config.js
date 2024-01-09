@@ -23,7 +23,6 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('toast', './assets/js/toast.js')
     .addEntry('picture-preview', './assets/js/picture-preview.js')
-    .addEntry('file-input-display', './assets/js/file-input-display.js')
     .addEntry('confirmation', './assets/js/confirmation.js')
     .addEntry('risk-weighting-pri-calculus', './assets/js/risk-weighting-pri-calculus.js')
     .addEntry('imcome-multiple', './assets/js/imcome-multiple.js')
