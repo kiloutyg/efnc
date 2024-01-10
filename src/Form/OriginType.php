@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+// use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 class OriginType extends AbstractType
 {
