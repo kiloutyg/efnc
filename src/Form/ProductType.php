@@ -14,6 +14,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+
 class ProductType extends AbstractType
 {
     private function getDefaultOptions($placeholder = '')
@@ -45,6 +48,11 @@ class ProductType extends AbstractType
                         'label' => 'Type de Produit :',
                         'class' => ProductCategory::class,
                         'choice_label' => 'name',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('t')
+                                ->select('t')
+                                ->where('t.archived IS NULL OR t.archived = false');
+                        },
                     ],
                     $this->getDefaultOptions('Choisir un Type de Produits')
                 )
@@ -57,6 +65,11 @@ class ProductType extends AbstractType
                         'label' => 'Version de Produit :',
                         'class' => ProductVersion::class,
                         'choice_label' => 'name',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('t')
+                                ->select('t')
+                                ->where('t.archived IS NULL OR t.archived = false');
+                        },
                     ],
                     $this->getDefaultOptions('Choisir une Version de Produits')
                 )
@@ -69,6 +82,11 @@ class ProductType extends AbstractType
                         'label' => 'Couleur du produit :',
                         'class' => ProductColor::class,
                         'choice_label' => 'name',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('t')
+                                ->select('t')
+                                ->where('t.archived IS NULL OR t.archived = false');
+                        },
                     ],
                     $this->getDefaultOptions('Choisir une couleur de produit')
                 )

@@ -61,7 +61,11 @@
 				<td colspan="2">{{ EFNC.SAPReference }}</td>
 			</tr>
 			<tr>
-				<th colspan="6">Description du Probléme</th>
+				<th colspan="6">
+					<h3>
+						<strong>Description du Probléme</strong>
+					</h3>
+				</th>
 			</tr>
 			<tr>
 				<th colspan="1">Type d'anomalie</th>
@@ -76,7 +80,11 @@
 				<td colspan="5">{{ EFNC.DetailedDescription }}</td>
 			</tr>
 			<tr>
-				<th colspan="6">Mesures Conservatoire Immediates</th>
+				<th colspan="6">
+					<h3>
+						<strong>Mesures Conservatoire Immediates</strong>
+					</h3>
+				</th>
 			</tr>
 			{% for imcome in EFNC.immediateConservatoryMeasures %}
 				<tr>
@@ -93,34 +101,14 @@
 			<td>{{ imcome.RealisedAt|date('d/m/Y') }}</td>
 			</tr>	
 		{% endfor %}
-		<tr>
-		<th colspan="6">Priorisation de la Non-Conformité</th>
-		</tr>
-		<tr>
-		<th>Gravité</th>
-		<td>{{ EFNC.riskWeighting.severityWeight }}</td>
-		<th>Fréquence</th>
-		<td>{{ EFNC.riskWeighting.frequencyWeight }}</td>
-		<th>Detectabilité (en interne)</th>
-		<td>{{ EFNC.riskWeighting.detectabilityWeight }}</td>
-		</tr>
-		<tr>
-		{% if EFNC.riskWeighting.RiskPriorityIndex > 300 %}
-		<th colspan="2" style="background-color: #ffcccb;">
-		Indice de Priorité du Risque</th> 
-		<td colspan="4" style="background-color: #ffcccb;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
-		{% elseif EFNC.riskWeighting.RiskPriorityIndex > 100 %}
-		<th colspan="2" style="background-color: #ffeda6;">
-		Indice de Priorité du Risque</th>
-		<td colspan="4" style="background-color: #ffeda6;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
-		{% else %}
-		<th colspan="2" style="background-color: #c8f7c5;">
-		Indice de Priorité du Risque</th>
-		<td colspan="4" style="background-color: #c8f7c5;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
-		{% endif %}
+
 		</tr>
 			<tr>
-				<th colspan="6">Photos de Traçabilité</th>
+				<th colspan="6">		
+				<h3>
+				<strong>Photos de Traçabilité					
+				</strong></h3>
+			</th>
 			</tr>
 			<tr>
 				<td colspan="6">
@@ -130,7 +118,8 @@
 				</td>
 			</tr>
 			<tr>
-				<th colspan="6">Photos de Non-Conformité</th>
+				<th colspan="6">				<h3>
+				<strong>Photos de Non-Conformité	</strong></h3></th>
 			</tr>
 			<tr>
 				<td colspan="6">

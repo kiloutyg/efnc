@@ -24,7 +24,7 @@ class Origin
 
     #[ORM\Column(length: 255)]
     #[Assert\Type(['type' => 'string'])]
-    private ?string $Name = null;
+    private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'nonConformityOrigin', targetEntity: EFNC::class)]
     private Collection $eFNCs;
@@ -44,12 +44,12 @@ class Origin
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): static
+    public function setName(string $name): static
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }

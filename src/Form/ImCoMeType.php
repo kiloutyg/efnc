@@ -16,6 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+
 class ImCoMeType extends AbstractType
 {
     private function getDefaultOptions($placeholder = '')
@@ -39,107 +42,132 @@ class ImCoMeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('action', EntityType::class, array_merge(
-                [
-                    'class' => ImmediateConservatoryMeasuresList::class,
-                    'choice_label' => 'name',
-                    'label' => 'Actions Mises en Place',
-                ],
-                $this->getDefaultOptions('Choisissez une action')
-            ))
-            ->add('customAction', TextType::class, array_merge(
-                [
-                    'required' => false,
-                    'label' => 'Autre Action',
-                    'attr' => [
-                        'class' => 'form-control mx-auto mt-2',
-                        'placeholder' => 'Précisez l\'action prise'
+            ->add(
+                'action',
+                EntityType::class,
+                array_merge(
+                    [
+                        'class' => ImmediateConservatoryMeasuresList::class,
+                        'choice_label' => 'name',
+                        'label' => 'Actions Mises en Place',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('t')
+                                ->select('t')
+                                ->where('t.archived IS NULL OR t.archived = false');
+                        },
                     ],
-                    'label_attr' => [
-                        'class' => 'form-label',
-                        'style' => 'font-weight: bold; color: #ffffff;'
+                    $this->getDefaultOptions('Choisissez une action')
+                )
+            )
+            ->add(
+                'customAction',
+                TextType::class,
+                array_merge(
+                    [
+                        'required' => false,
+                        'label' => 'Autre Action',
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => 'Précisez l\'action prise'
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'mb-3'
+                        ],
+                    ]
+                )
+            )
+            ->add(
+                'Manager',
+                TextType::class,
+                array_merge(
+                    [
+                        'label' => 'Nom du Responsable',
                     ],
-                    'row_attr' => [
-                        'class' => 'mb-3'
-                    ],
-                ]
-            ))
-            ->add('Manager', TextType::class, array_merge(
-                [
-                    'label' => 'Nom du Responsable',
-                ],
-                [
-                    'required' => true,
-                    'attr' => [
-                        'class' => 'form-control mx-auto mt-2',
-                        'placeholder' => 'Nom du Responsable'
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => 'Nom du Responsable'
 
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-4 mb-3'
+                        ],
+                    ]
+                )
+            )
+            ->add(
+                'status',
+                ChoiceType::class,
+                array_merge(
+                    [
+                        'placeholder' => 'L\'action est-elle réalisée ?',
+                        'label' => 'Fait ?',
+                        'choices' => [
+                            'Oui' => true,
+                            'Non' => false,
+                        ],
+                        'multiple' => false,
+                        'placeholder' => false,
+                        'choice_attr' => function ($choice) {
+                            // Add disabled attribute to the third choice
+                            if ($choice === 'Non') {
+                                return ['class' => 'form-check-input col-auto', 'disabled' => 'disabled'];
+                            }
+                            return ['class' => 'form-check-input col-auto'];
+                        },
                     ],
-                    'label_attr' => [
-                        'class' => 'form-label',
-                        'style' => 'font-weight: bold; color: #ffffff;'
-                    ],
-                    'row_attr' => [
-                        'class' => 'col-4 mb-3'
-                    ],
-                ]
-            ))
-            ->add('status', ChoiceType::class, array_merge(
-                [
-                    'placeholder' => 'L\'action est-elle réalisée ?',
-                    'label' => 'Fait ?',
-                    'choices' => [
-                        'Oui' => true,
-                        'Non' => false,
-                    ],
-                    'multiple' => false,
-                    'placeholder' => false,
-                    'choice_attr' => function ($choice) {
-                        // Add disabled attribute to the third choice
-                        if ($choice === 'Non') {
-                            return ['class' => 'form-check-input col-auto', 'disabled' => 'disabled'];
-                        }
-                        return ['class' => 'form-check-input col-auto'];
-                    },
-                ],
-                [
-                    'required' => true,
-                    'attr' => [
-                        'class' => 'form-control mx-auto mt-2',
-                        'placeholder' => ''
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => ''
 
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-4 mb-3'
+                        ],
+                    ]
+                )
+            )
+            ->add(
+                'RealisedAt',
+                DateType::class,
+                array_merge(
+                    [
+                        'label' => 'Date de réalisation',
+                        'widget' => 'single_text',
+                        'html5' => true,
                     ],
-                    'label_attr' => [
-                        'class' => 'form-label',
-                        'style' => 'font-weight: bold; color: #ffffff;'
-                    ],
-                    'row_attr' => [
-                        'class' => 'col-4 mb-3'
-                    ],
-                ]
-            ))
-            ->add('RealisedAt', DateType::class, array_merge(
-                [
-                    'label' => 'Date de réalisation',
-                    'widget' => 'single_text',
-                    'html5' => true,
-                ],
-                [
-                    'required' => true,
-                    'attr' => [
-                        'class' => 'form-control mx-auto mt-2',
-                        'placeholder' => ''
+                    [
+                        'required' => true,
+                        'attr' => [
+                            'class' => 'form-control mx-auto mt-2',
+                            'placeholder' => ''
 
-                    ],
-                    'label_attr' => [
-                        'class' => 'form-label',
-                        'style' => 'font-weight: bold; color: #ffffff;'
-                    ],
-                    'row_attr' => [
-                        'class' => 'col-4 mb-3'
-                    ],
-                ]
-            ));
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'col-4 mb-3'
+                        ],
+                    ]
+                )
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

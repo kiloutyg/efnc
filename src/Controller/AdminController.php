@@ -349,21 +349,39 @@ class AdminController extends FrontController
     public function archiveEntity(Request $request, string $entityType, int $id): Response
     {
         $originUrl = $request->headers->get('referer');
-        $this->entityDeletionService->archivedEntity($entityType, $id);
-        return $this->redirect($originUrl);
+        $result = $this->entityDeletionService->archivedEntity($entityType, $id);
+        if ($result == false) {
+            $this->addFlash('danger', 'L\'élément n\'a pas pu être archivé');
+            return $this->redirect($originUrl);
+        } else {
+            $this->addFlash('success', 'L\'élément a bien été archivé');
+            return $this->redirect($originUrl);
+        }
     }
     #[Route('admin/delete/{entityType}/{id}', name: 'delete_entity')]
     public function deleteEntity(Request $request, string $entityType, int $id): Response
     {
         $originUrl = $request->headers->get('referer');
-        $this->entityDeletionService->deleteEntity($entityType, $id);
-        return $this->redirect($originUrl);
+        $result = $this->entityDeletionService->deleteEntity($entityType, $id);
+        if ($result == false) {
+            $this->addFlash('danger', 'L\'élément n\'a pas pu être supprimé');
+            return $this->redirect($originUrl);
+        } else {
+            $this->addFlash('success', 'L\'élément a bien été supprimé');
+            return $this->redirect($originUrl);
+        }
     }
     #[Route('admin/unarchive/{entityType}/{id}', name: 'unarchive_entity')]
     public function unarchiveEntity(Request $request, string $entityType, int $id): Response
     {
         $originUrl = $request->headers->get('referer');
-        $this->entityDeletionService->unarchiveEntity($entityType, $id); // Implement this method in your service
-        return $this->redirect($originUrl);
+        $result = $this->entityDeletionService->unarchiveEntity($entityType, $id); // Implement this method in your service
+        if ($result == false) {
+            $this->addFlash('danger', 'L\'élément n\'a pas pu être restauré');
+            return $this->redirect($originUrl);
+        } else {
+            $this->addFlash('success', 'L\'élément a bien été restauré');
+            return $this->redirect($originUrl);
+        }
     }
 }
