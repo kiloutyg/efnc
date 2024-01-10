@@ -345,11 +345,25 @@ class AdminController extends FrontController
         }
     }
 
+    #[Route('admin/archive/{entityType}/{id}', name: 'archive_entity')]
+    public function archiveEntity(Request $request, string $entityType, int $id): Response
+    {
+        $originUrl = $request->headers->get('referer');
+        $this->entityDeletionService->archivedEntity($entityType, $id);
+        return $this->redirect($originUrl);
+    }
     #[Route('admin/delete/{entityType}/{id}', name: 'delete_entity')]
     public function deleteEntity(Request $request, string $entityType, int $id): Response
     {
         $originUrl = $request->headers->get('referer');
-        $this->entityDeletionService->archivedEntity($entityType, $id);
+        $this->entityDeletionService->deleteEntity($entityType, $id);
+        return $this->redirect($originUrl);
+    }
+    #[Route('admin/unarchive/{entityType}/{id}', name: 'unarchive_entity')]
+    public function unarchiveEntity(Request $request, string $entityType, int $id): Response
+    {
+        $originUrl = $request->headers->get('referer');
+        $this->entityDeletionService->unarchiveEntity($entityType, $id); // Implement this method in your service
         return $this->redirect($originUrl);
     }
 }

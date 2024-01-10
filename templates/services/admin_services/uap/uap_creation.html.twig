@@ -1,44 +1,86 @@
 {% block body %}
-	<div class="card-body ">
-		{{ form_start(uapForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_uap_creation') }) }}
+	<div class="card-body">
+		{{ form_start(uapForm, { attr: { class: 'd-flex flex-column', 
+		id: 'uapCreationForm', 
+		method: 'POST', 
+		enctype: 'multipart/form-data' }, 
+		action: path('app_uap_creation') }) }}
 		<div class="row">
 			<div class="col-6">
 				{{ form_label(uapForm.name) }}
 				{{ form_widget(uapForm.name) }}
+				<div class="d-grid col-auto mx-5 ">
+					{{ form_label(uapForm.save) }}
+					{{ form_widget(uapForm.save) }}
+				</div>
 			</div>
+
 			{% if uaps is not empty %}
-				<div class="col-6 mt-auto accordion" id="accordionUapList">
+				<div class="col-6 mt-auto mb-auto accordion" id="accordionUAPList">
 					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
-						<h2 class="accordion-header" id="headingUapList">
-							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUapList" aria-expanded="false" aria-controls="collapseUapList">
-								Liste des UAPs
-							</button>
-						</h2>
-						<div id="collapseUapList" class="accordion-collapse collapse" aria-labelledby="headingUapList" data-bs-parent="#accordionUapList">
-							<div class="accordion-body">
-								<ul class="list-group">
-									{% for uap in uaps %}
-										{% if uap.archived == false or uap.archived == null %}
+						{% set archivedUAPs = [] %}
+						{% set nonArchivedUAPs = [] %}
+
+						{% for uap in uaps %}
+							{% if uap.archived == true %}
+								{% set archivedUAPs = archivedUAPs|merge([uap]) %}
+							{% elseif uap.archived == false or uap.archived is null %}
+								{% set nonArchivedUAPs = nonArchivedUAPs|merge([uap]) %}
+							{% endif %}
+						{% endfor %}
+
+
+						{% if nonArchivedUAPs is not empty %}
+							<h2 class="accordion-header" id="headingUAPList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUAPList" aria-expanded="false" aria-controls="collapseUAPList">
+									Liste des UAPs
+								</button>
+							</h2>
+							<div id="collapseUAPList" class="accordion-collapse collapse" aria-labelledby="headingUAPList" data-bs-parent="#accordionUAPList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for uap in nonArchivedUAPs %}
 
 											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
 												{{ uap.name }}
 												<div class="ml-auto">
-													<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'uap', id: uap.id})}}">Supprimer</a>
+													<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'uap', id: uap.id})}}">Archiver</a>
 												</div>
 											</li>
-										{% endif %}
-									{% endfor %}
-								</ul>
+										{% endfor %}
+									</ul>
+								</div>
 							</div>
-						</div>
+						{% endif %}
+
+						{% if archivedUAPs is not empty %}
+							<h2 class="accordion-header" id="headingArchivedUAPsList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivedUAPsList" aria-expanded="false" aria-controls="collapseArchivedUAPsList">
+									Liste des UAPs Achivées
+								</button>
+							</h2>
+							<div id="collapseArchivedUAPsList" class="accordion-collapse collapse" aria-labelledby="headingArchivedUAPsList" data-bs-parent="#accordionUAPList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for uap in archivedUAPs %}
+
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ uap.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'uap', id: uap.id})}}">Restorer</a>
+												</div>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+
 					</div>
 				</div>
 			{% endif %}
 		</div>
-		<div class="d-grid col-auto mx-auto">
-			{{ form_label(uapForm.save) }}
-			{{ form_widget(uapForm.save) }}
-		</div>
 		{{ form_end(uapForm) }}
 	</div>
+
 {% endblock %}

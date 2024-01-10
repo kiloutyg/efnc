@@ -355,4 +355,142 @@ class EntityDeletionService
 
         return true;
     }
+
+
+    public function unarchiveEntity(string $entityType, int $id): bool
+    {
+        // Get the repository for the entity type
+        $repository = null;
+        switch ($entityType) {
+
+            case 'efnc':
+                $repository = $this->EFNCRepository;
+                break;
+            case 'user':
+                $repository = $this->userRepository;
+                break;
+            case 'team':
+                $repository = $this->teamRepository;
+                break;
+            case 'project':
+                $repository = $this->projectRepository;
+                break;
+            case 'uap':
+                $repository = $this->uapRepository;
+                break;
+            case 'origin':
+                $repository = $this->originRepository;
+                break;
+            case 'place':
+                $repository = $this->placeRepository;
+                break;
+            case 'anomalyType':
+                $repository = $this->anomalyTypeRepository;
+                break;
+            case 'imcome':
+                $repository = $this->imcomeRepository;
+                break;
+            case 'productCategory':
+                $repository = $this->productCategoryRepository;
+                break;
+            case 'productColor':
+                $repository = $this->productColorRepository;
+                break;
+            case 'productVersion':
+                $repository = $this->productVersionRepository;
+                break;
+        }
+        // If the repository is not found or the entity is not found in the database, return false
+        if (!$repository) {
+            return false;
+        }
+        // Get the entity from the database
+        $entity = $repository->find($id);
+        if (!$entity) {
+            return false;
+        }
+
+        // Deletion logic for related entities, folder and files
+        if ($entityType === 'user') {
+            $this->em->remove($entity);
+        }
+        if ($entityType === 'efnc') {
+            $entity->setArchived(false);
+        }
+        if ($entityType === 'team') {
+            $entity->setArchived(false);
+            $forms = $entity->getEFNCs();
+            foreach ($forms as $form) {
+                $form->setArchived(false);
+            }
+        }
+        if ($entityType === 'project') {
+            $entity->setArchived(false);
+            $forms = $entity->getEFNCs();
+            foreach ($forms as $form) {
+                $form->setArchived(false);
+            }
+        }
+        if ($entityType === 'uap') {
+            $entity->setArchived(false);
+            $forms = $entity->getEFNCs();
+            foreach ($forms as $form) {
+                $form->setArchived(false);
+            }
+        }
+        if ($entityType === 'origin') {
+            $entity->setArchived(false);
+            $forms = $entity->getEFNCs();
+            foreach ($forms as $form) {
+                $form->setArchived(false);
+            }
+        }
+        if ($entityType === 'place') {
+            $entity->setArchived(false);
+            $forms = $entity->getEFNCs();
+            foreach ($forms as $form) {
+                $form->setArchived(false);
+            }
+        }
+        if ($entityType === 'anomalyType') {
+            $entity->setArchived(false);
+            $forms = $entity->getEFNCs();
+            foreach ($forms as $form) {
+                $form->setArchived(false);
+            }
+        }
+        if ($entityType === 'imcome') {
+            $entity->setArchived(false);
+            $forms = $entity->getEFNCs();
+            foreach ($forms as $form) {
+                $form->setArchived(false);
+            }
+        }
+        if ($entityType === 'productCategory') {
+            $entity->setArchived(false);
+            $forms = $entity->getEFNCs();
+            foreach ($forms as $form) {
+                $form->setArchived(false);
+            }
+        }
+        if ($entityType === 'productColor') {
+            $entity->setArchived(false);
+            $forms = $entity->getEFNCs();
+            foreach ($forms as $form) {
+                $form->setArchived(false);
+            }
+        }
+        if ($entityType === 'productVersion') {
+            $entity->setArchived(false);
+            $forms = $entity->getEFNCs();
+            foreach ($forms as $form) {
+                $form->setArchived(false);
+            }
+        }
+
+
+        $this->em->flush();
+
+        return true;
+    }
 }

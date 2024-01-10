@@ -1,44 +1,86 @@
 {% block body %}
-	<div class="card-body ">
-		{{ form_start(projectForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_project_creation') }) }}
+	<div class="card-body">
+		{{ form_start(projectForm, { attr: { class: 'd-flex flex-column', 
+		id: 'projectCreationForm', 
+		method: 'POST', 
+		enctype: 'multipart/form-data' }, 
+		action: path('app_project_creation') }) }}
 		<div class="row">
 			<div class="col-6">
 				{{ form_label(projectForm.name) }}
 				{{ form_widget(projectForm.name) }}
+				<div class="d-grid col-auto mx-5 ">
+					{{ form_label(projectForm.save) }}
+					{{ form_widget(projectForm.save) }}
+				</div>
 			</div>
+
 			{% if projects is not empty %}
-				<div class="col-6 mt-auto accordion" id="accordionProjectList">
+				<div class="col-6 mt-auto mb-auto accordion" id="accordionProjectList">
 					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
-						<h2 class="accordion-header" id="headingProjectList">
-							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProjectList" aria-expanded="false" aria-controls="collapseProjectList">
-								Liste des Projets
-							</button>
-						</h2>
-						<div id="collapseProjectList" class="accordion-collapse collapse" aria-labelledby="headingProjectList" data-bs-parent="#accordionProjectList">
-							<div class="accordion-body">
-								<ul class="list-group">
-									{% for project in projects %}
-										{% if project.archived == false or project.archived == null %}
+						{% set archivedProjects = [] %}
+						{% set nonArchivedProjects = [] %}
+
+						{% for project in projects %}
+							{% if project.archived == true %}
+								{% set archivedProjects = archivedProjects|merge([project]) %}
+							{% elseif project.archived == false or project.archived is null %}
+								{% set nonArchivedProjects = nonArchivedProjects|merge([project]) %}
+							{% endif %}
+						{% endfor %}
+
+
+						{% if nonArchivedProjects is not empty %}
+							<h2 class="accordion-header" id="headingProjectList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProjectList" aria-expanded="false" aria-controls="collapseProjectList">
+									Liste des Projets
+								</button>
+							</h2>
+							<div id="collapseProjectList" class="accordion-collapse collapse" aria-labelledby="headingProjectList" data-bs-parent="#accordionProjectList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for project in nonArchivedProjects %}
 
 											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
 												{{ project.name }}
 												<div class="ml-auto">
-													<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'project', id: project.id})}}">Supprimer</a>
+													<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'project', id: project.id})}}">Archiver</a>
 												</div>
 											</li>
-										{% endif %}
-									{% endfor %}
-								</ul>
+										{% endfor %}
+									</ul>
+								</div>
 							</div>
-						</div>
+						{% endif %}
+
+						{% if archivedProjects is not empty %}
+							<h2 class="accordion-header" id="headingArchivedProjectsList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivedProjectsList" aria-expanded="false" aria-controls="collapseArchivedProjectsList">
+									Liste des Projets Achivées
+								</button>
+							</h2>
+							<div id="collapseArchivedProjectsList" class="accordion-collapse collapse" aria-labelledby="headingArchivedProjectsList" data-bs-parent="#accordionProjectList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for project in archivedProjects %}
+
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ project.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'project', id: project.id})}}">Restorer</a>
+												</div>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+
 					</div>
 				</div>
 			{% endif %}
 		</div>
-		<div class="d-grid col-auto mx-auto">
-			{{ form_label(projectForm.save) }}
-			{{ form_widget(projectForm.save) }}
-		</div>
 		{{ form_end(projectForm) }}
 	</div>
+
 {% endblock %}

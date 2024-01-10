@@ -1,3 +1,4 @@
+<![if mso]>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -17,7 +18,7 @@
 		</style>
 	</head>
 	<body style="font-family: Arial, sans-serif; font-size: 16px; color: #333333;">
-		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+		<table width="1000" cellpadding="0" cellspacing="0" border="0">
 			<tr>
 				<th colspan="6" style="text-align: center;">
 					<h1>Notification de Non-Conformité
@@ -124,7 +125,7 @@
 			<tr>
 				<td colspan="6">
 					{% for cid in traceabilityPictureCids %}
-						<img src="cid:{{ cid }}" alt="Photo de traçabilité" style="max-width: 50%; height: auto;">
+						<img src="cid:{{ cid }}"  width="1000" alt="Photo de traçabilité"  style="height: auto; display: block;">
 					{% endfor %}
 				</td>
 			</tr>
@@ -134,7 +135,7 @@
 			<tr>
 				<td colspan="6">
 					{% for cid in NcPictureCids %}
-						<img src="cid:{{ cid }}" alt="Photo de non-conformité" style="max-width: 50%; height: auto;">
+						<img src="cid:{{ cid }}"  width="1000" alt="Photo de non-conformité" style="height: auto; display: block;">
 					{% endfor %}
 				</td>
 			</tr>
@@ -142,3 +143,150 @@
 		</table>
 	</body>
 </html>
+<![endif]-->
+{#<!--[if !mso]>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{{ EFNC.Title }}</title>
+		<style>
+			th,
+			td {
+				padding: 8px;
+				text-align: left;
+				border-bottom: 1px solid #ddd;
+			}
+			th {
+				background-color: #f2f2f2;
+				color: #333;
+			}
+		</style>
+	</head>
+	<body style="font-family: Arial, sans-serif; font-size: 16px; color: #333333;">
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<th colspan="6" style="text-align: center;">
+					<h1>Notification de Non-Conformité
+						<strong>
+							<a href="{{ url('app_form_modification_display', { 'efncID': EFNC.id}) }}" style="color: #007bff; text-decoration: none; padding: 0.375rem 0.75rem; font-size: 1rem; line-height: 1.5; border: 1px solid transparent; border-radius: 0.25rem;">FNC
+								{{EFNC.id}}</a>
+						</strong>
+					</h1>
+				</th>
+			</tr>
+			<tr>
+				<th colspan="1">Créateur</th>
+				<td colspan="1">{{ EFNC.Creator }}</td>
+				<th colspan="1">Équipe</th>
+				<td colspan="1">{{ EFNC.team.name }}</td>
+				<th colspan="1">UAP</th>
+				<td colspan="1">{{ EFNC.uap.name }}</td>
+			</tr>
+			<tr>
+				<th colspan="1">Date de Détection</th>
+				<td colspan="1">{{ EFNC.DetectionDate|date('d/m/Y') }}</td>
+				<th colspan="1">Heure de Détection</th>
+				<td colspan="1">{{ EFNC.DetectionTime|date('H:i') }}</td>
+				<th colspan="1">Lieu de détection</th>
+				<td colspan="1">{{ EFNC.detectionPlace.name }}</td>
+			</tr>
+			<tr>
+				<th colspan="1">Projet</th>
+				<td colspan="2">{{ EFNC.project.name }}</td>
+				<th colspan="1">Origine de la Non-Conformité</th>
+				<td colspan="2">{{ EFNC.nonConformityOrigin.name }}</td>
+			</tr>
+			<tr>
+				<th colspan="1">Désignation du Produit</th>
+				<td colspan="2">
+					{{ EFNC.product.category.name }}-
+					{{ EFNC.product.version.name }}-
+					{{ EFNC.product.color.name }}</td>
+				<th colspan="1">Référence SAP</th>
+				<td colspan="2">{{ EFNC.SAPReference }}</td>
+			</tr>
+			<tr>
+				<th colspan="6">Description du Probléme</th>
+			</tr>
+			<tr>
+				<th colspan="1">Type d'anomalie</th>
+				<td colspan="1">{{ EFNC.anomalyType.name }}</td>
+				<th colspan="1">Quantité Non-Conforme</th>
+				<td colspan="1">{{ EFNC.Quantity }}</td>
+				<th colspan="1">Quantité à Bloquer</th>
+				<td colspan="1">{{ EFNC.QuantityToBlock }}</td>
+			</tr>
+			<tr>
+				<th colspan="1">Description Détaillée</th>
+				<td colspan="5">{{ EFNC.DetailedDescription }}</td>
+			</tr>
+			<tr>
+				<th colspan="6">Mesures Conservatoire Immediates</th>
+			</tr>
+			{% for imcome in EFNC.immediateConservatoryMeasures %}
+						<tr>
+							{% if imcome.action.name == 'Autre (Précisez l\'action prise)' %}
+			<th>Action Mise en Place </th>
+			<td>{{ imcome.customAction }}</td>
+			{% else %}
+			<th>Action Mise en Place </th>
+			<td>{{ imcome.action.name|replace({"\\": ""}) }}</td>
+			{% endif %}
+			<th>Nom du Responsable</th>
+			<td>{{ imcome.Manager }}</td>
+			<th>Date de réalisation</th>
+			<td>{{ imcome.RealisedAt|date('d/m/Y') }}</td>
+			</tr>	
+		{% endfor %}
+		<tr>
+		<th colspan="6">Priorisation de la Non-Conformité</th>
+		</tr>
+		<tr>
+		<th>Gravité</th>
+		<td>{{ EFNC.riskWeighting.severityWeight }}</td>
+		<th>Fréquence</th>
+		<td>{{ EFNC.riskWeighting.frequencyWeight }}</td>
+		<th>Detectabilité (en interne)</th>
+		<td>{{ EFNC.riskWeighting.detectabilityWeight }}</td>
+		</tr>
+		<tr>
+		{% if EFNC.riskWeighting.RiskPriorityIndex > 300 %}
+		<th colspan="2" style="background-color: #ffcccb;">
+		Indice de Priorité du Risque</th> 
+		<td colspan="4" style="background-color: #ffcccb;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
+		{% elseif EFNC.riskWeighting.RiskPriorityIndex > 100 %}
+		<th colspan="2" style="background-color: #ffeda6;">
+		Indice de Priorité du Risque</th>
+		<td colspan="4" style="background-color: #ffeda6;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
+		{% else %}
+		<th colspan="2" style="background-color: #c8f7c5;">
+		Indice de Priorité du Risque</th>
+		<td colspan="4" style="background-color: #c8f7c5;">{{ EFNC.riskWeighting.RiskPriorityIndex }}</td>
+		{% endif %}
+		</tr>
+			<tr>
+				<th colspan="6">Photos de Traçabilité</th>
+			</tr>
+			<tr>
+				<td colspan="6">
+					{% for cid in traceabilityPictureCids %}
+						<img src="cid:{{ cid }}" alt="Photo de traçabilité" style="max-width: 100%; height: auto;">
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th colspan="6">Photos de Non-Conformité</th>
+			</tr>
+			<tr>
+				<td colspan="6">
+					{% for cid in NcPictureCids %}
+						<img src="cid:{{ cid }}" alt="Photo de non-conformité" style="max-width: 100%; height: auto;">
+					{% endfor %}
+				</td>
+			</tr>
+			
+		</table>
+	</body>
+</html>
+ <![endif]-->#}

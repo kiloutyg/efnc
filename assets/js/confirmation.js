@@ -1,7 +1,7 @@
 window.addEventListener("turbo:load", () => {
-  const deleteZoneButtons = document.querySelectorAll(".delete-zone");
-  const deleteProductLineButtons = document.querySelectorAll(
-    ".delete-productline"
+  const archiveEntityButtons = document.querySelectorAll(".archive-entity");
+  const restoreArchivedEntityButtons = document.querySelectorAll(
+    ".restore-entity"
   );
   const deleteCategoryButtons = document.querySelectorAll(".delete-category");
   const deleteButtonButtons = document.querySelectorAll(".delete-button");
@@ -34,20 +34,20 @@ window.addEventListener("turbo:load", () => {
     }
   };
 
-  deleteZoneButtons.forEach((button) => {
+  archiveEntityButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
         event,
-        "Êtes vous sûr de vouloir supprimer cette Zone?"
+        "Êtes vous sûr de vouloir archiver cette Entitée?"
       );
     });
   });
 
-  deleteProductLineButtons.forEach((button) => {
+  restoreArchivedEntityButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
         event,
-        "Êtes vous sûr de vouloir supprimer cette Ligne?"
+        "Êtes vous sûr de vouloir restorer cette entitée?"
       );
     });
   });

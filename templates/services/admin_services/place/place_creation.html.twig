@@ -1,44 +1,86 @@
 {% block body %}
-	<div class="card-body ">
-		{{ form_start(placeForm, { attr: { class: 'd-flex flex-column ', id: 'formCreationForm', method: 'POST', enctype: 'multipart/form-data' }, action: path('app_place_creation') }) }}
+	<div class="card-body">
+		{{ form_start(placeForm, { attr: { class: 'd-flex flex-column', 
+		id: 'placeCreationForm', 
+		method: 'POST', 
+		enctype: 'multipart/form-data' }, 
+		action: path('app_place_creation') }) }}
 		<div class="row">
 			<div class="col-6">
 				{{ form_label(placeForm.name) }}
 				{{ form_widget(placeForm.name) }}
+				<div class="d-grid col-auto mx-5 ">
+					{{ form_label(placeForm.save) }}
+					{{ form_widget(placeForm.save) }}
+				</div>
 			</div>
+
 			{% if places is not empty %}
-				<div class="col-6 mt-auto accordion" id="accordionPlaceList">
+				<div class="col-6 mt-auto mb-auto accordion" id="accordionPlaceList">
 					<div class="accordion-item shadow-lg shadow-lg-inset border border-dark">
-						<h2 class="accordion-header" id="headingPlaceList">
-							<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlaceList" aria-expanded="false" aria-controls="collapsePlaceList">
-								Liste des Lieux
-							</button>
-						</h2>
-						<div id="collapsePlaceList" class="accordion-collapse collapse" aria-labelledby="headingPlaceList" data-bs-parent="#accordionPlaceList">
-							<div class="accordion-body">
-								<ul class="list-group">
-									{% for place in places %}
-										{% if place.archived == false or place.archived == null %}
+						{% set archivedPlaces = [] %}
+						{% set nonArchivedPlaces = [] %}
+
+						{% for place in places %}
+							{% if place.archived == true %}
+								{% set archivedPlaces = archivedPlaces|merge([place]) %}
+							{% elseif place.archived == false or place.archived is null %}
+								{% set nonArchivedPlaces = nonArchivedPlaces|merge([place]) %}
+							{% endif %}
+						{% endfor %}
+
+
+						{% if nonArchivedPlaces is not empty %}
+							<h2 class="accordion-header" id="headingPlaceList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlaceList" aria-expanded="false" aria-controls="collapsePlaceList">
+									Liste des Lieux
+								</button>
+							</h2>
+							<div id="collapsePlaceList" class="accordion-collapse collapse" aria-labelledby="headingPlaceList" data-bs-parent="#accordionPlaceList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for place in nonArchivedPlaces %}
 
 											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
 												{{ place.name }}
 												<div class="ml-auto">
-													<a class="btn btn-danger shadow delete-incident" href="{{path('app_delete_entity', {entityType: 'place', id: place.id})}}">Supprimer</a>
+													<a class="btn btn-danger shadow archive-entity" href="{{path('app_archive_entity', {entityType: 'place', id: place.id})}}">Archiver</a>
 												</div>
 											</li>
-										{% endif %}
-									{% endfor %}
-								</ul>
+										{% endfor %}
+									</ul>
+								</div>
 							</div>
-						</div>
+						{% endif %}
+
+						{% if archivedPlaces is not empty %}
+							<h2 class="accordion-header" id="headingArchivedPlacesList">
+								<button class="accordion-button btn btn-outline-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivedPlacesList" aria-expanded="false" aria-controls="collapseArchivedPlacesList">
+									Liste des Lieux Achivées
+								</button>
+							</h2>
+							<div id="collapseArchivedPlacesList" class="accordion-collapse collapse" aria-labelledby="headingArchivedPlacesList" data-bs-parent="#accordionPlaceList">
+								<div class="accordion-body">
+									<ul class="list-group">
+										{% for place in archivedPlaces %}
+
+											<li class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-lg">
+												{{ place.name }}
+												<div class="ml-auto">
+													<a class="btn btn-danger shadow restore-entity" href="{{path('app_unarchive_entity', {entityType: 'place', id: place.id})}}">Restorer</a>
+												</div>
+											</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						{% endif %}
+
 					</div>
 				</div>
 			{% endif %}
 		</div>
-		<div class="d-grid col-auto mx-auto">
-			{{ form_label(placeForm.save) }}
-			{{ form_widget(placeForm.save) }}
-		</div>
 		{{ form_end(placeForm) }}
 	</div>
+
 {% endblock %}

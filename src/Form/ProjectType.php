@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 // use Symfony\Component\Validator\Constraints as Assert;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+// use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 class ProjectType extends AbstractType
 {

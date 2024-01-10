@@ -50,7 +50,7 @@
 					<h3>
 						<strong>Mesures Conservatoire Immediates:</strong>
 					</h3>
-					<div id="imcome-container" data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
+					<div id="imcome-container" class="row" data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
 						{% for imcomeFormEntry in form1.immediateConservatoryMeasures %}
 							<div class="imcome-entry">
 								{{ form_widget(imcomeFormEntry) }}
