@@ -26,8 +26,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -134,6 +135,11 @@ class FormCreationType extends AbstractType
                         'label' => 'Equipe :',
                         'class' => Team::class,
                         'choice_label' => 'name',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('t')
+                                ->select('t')
+                                ->where('t.archived IS NULL OR t.archived = false');
+                        }
                     ],
                     [
                         'required' => true,
@@ -160,6 +166,11 @@ class FormCreationType extends AbstractType
                         'label' => 'Lieu de détection :',
                         'class' => Place::class,
                         'choice_label' => 'name',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('t')
+                                ->select('t')
+                                ->where('t.archived IS NULL OR t.archived = false');
+                        }
                     ],
                     [
                         'required' => true,
@@ -178,23 +189,27 @@ class FormCreationType extends AbstractType
                     ]
                 )
             )
-            ->add('product', ProductType::class, array_merge(
-                [
-                    'label' => 'Désignation du Produit :',
-                    'required' => true,
-                    'attr' => [
-                        'class' => ' mt-2 row',
-                        'placeholder' => 'Désignation du Produit',
-                    ],
-                    'label_attr' => [
-                        'class' => 'form-label',
-                        'style' => 'font-weight: bold; color: #ffffff;'
-                    ],
-                    'row_attr' => [
-                        'class' => 'mb-3'
-                    ],
-                ]
-            ))
+            ->add(
+                'product',
+                ProductType::class,
+                array_merge(
+                    [
+                        'label' => 'Désignation du Produit :',
+                        'required' => true,
+                        'attr' => [
+                            'class' => ' mt-2 row',
+                            'placeholder' => 'Désignation du Produit',
+                        ],
+                        'label_attr' => [
+                            'class' => 'form-label',
+                            'style' => 'font-weight: bold; color: #ffffff;'
+                        ],
+                        'row_attr' => [
+                            'class' => 'mb-3'
+                        ],
+                    ]
+                )
+            )
             ->add(
                 'Project',
                 EntityType::class,
@@ -203,6 +218,11 @@ class FormCreationType extends AbstractType
                         'label' => 'Projet :',
                         'class' => Project::class,
                         'choice_label' => 'name',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('t')
+                                ->select('t')
+                                ->where('t.archived IS NULL OR t.archived = false');
+                        },
                     ],
                     $this->getDefaultOptions('Choisir le projet :')
                 )
@@ -215,6 +235,11 @@ class FormCreationType extends AbstractType
                         'label' => 'UAP :',
                         'class' => UAP::class,
                         'choice_label' => 'name',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('t')
+                                ->select('t')
+                                ->where('t.archived IS NULL OR t.archived = false');
+                        },
                     ],
                     [
                         'required' => true,
@@ -240,7 +265,12 @@ class FormCreationType extends AbstractType
                     [
                         'label' => 'Lieu de création de la Non-Conformité :',
                         'class' => Origin::class,
-                        'choice_label' => 'name'
+                        'choice_label' => 'name',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('t')
+                                ->select('t')
+                                ->where('t.archived IS NULL OR t.archived = false');
+                        },
                     ],
                     [
                         'required' => true,
@@ -267,6 +297,11 @@ class FormCreationType extends AbstractType
                         'label' => 'Type de d\'anomalie :',
                         'class' => AnomalyType::class,
                         'choice_label' => 'name',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('t')
+                                ->select('t')
+                                ->where('t.archived IS NULL OR t.archived = false');
+                        },
                     ],
                     [
                         'required' => true,
@@ -374,17 +409,21 @@ class FormCreationType extends AbstractType
                     ]
                 )
             )
-            ->add('immediateConservatoryMeasures', CollectionType::class, array_merge(
-                [
-                    'label' => 'Mesures Conservatoires Immédiates :',
-                    'entry_type' => ImCoMeType::class,
-                    'allow_add'    => true,
-                    'by_reference' => false,
-                    // 'allow_delete' => true, if you want to allow removing items from the collection
+            ->add(
+                'immediateConservatoryMeasures',
+                CollectionType::class,
+                array_merge(
+                    [
+                        'label' => 'Mesures Conservatoires Immédiates :',
+                        'entry_type' => ImCoMeType::class,
+                        'allow_add'    => true,
+                        'by_reference' => false,
+                        // 'allow_delete' => true, if you want to allow removing items from the collection
 
-                ],
-                $this->getDefaultOptions('')
-            ))
+                    ],
+                    $this->getDefaultOptions('')
+                )
+            )
             ->add('riskWeighting', RiskWeightingType::class, array_merge(
                 [
                     'label' => 'Pondération des risques:',

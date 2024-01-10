@@ -16,7 +16,7 @@ use App\Repository\UAPRepository;
 use App\Repository\OriginRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\AnomalyTypeRepository;
-use App\Repository\ImmediateConservatoryMeasuresRepository;
+use App\Repository\ImmediateConservatoryMeasuresListRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductVersionRepository;
@@ -36,7 +36,7 @@ class EntityDeletionService
     private $originRepository;
     private $placeRepository;
     private $anomalyTypeRepository;
-    private $imcomeRepository;
+    private $imcomeListRepository;
     private $productCategoryRepository;
     private $productColorRepository;
     private $productVersionRepository;
@@ -48,21 +48,21 @@ class EntityDeletionService
     public function __construct(
         EntityManagerInterface          $em,
 
-        UserRepository                          $userRepository,
-        TeamRepository                          $teamRepository,
-        ProjectRepository                       $projectRepository,
-        UapRepository                           $uapRepository,
-        OriginRepository                        $originRepository,
-        PlaceRepository                         $placeRepository,
-        AnomalyTypeRepository                   $anomalyTypeRepository,
-        ImmediateConservatoryMeasuresRepository $imcomeRepository,
-        ProductCategoryRepository               $productCategoryRepository,
-        ProductColorRepository                  $productColorRepository,
-        ProductVersionRepository                $productVersionRepository,
-        EFNCRepository                          $efncRepository,
+        UserRepository                                  $userRepository,
+        TeamRepository                                  $teamRepository,
+        ProjectRepository                               $projectRepository,
+        UapRepository                                   $uapRepository,
+        OriginRepository                                $originRepository,
+        PlaceRepository                                 $placeRepository,
+        AnomalyTypeRepository                           $anomalyTypeRepository,
+        ImmediateConservatoryMeasuresListRepository     $imcomeListRepository,
+        ProductCategoryRepository                       $productCategoryRepository,
+        ProductColorRepository                          $productColorRepository,
+        ProductVersionRepository                        $productVersionRepository,
+        EFNCRepository                                  $efncRepository,
 
 
-        LoggerInterface                 $logger
+        LoggerInterface                                 $logger
     ) {
         $this->em                           = $em;
 
@@ -73,7 +73,7 @@ class EntityDeletionService
         $this->originRepository             = $originRepository;
         $this->placeRepository              = $placeRepository;
         $this->anomalyTypeRepository        = $anomalyTypeRepository;
-        $this->imcomeRepository             = $imcomeRepository;
+        $this->imcomeListRepository         = $imcomeListRepository;
         $this->productCategoryRepository    = $productCategoryRepository;
         $this->productColorRepository       = $productColorRepository;
         $this->productVersionRepository     = $productVersionRepository;
@@ -114,7 +114,7 @@ class EntityDeletionService
                 $repository = $this->anomalyTypeRepository;
                 break;
             case 'imcome':
-                $repository = $this->imcomeRepository;
+                $repository = $this->imcomeListRepository;
                 break;
             case 'productCategory':
                 $repository = $this->productCategoryRepository;
@@ -187,30 +187,42 @@ class EntityDeletionService
         }
         if ($entityType === 'imcome') {
             $entity->setArchived(true);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(true);
+            $midEntities = $entity->getImmediateConservatoryMeasures();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(true);
+                }
             }
         }
         if ($entityType === 'productCategory') {
             $entity->setArchived(true);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(true);
+            $midEntities = $entity->getProducts();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(true);
+                }
             }
         }
         if ($entityType === 'productColor') {
             $entity->setArchived(true);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(true);
+            $midEntities = $entity->getProducts();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(true);
+                }
             }
         }
         if ($entityType === 'productVersion') {
             $entity->setArchived(true);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(true);
+            $midEntities = $entity->getProducts();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(true);
+                }
             }
         }
 
@@ -250,7 +262,7 @@ class EntityDeletionService
                 $repository = $this->anomalyTypeRepository;
                 break;
             case 'imcome':
-                $repository = $this->imcomeRepository;
+                $repository = $this->imcomeListRepository;
                 break;
             case 'productCategory':
                 $repository = $this->productCategoryRepository;
@@ -323,30 +335,42 @@ class EntityDeletionService
         }
         if ($entityType === 'imcome') {
             $entity->setArchived(true);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(true);
+            $midEntities = $entity->getImmediateConservatoryMeasures();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(true);
+                }
             }
         }
         if ($entityType === 'productCategory') {
             $entity->setArchived(true);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(true);
+            $midEntities = $entity->getProducts();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(true);
+                }
             }
         }
         if ($entityType === 'productColor') {
             $entity->setArchived(true);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(true);
+            $midEntities = $entity->getProducts();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(true);
+                }
             }
         }
         if ($entityType === 'productVersion') {
             $entity->setArchived(true);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(true);
+            $midEntities = $entity->getProducts();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(true);
+                }
             }
         }
 
@@ -388,7 +412,7 @@ class EntityDeletionService
                 $repository = $this->anomalyTypeRepository;
                 break;
             case 'imcome':
-                $repository = $this->imcomeRepository;
+                $repository = $this->imcomeListRepository;
                 break;
             case 'productCategory':
                 $repository = $this->productCategoryRepository;
@@ -461,30 +485,42 @@ class EntityDeletionService
         }
         if ($entityType === 'imcome') {
             $entity->setArchived(false);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(false);
+            $midEntities = $entity->getImmediateConservatoryMeasures();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(false);
+                }
             }
         }
         if ($entityType === 'productCategory') {
             $entity->setArchived(false);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(false);
+            $midEntities = $entity->getProducts();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(false);
+                }
             }
         }
         if ($entityType === 'productColor') {
             $entity->setArchived(false);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(false);
+            $midEntities = $entity->getProducts();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(false);
+                }
             }
         }
         if ($entityType === 'productVersion') {
             $entity->setArchived(false);
-            $forms = $entity->getEFNCs();
-            foreach ($forms as $form) {
-                $form->setArchived(false);
+            $midEntities = $entity->getProducts();
+            foreach ($midEntities as $midEntity) {
+                $forms = $midEntity->getEFNC();
+                foreach ($forms as $form) {
+                    $form->setArchived(false);
+                }
             }
         }
 

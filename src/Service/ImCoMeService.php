@@ -54,10 +54,10 @@ class ImCoMeService extends AbstractController
         // Request $request
     ) {
         foreach ($efncform->get('immediateConservatoryMeasures')->getData() as $imcome) {
-            if ($imcome->getAction() === $this->imcomeListRepo->findOneBy(['name' => 'Autre (Précisez l\'action prise)'])) {
-            } else {
-                $imcome->setCustomAction(null);
-            }
+            // if ($imcome->getAction() === $this->imcomeListRepo->findOneBy(['name' => 'Autre (Précisez l\'action prise)'])) {
+            // } else {
+            //     $imcome->setCustomAction(null);
+            // }
             $imcome->setEFNC($efnc);
             $this->em->persist($imcome);
         }
