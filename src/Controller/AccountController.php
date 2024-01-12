@@ -51,7 +51,7 @@ class AccountController extends FrontController
 
 
     // This function is responsible for rendering the account modifiying interface destined to the super admin
-    #[Route(path: '/modify_account/{userid}', name: 'modify_account')]
+    #[Route(path: '/admin/modify_account/{userid}', name: 'modify_account')]
     public function modify_account(UserInterface $currentUser, int $userid, AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -61,10 +61,18 @@ class AccountController extends FrontController
                 $this->addFlash('danger', 'Le compte ne peut être modifié');
                 return $this->redirectToRoute('app_base');
             }
-            return $this->render('services/admin_services/accountservices/modify_account_view.html.twig', [
-                'user'          => $user,
-                'error'         => $error,
-            ]);
+
+            if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
+                return $this->render('services/admin_services/accountservices/superadmin_modify_account_view.html.twig', [
+                    'user'          => $user,
+                    'error'         => $error,
+                ]);
+            } else {
+                return $this->render('services/admin_services/accountservices/modify_account_view.html.twig', [
+                    'user'          => $user,
+                    'error'         => $error,
+                ]);
+            }
         } else if ($request->isMethod('POST')) {
             $error = $authenticationUtils->getLastAuthenticationError();
             $usermod = $this->accountService->modifyAccount($request, $currentUser, $user);
@@ -78,7 +86,7 @@ class AccountController extends FrontController
 
 
     // This function is responsible for managing the logic of the account deletion
-    #[Route(path: '/delete_account/basic{{userId}}', name: 'delete_account_basic')]
+    #[Route(path: '/admin/delete_account/basic{{userId}}', name: 'delete_account_basic')]
     public function delete_account_basic(int $userId): Response
     {
         $result = $this->accountService->deleteUser($userId);
