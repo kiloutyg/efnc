@@ -44,10 +44,10 @@ sg docker -c "
     sudo systemctl enable containerd.service;"
 
 # Ask the user for the git repository address either in ssh or http
-    read -p "Address of the git repository (ssh or http // default: https://github.com/kiloutyg/efnc ) :  " GIT_ADDRESS;
+    read -p "Address of the git repository (ssh or http // default: https://github.com/polangres/efnc ) :  " GIT_ADDRESS;
     if [ -z "${GIT_ADDRESS}" ]
     then
-        GIT_ADDRESS="https://github.com/kiloutyg/efnc"
+        GIT_ADDRESS="https://github.com/polangres/efnc"
     fi
 
 # Clone the git repository and run the env_create.sh script
@@ -84,10 +84,10 @@ done
             done
         if [ "${UPDATE_ANSWER}" == "yes" ]; then
         # Ask the user for the git repository address either in ssh or http
-            read -p "Address of the git repository (ssh or http // default: https://github.com/kiloutyg/efnc ) :  " GIT_ADDRESS;
+            read -p "Address of the git repository (ssh or http // default: https://github.com/polangres/efnc ) :  " GIT_ADDRESS;
             if [ -z "${GIT_ADDRESS}" ]
             then
-                GIT_ADDRESS="https://github.com/kiloutyg/efnc"
+                GIT_ADDRESS="https://github.com/polangres/efnc"
             fi
             cd efnc;
             sg docker -c "docker compose stop";
