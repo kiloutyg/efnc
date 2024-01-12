@@ -67,7 +67,7 @@ ${PROXY_ENV}
       - ./:/var/www
     labels:
       - traefik.enable=true
-      - traefik.http.routers.webefnc.rule=PathPrefix(`/efnc`)
+      - traefik.http.routers.webefnc.rule=PathPrefix(\`/efnc\`)
       - traefik.http.routers.webefnc.middlewares=strip-webefnc-prefix
       - traefik.http.middlewares.strip-webefnc-prefix.stripprefix.prefixes=/efnc
       - traefik.http.routers.webefnc.entrypoints=web
@@ -165,7 +165,7 @@ ${PROXY_ENV}
       - ./:/var/www
     labels:
       - traefik.enable=true
-      - traefik.http.routers.webefnc.rule=PathPrefix(`/efnc`)
+      - traefik.http.routers.webefnc.rule=PathPrefix(\`/efnc\`)
       - traefik.http.routers.webefnc.middlewares=strip-webefnc-prefix
       - traefik.http.middlewares.strip-webefnc-prefix.stripprefix.prefixes=/efnc
       - traefik.http.routers.webefnc.entrypoints=web
@@ -205,7 +205,7 @@ ${PROXY_ENV}
       - ./:/var/www
     labels:
       - traefik.enable=true
-      - traefik.http.routers.webefnc.rule=PathPrefix(`/efnc`)
+      - traefik.http.routers.webefnc.rule=PathPrefix(\`/efnc\`)
       - traefik.http.routers.webefnc.middlewares=strip-webefnc-prefix
       - traefik.http.middlewares.strip-webefnc-prefix.stripprefix.prefixes=/efnc
       - traefik.http.routers.webefnc.entrypoints=web
