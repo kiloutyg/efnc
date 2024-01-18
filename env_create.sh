@@ -72,7 +72,7 @@ ${PROXY_ENV}
       - traefik.http.middlewares.strip-webefnc-prefix.stripprefix.prefixes=/efnc
       - traefik.http.routers.webefnc.entrypoints=web
     depends_on:
-      - databaseefnc
+      - database
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
@@ -170,7 +170,7 @@ ${PROXY_ENV}
       - traefik.http.middlewares.strip-webefnc-prefix.stripprefix.prefixes=/efnc
       - traefik.http.routers.webefnc.entrypoints=web
     depends_on:
-      - databaseefnc
+      - database
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
@@ -210,7 +210,7 @@ ${PROXY_ENV}
       - traefik.http.middlewares.strip-webefnc-prefix.stripprefix.prefixes=/efnc
       - traefik.http.routers.webefnc.entrypoints=web
     depends_on:
-      - databaseefnc
+      - database
     networks:
       vpcbr:
         ipv4_address: 172.22.0.4
