@@ -23,9 +23,9 @@ class ProductType extends AbstractType
     {
         return [
             'required' => true,
+            'placeholder' => $placeholder,
             'attr' => [
                 'class' => 'form-control mx-auto mt-2',
-                'placeholder' => $placeholder
             ],
             'label_attr' => [
                 'class' => 'form-label',
@@ -54,7 +54,7 @@ class ProductType extends AbstractType
                                 ->where('t.archived IS NULL OR t.archived = false');
                         },
                     ],
-                    $this->getDefaultOptions('Choisir un Type de Produits')
+                    $this->getDefaultOptions('Choisir un Type :')
                 )
             )
             ->add(
@@ -71,7 +71,7 @@ class ProductType extends AbstractType
                                 ->where('t.archived IS NULL OR t.archived = false');
                         },
                     ],
-                    $this->getDefaultOptions('Choisir une Version de Produits')
+                    $this->getDefaultOptions('Choisir une Version :')
                 )
             )
             ->add(
@@ -88,7 +88,7 @@ class ProductType extends AbstractType
                                 ->where('t.archived IS NULL OR t.archived = false');
                         },
                     ],
-                    $this->getDefaultOptions('Choisir une couleur de produit')
+                    $this->getDefaultOptions('Choisir une Couleur :')
                 )
             );
     }

@@ -1,31 +1,12 @@
 window.addEventListener("turbo:load", () => {
   const archiveEntityButtons = document.querySelectorAll(".archive-entity");
-  const restoreArchivedEntityButtons = document.querySelectorAll(
-    ".restore-entity"
-  );
-  const deleteCategoryButtons = document.querySelectorAll(".delete-category");
-  const deleteButtonButtons = document.querySelectorAll(".delete-button");
+  const restoreArchivedEntityButtons = document.querySelectorAll(".restore-entity");
+  const creationUserButtons = document.querySelectorAll(".submit-user-creation");
   const deleteUserButtons = document.querySelectorAll(".delete-user");
-  const deleteUserButtonsDefinitively = document.querySelectorAll(".definitively-delete-user");
-  const deleteUploadButtons = document.querySelectorAll(".delete-upload");
-  const deleteIncidentButtons = document.querySelectorAll(".delete-incident");
-  const deleteIncidentCategoryButtons = document.querySelectorAll(
-    ".delete-incidentCategory"
-  );
-  const deleteDepartmentButtons = document.querySelectorAll(
-    ".delete-department"
-  );
-  const submitApprovalButtons = document.querySelectorAll(
-    ".submit-approval"
-  );
-  const submitDisapprovalModifcationButtons = document.querySelectorAll(
-    ".submit-disapproval-modification");
-  const submitUploadModifcationButtons = document.querySelectorAll(
-    ".submit-upload-modification");
-  const submitIncidentModifcationButtons = document.querySelectorAll(
-    ".submit-incident-modification");
-  const submitViewsModifcationButtons = document.querySelectorAll(
-    ".submit-views-modification");
+  const archiveEFNCButtons = document.querySelectorAll(".archive-EFNC");
+  const creationEFNCformButtons = document.querySelectorAll(".submit-EFNCform-creation");
+  const modificationEFNCformButtons = document.querySelectorAll(".submit-EFNCform-modification");
+  const entityCreationButtons = document.querySelectorAll(".submit-entity-creation");
 
   const confirmationHandler = (event, message) => {
     const confirmed = confirm(message);
@@ -51,22 +32,17 @@ window.addEventListener("turbo:load", () => {
       );
     });
   });
-  deleteCategoryButtons.forEach((button) => {
+
+
+  creationUserButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
         event,
-        "Êtes vous sûr de vouloir supprimer cette categorie?"
+        "Êtes vous sûr de vouloir créer cet Utilisateur?"
       );
     });
   });
-  deleteButtonButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir supprimer ce Bouton?"
-      );
-    });
-  });
+
   deleteUserButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
@@ -75,84 +51,43 @@ window.addEventListener("turbo:load", () => {
       );
     });
   });
-  deleteUserButtonsDefinitively.forEach((button) => {
+
+
+  archiveEFNCButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
         event,
-        "Êtes vous sûr de vouloir supprimer cet Utilisateur? Celà supprimera également tous les incidents et documents liés à cet utilisateur."
+        "Êtes vous sûr de vouloir archiver cette EFNC?"
       );
     });
   });
-  deleteUploadButtons.forEach((button) => {
+
+  creationEFNCformButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
         event,
-        "Êtes vous sûr de vouloir supprimer ce Document?"
+        "Êtes vous sûr de vouloir créer cette EFNC?"
       );
     });
   });
-  deleteIncidentButtons.forEach((button) => {
+
+  modificationEFNCformButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
         event,
-        "Êtes vous sûr de vouloir supprimer cet Incident?"
+        "Êtes vous sûr de vouloir modifier cette EFNC?"
       );
     });
   });
-  deleteIncidentCategoryButtons.forEach((button) => {
+
+  entityCreationButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
         event,
-        "Êtes vous sûr de vouloir supprimer ce Type d'Incident?"
+        "Êtes vous sûr de vouloir créer cette entitée?"
       );
     });
   });
-  deleteDepartmentButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir supprimer ce Service?"
-      );
-    });
-  });
-  submitApprovalButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir soumettre ce formulaire de validation?"
-      );
-    });
-  });
-  submitDisapprovalModifcationButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir soumettre ces modifications?"
-      );
-    });
-  });
-  submitUploadModifcationButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir soumettre ces modifications?"
-      );
-    });
-  });
-  submitIncidentModifcationButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir soumettre ces modifications?"
-      );
-    });
-  });
-  submitViewsModifcationButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir soumettre ces modifications?"
-      );
-    });
-  });
+
+
 });

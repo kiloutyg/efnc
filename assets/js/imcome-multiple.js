@@ -47,7 +47,7 @@ document.addEventListener('turbo:load', function () {
 
         // Handle the click event of the remove button
         removeButton.addEventListener('click', function (e) {
-            e.preventDefault();
+            // e.preventDefault();
 
             // Remove the item from the DOM
             item.remove();
