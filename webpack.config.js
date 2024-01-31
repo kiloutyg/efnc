@@ -26,7 +26,6 @@ Encore
     .addEntry('confirmation', './assets/js/confirmation.js')
     .addEntry('risk-weighting-pri-calculus', './assets/js/risk-weighting-pri-calculus.js')
     .addEntry('imcome-multiple', './assets/js/imcome-multiple.js')
-    .addEntry('custom-required', './assets/js/custom-required.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
