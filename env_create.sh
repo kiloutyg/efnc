@@ -57,7 +57,7 @@ version: '3.8'
 
 services:
   webefnc:
-    build: ./docker/dockerfile/
+    image: ghcr.io/kiloutyg/efnc:main
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
@@ -155,7 +155,7 @@ version: '3.8'
 
 services:
   web:
-    build: ./docker/dockerfile/
+    image: ghcr.io/kiloutyg/efnc:main
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
@@ -195,7 +195,7 @@ version: '3.8'
 
 services:
   web:
-    build: ./docker/dockerfile/
+    image: ghcr.io/kiloutyg/efnc:main
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
