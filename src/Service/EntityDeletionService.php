@@ -46,7 +46,7 @@ class EntityDeletionService
 
 
     public function __construct(
-        EntityManagerInterface          $em,
+        EntityManagerInterface                          $em,
 
         UserRepository                                  $userRepository,
         TeamRepository                                  $teamRepository,

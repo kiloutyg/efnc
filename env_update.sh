@@ -68,7 +68,7 @@ version: '3.8'
 
 services:
   web:
-    image: ghcr.io/kiloutyg/efnc:main
+    image: ghcr.io/polangres/efnc:main
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
@@ -108,7 +108,7 @@ version: '3.8'
 
 services:
   web:
-    image: ghcr.io/kiloutyg/efnc:main
+    image: ghcr.io/polangres/efnc:main
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
