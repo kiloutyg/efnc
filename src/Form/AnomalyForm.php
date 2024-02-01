@@ -31,7 +31,7 @@ class AnomalyForm extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Ajouter',
                 'attr' => [
-                    'class' => 'btn btn-primary btn-login text-uppercase fw-bold mt-2 mb-3 submit-approval',
+                    'class' => 'btn btn-primary btn-login text-uppercase fw-bold mt-2 mb-3 submit-entity-creation',
                     'type' => 'submit'
                 ]
             ]);

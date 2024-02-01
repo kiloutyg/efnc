@@ -44,15 +44,13 @@
 
 						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 						<div class="d-grid col-6 mx-auto">
-							<button class="btn btn-primary btn-login text-uppercase fw-bold mt-2 mb-5" type="submit">
+							<button class="btn btn-primary btn-login text-uppercase fw-bold mt-2 mb-5 submit-user-creation" type="submit">
 								Création du compte
 
 							</button>
 						</div>
 					</form>
-
 				</div>
-
 			</div>
 
 			{% if users is not empty and users|length > 1 %}

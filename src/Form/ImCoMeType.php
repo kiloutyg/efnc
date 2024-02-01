@@ -49,6 +49,7 @@ class ImCoMeType extends AbstractType
                     [
                         'class' => ImmediateConservatoryMeasuresList::class,
                         'choice_label' => 'name',
+                        'placeholder' => 'Choisissez une action :',
                         'label' => 'Actions Mises en Place',
                         'query_builder' => function (EntityRepository $er): QueryBuilder {
                             return $er->createQueryBuilder('t')
@@ -129,7 +130,6 @@ class ImCoMeType extends AbstractType
                         'required' => true,
                         'attr' => [
                             'class' => 'form-control mx-auto mt-2',
-                            'placeholder' => ''
 
                         ],
                         'label_attr' => [

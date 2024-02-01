@@ -1,31 +1,104 @@
-window.addEventListener("turbo:load", () => {
+document.addEventListener('turbo:load', function () {
+  // Define the "form" element and indicator
+  var form = null;
+  var indic = '';
+  if (document.getElementById('formCreationForm')) {
+    form = document.getElementById('formCreationForm');
+    indic = 'creation';
+  } else if (document.getElementById('formModificationForm')) {
+    form = document.getElementById('formModificationForm');
+    indic = 'modification';
+  }
+  console.log(indic);
+
+  const checkFormValidity = (form) => {
+    var requiredElements = form.querySelectorAll('[required]');
+    var isFormValid = true;
+
+    // Clear previous errors
+    const errorMessages = form.querySelectorAll('.error-message');
+    errorMessages.forEach((msg) => {
+      msg.remove();
+    });
+
+    for (let i = 0; i < requiredElements.length; i++) {
+      const input = requiredElements[i];
+      if (!input.value.trim()) {
+        const errorMessage = document.createElement('span');
+        errorMessage.textContent = 'Ce champ est obligatoire.';
+        errorMessage.classList.add('error-message');
+        // Style the error message, for example:
+        errorMessage.style.color = 'red';
+
+        // Insert the error message in the DOM
+        input.parentNode.insertBefore(errorMessage, input.nextSibling);
+
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        input.focus();
+
+        isFormValid = false;
+        console.log('hello from the checkFormValidity function = false');
+        break; // Exit the loop on the first invalid input
+      }
+    }
+
+    console.log('isFormValid = ' + isFormValid);
+    return isFormValid;
+  };
+
+
+  if (form !== null) {
+    console.log('hello from the test (form !== null) = true ');
+
+    // Attach the submit handler if the "form" element exists
+    form.addEventListener('submit', function (event) {
+      if (!checkFormValidity(form)) {
+        event.preventDefault(); // Prevent form submission if form is invalid
+      }
+    });
+  }
+
+  // Validation before confirmation
+  const attachClickHandlerWithValidation = (button, message) => {
+    console.log('hello from the attachClickHandlerWithValidation function');
+    button.addEventListener('click', (event) => {
+      if (!checkFormValidity(form)) { // If form is invalid
+        event.preventDefault(); // Prevent the action
+        return; // Exit the function early
+      }
+      const confirmed = confirm(message);
+      if (!confirmed) {
+        event.preventDefault();
+      }
+    });
+  };
+
+  // // Your button selectors and confirmation messages
+  const creationEFNCformButtons = document.querySelectorAll(".submit-EFNCform-creation");
+  creationEFNCformButtons.forEach((button) => {
+    attachClickHandlerWithValidation(
+      button,
+      "Êtes vous sûr de vouloir ajouter cette Fiche de Non Conformité ?"
+    );
+  });
+
+  const modificationEFNCformButtons = document.querySelectorAll(".submit-EFNCform-modification");
+
+  modificationEFNCformButtons.forEach((button) => {
+    attachClickHandlerWithValidation(
+      button,
+      "Êtes vous sûr de vouloir modifier cette Fiche de Non Conformité ?"
+    );
+  });
+
+
   const archiveEntityButtons = document.querySelectorAll(".archive-entity");
-  const restoreArchivedEntityButtons = document.querySelectorAll(
-    ".restore-entity"
-  );
-  const deleteCategoryButtons = document.querySelectorAll(".delete-category");
-  const deleteButtonButtons = document.querySelectorAll(".delete-button");
+  const restoreArchivedEntityButtons = document.querySelectorAll(".restore-entity");
+  const creationUserButtons = document.querySelectorAll(".submit-user-creation");
   const deleteUserButtons = document.querySelectorAll(".delete-user");
-  const deleteUserButtonsDefinitively = document.querySelectorAll(".definitively-delete-user");
-  const deleteUploadButtons = document.querySelectorAll(".delete-upload");
-  const deleteIncidentButtons = document.querySelectorAll(".delete-incident");
-  const deleteIncidentCategoryButtons = document.querySelectorAll(
-    ".delete-incidentCategory"
-  );
-  const deleteDepartmentButtons = document.querySelectorAll(
-    ".delete-department"
-  );
-  const submitApprovalButtons = document.querySelectorAll(
-    ".submit-approval"
-  );
-  const submitDisapprovalModifcationButtons = document.querySelectorAll(
-    ".submit-disapproval-modification");
-  const submitUploadModifcationButtons = document.querySelectorAll(
-    ".submit-upload-modification");
-  const submitIncidentModifcationButtons = document.querySelectorAll(
-    ".submit-incident-modification");
-  const submitViewsModifcationButtons = document.querySelectorAll(
-    ".submit-views-modification");
+  const archiveEFNCButtons = document.querySelectorAll(".archive-EFNC");
+
+  const entityCreationButtons = document.querySelectorAll(".submit-entity-creation");
 
   const confirmationHandler = (event, message) => {
     const confirmed = confirm(message);
@@ -51,22 +124,17 @@ window.addEventListener("turbo:load", () => {
       );
     });
   });
-  deleteCategoryButtons.forEach((button) => {
+
+
+  creationUserButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
         event,
-        "Êtes vous sûr de vouloir supprimer cette categorie?"
+        "Êtes vous sûr de vouloir créer cet Utilisateur?"
       );
     });
   });
-  deleteButtonButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir supprimer ce Bouton?"
-      );
-    });
-  });
+
   deleteUserButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
@@ -75,84 +143,24 @@ window.addEventListener("turbo:load", () => {
       );
     });
   });
-  deleteUserButtonsDefinitively.forEach((button) => {
+
+
+  archiveEFNCButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
         event,
-        "Êtes vous sûr de vouloir supprimer cet Utilisateur? Celà supprimera également tous les incidents et documents liés à cet utilisateur."
+        "Êtes vous sûr de vouloir archiver cette EFNC?"
       );
     });
   });
-  deleteUploadButtons.forEach((button) => {
+
+  entityCreationButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       confirmationHandler(
         event,
-        "Êtes vous sûr de vouloir supprimer ce Document?"
+        "Êtes vous sûr de vouloir créer cette entitée?"
       );
     });
   });
-  deleteIncidentButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir supprimer cet Incident?"
-      );
-    });
-  });
-  deleteIncidentCategoryButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir supprimer ce Type d'Incident?"
-      );
-    });
-  });
-  deleteDepartmentButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir supprimer ce Service?"
-      );
-    });
-  });
-  submitApprovalButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir soumettre ce formulaire de validation?"
-      );
-    });
-  });
-  submitDisapprovalModifcationButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir soumettre ces modifications?"
-      );
-    });
-  });
-  submitUploadModifcationButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir soumettre ces modifications?"
-      );
-    });
-  });
-  submitIncidentModifcationButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir soumettre ces modifications?"
-      );
-    });
-  });
-  submitViewsModifcationButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      confirmationHandler(
-        event,
-        "Êtes vous sûr de vouloir soumettre ces modifications?"
-      );
-    });
-  });
+
 });

@@ -38,9 +38,10 @@ class FormCreationType extends AbstractType
     {
         return [
             'required' => true,
+
             'attr' => [
                 'class' => 'form-control mx-auto mt-2',
-                'placeholder' => $placeholder
+                'placeholder' => $placeholder,
             ],
             'label_attr' => [
                 'class' => 'form-label',
@@ -67,7 +68,6 @@ class FormCreationType extends AbstractType
                         'attr' => [
                             'class' => 'form-control mx-auto mt-2',
                             'placeholder' => 'Prénom NOM'
-
                         ],
                         'label_attr' => [
                             'class' => 'form-label',
@@ -130,39 +130,38 @@ class FormCreationType extends AbstractType
             ->add(
                 'Team',
                 EntityType::class,
-                array_merge(
-                    [
-                        'label' => 'Equipe :',
-                        'class' => Team::class,
-                        'choice_label' => 'name',
-                        'query_builder' => function (EntityRepository $er): QueryBuilder {
-                            return $er->createQueryBuilder('t')
-                                ->select('t')
-                                ->where('t.archived IS NULL OR t.archived = false');
-                        }
-                    ],
-                    [
-                        'required' => true,
-                        'attr' => [
-                            'class' => 'form-control mx-auto mt-2',
-                            'placeholder' => 'Choisir une équipe :'
+                [
 
-                        ],
-                        'label_attr' => [
-                            'class' => 'form-label',
-                            'style' => 'font-weight: bold; color: #ffffff;'
-                        ],
-                        'row_attr' => [
-                            'class' => 'col-4 mb-3'
-                        ],
-                    ]
-                )
+                    'label' => 'Equipe :',
+                    'class' => Team::class,
+                    'choice_label' => 'name',
+                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        return $er->createQueryBuilder('t')
+                            ->select('t')
+                            ->where('t.archived IS NULL OR t.archived = false');
+                    },
+                    'required' => true,
+                    'placeholder' => 'Choisir une équipe :',
+
+                    'attr' => [
+                        'class' => 'form-control mx-auto mt-2',
+                    ],
+                    'label_attr' => [
+                        'class' => 'form-label',
+                        'style' => 'font-weight: bold; color: #ffffff;'
+                    ],
+                    'row_attr' => [
+                        'class' => 'col-4 mb-3'
+                    ],
+                ]
             )
+
             ->add(
                 'DetectionPlace',
                 EntityType::class,
                 array_merge(
                     [
+
                         'label' => 'Lieu de détection :',
                         'class' => Place::class,
                         'choice_label' => 'name',
@@ -174,9 +173,9 @@ class FormCreationType extends AbstractType
                     ],
                     [
                         'required' => true,
+                        'placeholder' => 'Choisir le lieu de détection :',
                         'attr' => [
                             'class' => 'form-control mx-auto mt-2',
-                            'placeholder' => 'Choisir le lieu de détection de la Non-Conformité :'
 
                         ],
                         'label_attr' => [
@@ -194,11 +193,10 @@ class FormCreationType extends AbstractType
                 ProductType::class,
                 array_merge(
                     [
+
                         'label' => 'Désignation du Produit :',
-                        'required' => true,
                         'attr' => [
                             'class' => ' mt-2 row',
-                            'placeholder' => 'Désignation du Produit',
                         ],
                         'label_attr' => [
                             'class' => 'form-label',
@@ -218,6 +216,8 @@ class FormCreationType extends AbstractType
                         'label' => 'Projet :',
                         'class' => Project::class,
                         'choice_label' => 'name',
+                        'placeholder' => 'Choisir le projet :',
+
                         'query_builder' => function (EntityRepository $er): QueryBuilder {
                             return $er->createQueryBuilder('t')
                                 ->select('t')
@@ -233,6 +233,7 @@ class FormCreationType extends AbstractType
                 array_merge(
                     [
                         'label' => 'UAP :',
+
                         'class' => UAP::class,
                         'choice_label' => 'name',
                         'query_builder' => function (EntityRepository $er): QueryBuilder {
@@ -243,9 +244,9 @@ class FormCreationType extends AbstractType
                     ],
                     [
                         'required' => true,
+                        'placeholder' => 'Choisir l\'UAP :',
                         'attr' => [
                             'class' => 'form-control mx-auto mt-2',
-                            'placeholder' => 'Choisir l\'UAP :'
 
                         ],
                         'label_attr' => [
@@ -265,6 +266,7 @@ class FormCreationType extends AbstractType
                     [
                         'label' => 'Lieu de création de la Non-Conformité :',
                         'class' => Origin::class,
+
                         'choice_label' => 'name',
                         'query_builder' => function (EntityRepository $er): QueryBuilder {
                             return $er->createQueryBuilder('t')
@@ -274,9 +276,9 @@ class FormCreationType extends AbstractType
                     ],
                     [
                         'required' => true,
+                        'placeholder' => 'Choisir le lieu de création :',
                         'attr' => [
                             'class' => 'form-control mx-auto mt-2',
-                            'placeholder' => 'Choisir le lieu de création de la Non-Conformité :'
 
                         ],
                         'label_attr' => [
@@ -295,6 +297,7 @@ class FormCreationType extends AbstractType
                 array_merge(
                     [
                         'label' => 'Type de d\'anomalie :',
+
                         'class' => AnomalyType::class,
                         'choice_label' => 'name',
                         'query_builder' => function (EntityRepository $er): QueryBuilder {
@@ -305,9 +308,9 @@ class FormCreationType extends AbstractType
                     ],
                     [
                         'required' => true,
+                        'placeholder' => 'Choisir le type d\'anomalie :',
                         'attr' => [
                             'class' => 'form-control mx-auto mt-2',
-                            'placeholder' => 'Choisir le type de Non-Conformité :'
 
                         ],
                         'label_attr' => [
@@ -325,7 +328,7 @@ class FormCreationType extends AbstractType
                 NumberType::class,
                 array_merge(
                     [
-                        'label' => 'Nombre de Pièces Non-Conforme :',
+                        'label' => 'Nb. de Pièces Non-Conforme :',
                         'html5' => true,
                         'input' => 'number',
                         'attr' => [
@@ -424,12 +427,16 @@ class FormCreationType extends AbstractType
                     $this->getDefaultOptions('')
                 )
             )
-            ->add('riskWeighting', RiskWeightingType::class, array_merge(
-                [
-                    'label' => 'Pondération des risques:',
-                ],
-                $this->getDefaultOptions('')
-            ));
+            ->add(
+                'riskWeighting',
+                RiskWeightingType::class,
+                array_merge(
+                    [
+                        'label' => 'Pondération des risques:',
+                    ],
+                    $this->getDefaultOptions('')
+                )
+            );
     }
 
 

@@ -70,8 +70,6 @@ class EFNCController extends BaseController
     }
 
 
-
-
     #[Route('/form{efncID}_modification_display', name: 'form_modification_display')]
     public function formModificationDisplay(int $efncID, Request $request): Response
     {
