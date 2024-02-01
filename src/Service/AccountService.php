@@ -3,6 +3,9 @@
 namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+
+use Psr\Log\LoggerInterface;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,29 +23,40 @@ class AccountService
     private $userRepository;
     private $manager;
     private $entityDeletionService;
+    private $logger;
 
     public function __construct(
         UserPasswordHasherInterface $passwordHasher,
         UserRepository $userRepository,
         EntityManagerInterface $manager,
-        EntityDeletionService $entityDeletionService
+        EntityDeletionService $entityDeletionService,
+        LoggerInterface $logger
     ) {
         $this->passwordHasher = $passwordHasher;
         $this->userRepository = $userRepository;
         $this->manager = $manager;
         $this->entityDeletionService = $entityDeletionService;
+        $this->logger = $logger;
     }
 
     // This function is responsible for creating a new user account and persisting it to the database
-    public function createAccount(Request $request, $error)
+    public function createAccount(Request $request)
     {
+        $this->logger->info('full request: ' . json_encode($request->request->all()));
         if ($request->getMethod() == 'POST') {
             $name = $request->request->get('username');
             $password = $request->request->get('password');
-            $role = $request->request->get('role');
             $emailAddress = $request->request->get('emailAddress');
 
+            if ($request->request->get('role') == '') {
+                $role = 'ROLE_USER';
+            } else {
+                $role = $request->request->get('role');
+            };
 
+            if ($role == 'ROLE_ADMIN' && $password == '') {
+                throw new \Exception('Le mot de passe ne peut pas être vide.');
+            }
             // check if the username is already in use
             $user = $this->userRepository->findOneBy(['username' => $name]);
             if ($user) {

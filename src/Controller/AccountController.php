@@ -34,16 +34,16 @@ class AccountController extends FrontController
                 $this->addFlash('danger', 'Le compte ne peut être créé');
                 return $this->redirectToRoute('app_base');
             }
-            $error = null;
-            $result = $this->accountService->createAccount(
-                $request,
-                $error
-            );
-            if ($result) {
-                $this->addFlash('success', 'Le compte a bien été créé.');
-            }
-            if ($error) {
-                $this->addFlash('error', $error);
+            try {
+                $result = $this->accountService->createAccount($request);
+                if ($result) {
+                    $this->addFlash('success', 'Le compte a bien été créé.');
+                }
+            } catch (\Exception $e) {
+                // Catch and handle the exception.
+                // Log it, add a flash message, etc.
+                $error = $e->getMessage();
+                $this->addFlash('danger', $error);
             }
             return $this->redirectToRoute('app_base');
         }
