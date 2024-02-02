@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 use App\Entity\User;
 
@@ -24,19 +25,22 @@ class AccountService
     private $manager;
     private $entityDeletionService;
     private $logger;
+    private $validator;
 
     public function __construct(
         UserPasswordHasherInterface $passwordHasher,
         UserRepository $userRepository,
         EntityManagerInterface $manager,
         EntityDeletionService $entityDeletionService,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ValidatorInterface $validator
     ) {
         $this->passwordHasher = $passwordHasher;
         $this->userRepository = $userRepository;
         $this->manager = $manager;
         $this->entityDeletionService = $entityDeletionService;
         $this->logger = $logger;
+        $this->validator = $validator;
     }
 
     // This function is responsible for creating a new user account and persisting it to the database
@@ -72,6 +76,25 @@ class AccountService
                 $user->setUsername($name);
                 $user->setRoles([$role]);
                 $user->setEmailAddress($emailAddress);
+                $errors = $this->validator->validate($user);
+                if (count($errors) > 0) {
+                    $errorMessages = [];
+                    foreach ($errors as $violation) {
+                        // You can use ->getPropertyPath() if you need to show the field name
+                        // $errorMessages[] = $violation->getPropertyPath() . ': ' . $violation->getMessage();
+                        $errorMessages[] = $violation->getMessage();
+                    }
+
+                    // Now you have an array of user-friendly messages you can display
+                    // For example, you can separate them with new lines when displaying in text format:
+                    $errorsString = implode("\n", $errorMessages);
+
+                    // If you need to return JSON response:
+                    // return new JsonResponse(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
+
+                    throw new \Exception($errorsString);
+                }
+
                 $this->manager->persist($user);
                 $this->manager->flush();
 
