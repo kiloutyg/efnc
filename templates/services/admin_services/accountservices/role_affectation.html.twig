@@ -21,8 +21,8 @@
 {% elseif is_granted('ROLE_ADMIN') %}
 	<div>
 		<label>Selectionnez le role du nouveau compte:</label>
-		<select class="form-control "  required name="role" id="role">
-			<option value="" disabled selected >--Choisissez un role--</option>
+		<select class="form-control "  name="role" id="role">
+			<option value="" disabled >--Choisissez un role--</option>
 			<option value="ROLE_USER" selected>User</option>
 		</select>
 	</div>
