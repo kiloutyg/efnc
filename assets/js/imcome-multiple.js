@@ -56,11 +56,6 @@ document.addEventListener('turbo:load', function () {
             });
         }
 
-        // // Optionally: Setup an initial "remove" button on existing items
-        // var existingItems = collectionHolder.querySelectorAll('.imcome-entry');
-        // existingItems.forEach(function (item) {
-        //     addRemoveButton(item);
-        // });
     }
 });
 
