@@ -155,7 +155,6 @@ class ImCoMeType extends AbstractType
                         'required' => true,
                         'attr' => [
                             'class' => 'form-control mx-auto mt-2',
-                            'placeholder' => ''
 
                         ],
                         'label_attr' => [

@@ -34,10 +34,8 @@ class EFNCController extends BaseController
         $efnc->getRiskWeighting($riskWeighting);
         $form1 = $this->createForm(FormCreationType::class, $efnc);
 
-        $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
         if ($request->getMethod() == 'POST') {
             $form1->handleRequest($request);
-            $this->logger->info('full request at creation controller level' . json_encode($request->request->all()));
             if (
                 $form1->isSubmitted() && $form1->isValid()
             ) {

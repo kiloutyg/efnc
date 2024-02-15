@@ -51,10 +51,10 @@
 					<h3>
 						<strong>Mesures Conservatoire Immediates:</strong>
 					</h3>
-					<div id="imcome-container" class="row" data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
+					<div id="imcome-container" data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
 						{% for imcomeFormEntry in form1.immediateConservatoryMeasures %}
 							<div class="imcome-entry">
-								{{ form_widget(imcomeFormEntry) }}
+								{{ form_widget(imcomeFormEntry, {'attr': {'class': 'row'}}) }}
 							</div>
 						{% endfor %}
 					</div>
@@ -79,7 +79,7 @@
 						<div id="rpi-low-risk" style="color: #c8f7c5;">
 							<strong>Risque Faible:</strong>
 							Pas d'analyse, affichage au poste : Alerte d'un Problème.</div>
-					</div>				
+					</div>
 				</div>
 
 				{{ form_row(form1._token) }}

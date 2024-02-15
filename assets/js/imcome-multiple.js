@@ -31,12 +31,14 @@ document.addEventListener('turbo:load', function () {
 
             // Append the new form group to the collectionHolder
             collectionHolder.appendChild(formGroup);
-
-            // Optionally: add a remove button to the newItem and attach event handler
-            addRemoveButton(formGroup);
+            if (index > 0) {
+                // Optionally: add a remove button to the newItem and attach event handler
+                addRemoveButton(formGroup);
+            }
         });
 
         function addRemoveButton(item) {
+
             // Create the remove button
             var removeButton = document.createElement('button');
             removeButton.textContent = 'Supprimer';
@@ -54,11 +56,11 @@ document.addEventListener('turbo:load', function () {
             });
         }
 
-        // Optionally: Setup an initial "remove" button on existing items
-        var existingItems = collectionHolder.querySelectorAll('.imcome-entry');
-        existingItems.forEach(function (item) {
-            addRemoveButton(item);
-        });
+        // // Optionally: Setup an initial "remove" button on existing items
+        // var existingItems = collectionHolder.querySelectorAll('.imcome-entry');
+        // existingItems.forEach(function (item) {
+        //     addRemoveButton(item);
+        // });
     }
 });
 
