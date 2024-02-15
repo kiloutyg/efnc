@@ -67,7 +67,7 @@
 					<div id="imcome-container" data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
 						{% for imcomeFormEntry in form1.immediateConservatoryMeasures %}
 							<div class="imcome-entry">
-								{{ form_widget(imcomeFormEntry) }}
+								{{ form_widget(imcomeFormEntry, {'attr': {'class': 'row'}}) }}
 							</div>
 						{% endfor %}
 					</div>
