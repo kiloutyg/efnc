@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
-	<head lang="fr">
-		<meta charset="UTF-8">
+	<head
+		lang="fr">
+		<meta
+			charset="UTF-8">
 		<title>
 			{% block title %}
 				eFNC
 			{% endblock %}
 		</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="icon" type="image/ico" href="{{ asset('favicon.ico') }}"/>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1">
+		<link
+			rel="icon"
+			type="image/ico"
+			href="{{ asset('favicon.ico') }}"/>
 
 		{% block stylesheets %}
 			{{
@@ -32,21 +39,35 @@
 
 		<!-- Main Navigation -->
 
-		<nav class="navbar navbar-expand-lg navbar-dark flex-shrink-0" style="background-color: #1f3e52">
-			<div class="container">
-				<a class="navbar-brand" href="{{ path('app_base') }}">
-					<img class="img-fluid align-center justify-content-center" src="{{ asset('Plastic_Omnium.svg') }}" alt="Logo de PlasticOmnium" role="img" width="125"/>
+		<nav
+			class="navbar navbar-expand-lg navbar-dark flex-shrink-0"
+			style="background-color: #1f3e52">
+			<div
+				class="container">
+				<a
+					class="navbar-brand"
+					href="{{ path('app_base') }}">
+					<img
+						class="img-fluid align-center justify-content-center"
+						src="{{ asset('Plastic_Omnium.svg') }}" alt="Logo de PlasticOmnium"
+						role="img"
+						width="125"/>
 				</a>
-				<a class="navbar-brand" href="{{ path('app_base') }}">
+				<a
+					class="navbar-brand"
+					href="{{ path('app_base') }}">
 					<h2>
 						<strong>
 							eFNC
 						</strong>
 					</h2>
 				</a>
-				<div class="ms-auto d-flex align-items-center">
+				<div
+					class="ms-auto d-flex align-items-center">
 					{% if app.user is null %}
-						<a class="btn btn-primary" href="{{ path('app_login') }}">
+						<a
+							class="btn btn-primary"
+							href="{{ path('app_login') }}">
 							Connexion
 						</a>
 					{% else %}
@@ -55,11 +76,14 @@
 								{{app.user.username|capitalize|split('.')|first }}
 								{{app.user.username|upper|split('.')|last }}
 							</strong>
-							<a class="btn btn-primary" href="{{ path('app_logout') }}">
+							<a
+								class="btn btn-primary"
+								href="{{ path('app_logout') }}">
 								Déconnexion
 							</a>
 						</p>
-						<div style="width: 10px"></div>
+						<div
+							style="width: 10px"></div>
 					{% endif %}
 				</div>
 			</div>
@@ -69,31 +93,42 @@
 
 		{% if users is defined %}
 			{% if users is empty %}
-				<div class="container ">
-					<h5 class="my-5">
+				<div
+					class="container ">
+					<h5
+						class="my-5">
 						<strong>
 							Pour commencer à utiliser l'application, veuillez créer le superadministrateur :
 						</strong>
 					</h5>
-					<div class="card border-0 shadow rounded-3 my-5">
-						<div class="card-body">
-							<div class="row">
+					<div
+						class="card border-0 shadow rounded-3 my-5">
+						<div
+							class="card-body">
+							<div
+								class="row">
 								{% include "services/admin_services/accountservices/superadmin_create_account.html.twig" %}
 							</div>
 						</div>
 					</div>
 				</div>
 			{% else %}
-				<div class="container flex-grow-1 d-flex flex-column ">
+				<div
+					class="container flex-grow-1 d-flex flex-column ">
 					{% include "services/navbarservices/navbar_service.html.twig" %}
 					{% block body %}
 						{% if app.user %}
 							{% if  is_granted('ROLE_ADMIN', object = null, field = null)%}
-								<aside class="position-absolute end-0 mt-2 ">
-									<a href="{{ path('app_admin_page') }}" class="btn shadow bg-dark" style="color:white;">
-										<span class="fa fa-gear"></span>
+								<aside
+									class="position-absolute end-0 mt-2 ">
+									<a
+										href="{{ path('app_admin_page') }}" class="btn shadow bg-dark"
+										style="color:white;">
+										<span
+											class="fa fa-gear"></span>
 										<strong>
-											<span class="button-text">
+											<span
+												class="button-text">
 												Centre de Super-Administration
 											</span>
 										</strong>
@@ -102,39 +137,72 @@
 							{% endif %}
 						{% endif %}
 						<p>
-							<h1 class="text-justify mb-2 mt-4 flex-shrink-0">
+							<h1
+								class="text-justify mb-2 mt-4 flex-shrink-0">
 								<strong>
 									eFNC
 								</strong>
 							</h1>
 						</p>
-						<h3 class="text-justify flex-shrink-0">
+						<h3
+							class="text-justify flex-shrink-0">
 							<strong>
 								Le site des Fiches de Non Conformités de P.O. Langres.
 							</strong>
 						</h3>
-						<div class="inner-container d-flex flex-column justify-content-center align-items-center flex-grow-1">
-							<div class="d-flex  mb-4 mt-4 line-list align-items-center justify-content-center flex-wrap">
-								<a class="btn btn-primary btn-lg m-4 " role="button" aria-pressed="true" style="color:white" method="get" href="{{path('app_form_creation')}}">
-									<span class="line-details text-justify">
+						<div
+							class="inner-container d-flex flex-column justify-content-center align-items-center flex-grow-1">
+							<div
+								class="d-flex  mb-4 mt-4 line-list align-items-center justify-content-center flex-wrap">
+								<a
+									class="btn btn-primary btn-lg m-4 "
+									role="button"
+									aria-pressed="true"
+									style="color:white"
+									method="get"
+									href="{{path('app_form_creation')}}">
+									<span
+										class="line-details text-justify">
 										NOUVELLE FICHE DE NON CONFORMITÉ
 									</span>
 								</a>
 							</div>
 						</div>
-						<iframe class="d-flex mb-3 rounded-3 flex-grow-1" name="form_list" src="{{ path('app_form_list')}}" frameborder="0"></iframe>
+						<iframe
+							class="d-flex mb-3 rounded-3 flex-grow-1"
+							name="form_list"
+							src="{{ path('app_form_list')}}" frameborder="0"></iframe>
 						{% set archive = 0 %}
+						{% set closed = 0 %}
 						{% for efnc in EFNCs %}
 							{% if efnc.isArchived == true %}
 								{% set archive = archive + 1 %}
+								{% if efnc.Status == true %}
+									{% set closed = closed + 1 %}
+								{% endif %}
 							{% else %}
 								{% set archive = archive + 0 %}
 							{% endif %}
 						{% endfor %}
 						{% if is_granted('ROLE_USER') and archive > 0  %}
-							<strong>FNC ARCHIVÉES</strong>
-							<iframe class="d-flex mb-3 rounded-3 flex-grow-1" name="form_list" src="{{ path('app_archived_form_list')}}" frameborder="0"></iframe>
+							<strong>
+								FNC ARCHIVÉES
+							</strong>
+							<iframe
+								class="d-flex mb-3 rounded-3 flex-grow-1"
+								name="form_list"
+								src="{{ path('app_archived_form_list')}}" frameborder="0"></iframe>
+							{% if is_granted('ROLE_MASTER_ADMIN')  and closed > 0 %}
+								<strong>
+									FNC CLOSES
+								</strong>
+								<iframe
+									class="d-flex mb-3 rounded-3 flex-grow-1"
+									name="form_list"
+									src="{{ path('app_closed_form_list')}}" frameborder="0"></iframe>
+							{% endif %}
 						{% endif %}
+
 					{% endblock %}
 				</div>
 			{% endif %}
@@ -142,27 +210,47 @@
 
 		<!-- Footer -->
 
-		<footer class="container py-3 border-top  flex-shrink-0">
-			<div class="d-flex flex-wrap justify-content-between">
-				<div class="col-md-5 d-flex align-items-center">
-					<span class="me-1" style="color: red">
-						<i class="fas fa-copyright"></i>
+		<footer
+			class="container py-3 border-top  flex-shrink-0">
+			<div
+				class="d-flex flex-wrap justify-content-between">
+				<div
+					class="col-md-5 d-flex align-items-center">
+					<span
+						class="me-1"
+						style="color: red">
+						<i
+							class="fas fa-copyright"></i>
 					</span>
-					<a target="_blank" href="http://topnet.corp.ponet/" style="color: #25a1dd" class="mb-3  mb-md-0 text-decoration-none lh-1">
+					<a
+						target="_blank"
+						href="http://topnet.corp.ponet/"
+						style="color: #25a1dd"
+						class="mb-3  mb-md-0 text-decoration-none lh-1">
 						PlasticOmnium Langres
 					</a>
 				</div>
 				<div>
-					<a href="javascript:void(0)" onclick="event.preventDefault(); window.history.back();">
-						<i class="fa fa-arrow-circle-o-left" 'aria-hidden="false"'>
+					<a
+						href="javascript:void(0)"
+						onclick="event.preventDefault(); window.history.back();">
+						<i
+							class="fa fa-arrow-circle-o-left"
+							'aria-hidden="false"'>
 							Retour
 						</i>
 					</a>
 				</div>
-				<ul class="nav col-md-5 justify-content-end list-unstyled d-flex">
-					<li class="ms-3">
-						<a class="text-muted" target="_blank" href="https://github.com/kiloutyg/">
-							<i class="fab fa-github"></i>
+				<ul
+					class="nav col-md-5 justify-content-end list-unstyled d-flex">
+					<li
+						class="ms-3">
+						<a
+							class="text-muted"
+							target="_blank"
+							href="https://github.com/kiloutyg/">
+							<i
+								class="fab fa-github"></i>
 						</a>
 					</li>
 				</ul>
