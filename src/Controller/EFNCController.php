@@ -151,7 +151,8 @@ class EFNCController extends BaseController
 
         if ($this->getUser() !== null) {
             if ($this->authChecker->isGranted('ROLE_MASTER_ADMIN')) {
-                $result = $this->entityDeletionService->closeEntity($entityType, $id); // Implement this method in your service
+                $user = $this->getUser()->getUsername();
+                $result = $this->entityDeletionService->closeEntity($entityType, $id, $commentary = null, $user); // Implement this method in your service
                 if ($result == false) {
                     $this->addFlash('danger', 'L\'élément n\'a pas pu être clôturé');
                     return $this->redirectToRoute('app_base', []);
