@@ -350,8 +350,13 @@ class AdminController extends FrontController
     public function archiveEntity(Request $request, string $entityType, int $id): Response
     {
         $originUrl = $request->headers->get('referer');
-        $this->logger->info('Archive entity: ' . $entityType . ' ' . $id . ' full request: ' . json_encode($request->getContent()));
-        $result = $this->entityDeletionService->archivedEntity($entityType, $id, $request);
+        $user = $this->getUser()->getUsername();
+        $commentary = $request->request->get('archivingCommentary');
+
+        $this->logger->info($user . ' archived entity: ' . $entityType . ' ' . $id .  ' ' . 'commentaire: ' . $commentary . ' full request: ' . json_encode($request->getContent()));
+
+        $result = $this->entityDeletionService->archivedEntity($entityType, $id, $commentary, $user);
+
         if ($result == false) {
             $this->addFlash('danger', 'L\'élément n\'a pas pu être archivé');
             return $this->redirect($originUrl);

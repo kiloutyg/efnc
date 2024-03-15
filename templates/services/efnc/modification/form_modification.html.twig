@@ -183,53 +183,58 @@
 							Modifier
 						</button>
 					</div>
-					<div
-						class="container mt-5"
-						data-controller="archiving-commentary">
-						<div
-							class="row justify-content-md-center">
-							<div
-								class="col-md-12">
-								<label
-									for="archivingCommentary"
-									class="form-label text-white">
-									Commentaire d'archivage obligatoire
-									<div
-										data-archiving-commentary-target="archivingCommentaryMessage"
-										class="archivingCommentaryMessage-message d-flex justify-content-evenly"></div>
-								</label>
-								<textarea
-									class="form-control"
-									id="archivingCommentary"
-									name="archivingCommentary"
-									data-archiving-commentary-target="archivingCommentary"
-									data-action="keyup->archiving-commentary#archivingCommentary"></textarea>
-							</div>
-						</div>
-						<div
-							class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
-							<a
-								id="archivingButton"
-								name="archivingButton"
-								data-archiving-commentary-target="archivingButton"
-								class="btn btn-danger archive-EFNC"
-								href="{{path('app_archive_entity', {entityType: 'efnc', id: EFNC.id})}}" hidden
-								disabled>
-								Archiver
-							</a>
-							{% if is_granted('ROLE_MASTER_ADMIN') %}
-								<a
-									class="btn btn-danger archive-EFNC"
-									href="{{path('app_close_entity', {entityType: 'efnc', id: EFNC.id})}}">
-									Cloturer
-								</a>
-							{% endif %}
-						</div>
-					</div>
+
 
 				{% endif %}
 			</div>
 			{{ form_end(form1) }}
+			<form
+				method="post"
+				action="{{ path('app_archive_entity', {entityType: 'efnc', id: EFNC.id}) }}">
+
+				<div
+					class="container mt-2 mb-2"
+					data-controller="archiving-commentary">
+					<div
+						class="row justify-content-md-center">
+						<div
+							class="col-md-12">
+							<label
+								for="archivingCommentary"
+								class="form-label text-white">
+								Commentaire d'archivage obligatoire
+								<div
+									data-archiving-commentary-target="archivingCommentaryMessage"
+									class="archivingCommentaryMessage-message d-flex justify-content-evenly"></div>
+							</label>
+							<textarea
+								class="form-control"
+								id="archivingCommentary"
+								name="archivingCommentary"
+								data-archiving-commentary-target="archivingCommentary"
+								data-action="keyup->archiving-commentary#archivingCommentary"></textarea>
+						</div>
+					</div>
+					<div
+						class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
+						<button
+							type="submit"
+							class="btn btn-danger archive-EFNC"
+							data-archiving-commentary-target="archivingButton"
+							hidden
+							disabled>
+							Archiver
+						</button>
+						{% if is_granted('ROLE_MASTER_ADMIN') %}
+							<a
+								class="btn btn-danger archive-EFNC"
+								href="{{path('app_close_entity', {entityType: 'efnc', id: EFNC.id})}}">
+								Cloturer
+							</a>
+						{% endif %}
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 {% endblock %}

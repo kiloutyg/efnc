@@ -50,8 +50,7 @@ class FormModificationService extends AbstractController
     public function modifyNCForm(
         EFNC $efnc,
         Request $request,
-        FormInterface $form1,
-        User $user
+        FormInterface $form1
     ) {
         $now = new \DateTime();
 
