@@ -4,20 +4,29 @@
 {% endblock %}
 
 {% block body %}
-	<h3 class="text-white mb-5">
-		<strong>Modification de la Fiche de Non-Conformité :</strong>
+	<h3
+		class="text-white mb-5">
+		<strong>
+			Modification de la Fiche de Non-Conformité :
+		</strong>
 	</h3>
-	<div class="col-lg-8 mx-auto">
-		<div class="card border-0 shadow rounded-3 my-5 bg-secondary">
-			<div class="card-body">
+	<div
+		class="col-lg-8 mx-auto">
+		<div
+			class="card border-0 shadow rounded-3 my-5 bg-secondary">
+			<div
+				class="card-body">
 				{{ form_start(form1, { 
 					attr: { 
 						id: 'formModificationForm', 
 						method: 'POST', 
 						enctype: 'multipart/form-data' }, action: path('app_form_modification_display', {'efncID': EFNC.id}) }) }}
-				<div class="row g-3">
+				<div
+					class="row g-3">
 					<h3>
-						<strong>Enregistrement de la Non-Conformité:</strong>
+						<strong>
+							Enregistrement de la Non-Conformité:
+						</strong>
 					</h3>
 					{% set fields = [
 						'Creator', 'DetectionDate', 'DetectionTime', 'Team','UAP',
@@ -28,74 +37,164 @@
 						{{ form_row(form1[field]) }}
 					{% endfor %}
 					<h3>
-						<strong>Description du Problème :</strong>
+						<strong>
+							Description du Problème :
+						</strong>
 					</h3>
 					{% set problemDetails = ['AnomalyType', 'Quantity', 'QuantityToBlock', 'DetailedDescription'] %}
 					{% for detail in problemDetails %}
 						{{ form_row(form1[detail]) }}
 					{% endfor %}
-					<div class="mb-3" id="traceability-picture-container">
-						<label class="form-label" style="font-weight: bold; color: #ffffff;" for="picture_TraceabilityPicture">Photo de Traçabilité Obligatoire :</label>
+					<div
+						class="mb-3"
+						id="traceability-picture-container">
+						<label
+							class="form-label"
+							style="font-weight: bold; color: #ffffff;"
+							for="picture_TraceabilityPicture">
+							Photo de Traçabilité Obligatoire :
+						</label>
 						{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
 							{% for picture in EFNC.pictures %}
 								{% if picture.category is same as('traceability') %}
-									<img class="img-fluid" src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
+									<img
+										class="img-fluid"
+										src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
 								{% endif %}
 								{% if picture.category is same as(null) %}
-									<img class="img-fluid" src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
+									<img
+										class="img-fluid"
+										src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
 								{% endif %}
 							{% endfor %}
 						{% endif %}
-						<input type="file" id="picture_TraceabilityPicture" name="picture[TraceabilityPicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de Traçabilité Obligatoire">
-						<div id="TraceabilityPicturePreview"></div>
+						<input
+							type="file"
+							id="picture_TraceabilityPicture"
+							name="picture[TraceabilityPicture][]"
+							multiple="multiple"
+							class="form-control mx-auto"
+							placeholder="Photo de Traçabilité Obligatoire">
+						<div
+							id="TraceabilityPicturePreview"></div>
 					</div>
-					<div class="mb-3" id="nc-picture-container">
-						<label class="form-label" style="font-weight: bold; color: #ffffff;" for="picture_NCpicture">Photo de non-conformité :</label>
+					<div
+						class="mb-3"
+						id="nc-picture-container">
+						<label
+							class="form-label"
+							style="font-weight: bold; color: #ffffff;"
+							for="picture_NCpicture">
+							Photo de non-conformité :
+						</label>
 						{% if EFNC.pictures is defined and EFNC.pictures is not empty %}
 							{% for picture in EFNC.pictures %}
 								{% if picture.category is same as('NC') %}
-									<img class="img-fluid" src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
+									<img
+										class="img-fluid"
+										src="{{path('app_picture_view', {'pictureID': picture.id})}}" alt="Image de traçabilité obligatoire">
 								{% endif %}
 							{% endfor %}
 						{% endif %}
-						<input type="file" id="picture_NCpicture" name="picture[NCpicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de non-conformité">
-						<div id="NCpicturePreview"></div>
+						<input
+							type="file"
+							id="picture_NCpicture"
+							name="picture[NCpicture][]"
+							multiple="multiple"
+							class="form-control mx-auto"
+							placeholder="Photo de non-conformité">
+						<div
+							id="NCpicturePreview"></div>
 					</div>
 					<h3>
-						<strong>Mesures Conservatoire Immediates:</strong>
+						<strong>
+							Mesures Conservatoire Immediates:
+						</strong>
 					</h3>
-					<div id="imcome-container" data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
+					<div
+						id="imcome-container"
+						data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
 						{% for imcomeFormEntry in form1.immediateConservatoryMeasures %}
-							<div class="imcome-entry">
-								{{ form_widget(imcomeFormEntry, {'attr': {'class': 'row'}}) }}
+							<div
+								class="imcome-entry">
+								{{ form_widget(imcomeFormEntry, {'attr': {'class': 'row'}}
+								) }}
 							</div>
 						{% endfor %}
 					</div>
-					<button type="button" id="add-another-imcome" class="btn btn-info">Ajouter une autre Mesure</button>
+					<button
+						type="button"
+						id="add-another-imcome"
+						class="btn btn-info">
+						Ajouter une autre Mesure
+					</button>
 					<h3>
-						<strong>Priorisation de la non-conformité :</strong>
+						<strong>
+							Priorisation de la non-conformité :
+						</strong>
 					</h3>
 					{% for riskWeightingFormEntry in form1.riskWeighting %}
 						{{ form_row(riskWeightingFormEntry) }}
 					{% endfor %}
-					<div class="risk-priority-explanation"></div>
-					<div id="rpi-high-risk" style="color: #ffcccb;">
-						<strong>Risque Élevé:</strong>
-						Réaliser une analyse 8D.</div>
-					<div id="rpi-medium-risk" style="color: #ffeda6;">
-						<strong>Risque Moyen:</strong>
-						Réaliser une analyse de causes potentielles.</div>
-					<div id="rpi-low-risk" style="color: #c8f7c5;">
-						<strong>Risque Faible:</strong>
-						Pas d'analyse, affichage au poste : Alerte d'un Problème.</div>
-				</div>
-				<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
-					<button type="submit" class="btn btn-primary mb-3 submit-EFNCform-modification">Modifier</button>
-				</div>
-				{% if is_granted('ROLE_ADMIN') %}
-					<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
-						<a class="btn btn-danger archive-EFNC" href="{{path('app_archive_entity', {entityType: 'efnc', id: EFNC.id})}}">Archiver</a>
+					<div
+						class="risk-priority-explanation"></div>
+					<div
+						id="rpi-high-risk"
+						style="color: #ffcccb;">
+						<strong>
+							Risque Élevé:
+						</strong>
+						Réaliser une analyse 8D.
 					</div>
+					<div
+						id="rpi-medium-risk"
+						style="color: #ffeda6;">
+						<strong>
+							Risque Moyen:
+						</strong>
+						Réaliser une analyse de causes potentielles.
+					</div>
+					<div
+						id="rpi-low-risk"
+						style="color: #c8f7c5;">
+						<strong>
+							Risque Faible:
+						</strong>
+						Pas d'analyse, affichage au poste : Alerte d'un Problème.
+					</div>
+				</div>
+
+				{% if is_granted('ROLE_ADMIN') %}
+					<div
+						class="d-grid gap-2 d-md-flex justify-content-md-center mt-5 text-white">
+						Derniere modification effectué par
+						{{ EFNC.LastModifier.username|capitalize|split('.')|first }}
+						{{ EFNC.LastModifier.username|upper|split('.')|last }}
+					</div>
+					<div
+						class="d-grid gap-2 d-md-flex justify-content-md-center mt-1 textwhite">
+						<button
+							type="submit"
+							class="btn btn-primary mb-3 submit-EFNCform-modification">
+							Modifier
+						</button>
+					</div>
+					<div
+						class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+						<a
+							class="btn btn-danger archive-EFNC"
+							href="{{path('app_archive_entity', {entityType: 'efnc', id: EFNC.id})}}">
+							Archiver
+						</a>
+						{% if is_granted('ROLE_MASTER_ADMIN') %}
+
+							<a
+								class="btn btn-danger archive-EFNC"
+								href="{{path('app_close_entity', {entityType: 'efnc', id: EFNC.id})}}">
+								Cloturer
+							</a>
+						</div>
+					{% endif %}
 				{% endif %}
 			</div>
 			{{ form_end(form1) }}

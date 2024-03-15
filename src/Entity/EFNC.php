@@ -50,7 +50,6 @@ class EFNC
     #[ORM\OneToMany(mappedBy: 'EFNC', targetEntity: ImmediateConservatoryMeasures::class, cascade: ['persist', 'remove'])]
     private Collection $immediateConservatoryMeasures;
 
-
     #[ORM\OneToMany(mappedBy: 'EFNC', targetEntity: BoughtComponent::class)]
     private Collection $boughtComponents;
 
@@ -95,6 +94,9 @@ class EFNC
 
     #[ORM\Column(nullable: true)]
     private ?bool $archived = null;
+
+    #[ORM\ManyToOne(inversedBy: 'eFNCs')]
+    private ?User $lastModifier = null;
 
 
     public function __construct()
@@ -361,7 +363,7 @@ class EFNC
         $this->Status = $Status;
         // If the status is set to true, we set the ClosedDate to the current date
         if ($Status === true) {
-            $this->ClosedDate = new \DateTimeInterface();
+            $this->ClosedDate = new \DateTime();
         }
         return $this;
     }
@@ -521,6 +523,18 @@ class EFNC
     public function setArchived(?bool $archived): static
     {
         $this->archived = $archived;
+
+        return $this;
+    }
+
+    public function getLastModifier(): ?User
+    {
+        return $this->lastModifier;
+    }
+
+    public function setLastModifier(?User $lastModifier): static
+    {
+        $this->lastModifier = $lastModifier;
 
         return $this;
     }

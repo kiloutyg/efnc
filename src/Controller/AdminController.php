@@ -345,6 +345,7 @@ class AdminController extends FrontController
         }
     }
 
+
     #[Route('admin/archive/{entityType}/{id}', name: 'archive_entity')]
     public function archiveEntity(Request $request, string $entityType, int $id): Response
     {
@@ -355,9 +356,15 @@ class AdminController extends FrontController
             return $this->redirect($originUrl);
         } else {
             $this->addFlash('success', 'L\'élément a bien été archivé');
-            return $this->redirect($originUrl);
+            if ($entityType == "efnc") {
+                return $this->redirectToRoute('app_base', []);
+            } else {
+                return $this->redirect($originUrl);
+            }
         }
     }
+
+
     #[Route('admin/delete/{entityType}/{id}', name: 'delete_entity')]
     public function deleteEntity(Request $request, string $entityType, int $id): Response
     {
@@ -371,6 +378,8 @@ class AdminController extends FrontController
             return $this->redirect($originUrl);
         }
     }
+
+
     #[Route('admin/unarchive/{entityType}/{id}', name: 'unarchive_entity')]
     public function unarchiveEntity(Request $request, string $entityType, int $id): Response
     {

@@ -529,4 +529,34 @@ class EntityDeletionService
 
         return true;
     }
+
+
+    public function closeEntity(string $entityType, int $id): bool
+    {
+        $repository = null;
+        switch ($entityType) {
+            case "efnc":
+                $repository = $this->EFNCRepository;
+                break;
+        }
+
+        // If the repository is not found or the entity is not found in the database, return false
+        if (!$repository) {
+            return false;
+        }
+        // Get the entity from the database
+        $entity = $repository->find($id);
+        if (!$entity) {
+            return false;
+        }
+
+        if ($entityType === 'efnc') {
+            $entity->setArchived(true);
+            $entity->setStatus(true);
+        }
+
+        $this->em->flush();
+
+        return true;
+    }
 }

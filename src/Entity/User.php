@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -36,6 +38,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $emailAddress = null;
+
+    #[ORM\OneToMany(mappedBy: 'lastModifier', targetEntity: EFNC::class)]
+    private Collection $eFNCs;
+
+    public function __construct()
+    {
+        $this->eFNCs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -116,6 +126,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmailAddress(?string $emailAddress): static
     {
         $this->emailAddress = $emailAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EFNC>
+     */
+    public function getEFNCs(): Collection
+    {
+        return $this->eFNCs;
+    }
+
+    public function addEFNC(EFNC $eFNC): static
+    {
+        if (!$this->eFNCs->contains($eFNC)) {
+            $this->eFNCs->add($eFNC);
+            $eFNC->setLastModifier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEFNC(EFNC $eFNC): static
+    {
+        if ($this->eFNCs->removeElement($eFNC)) {
+            // set the owning side to null (unless already changed)
+            if ($eFNC->getLastModifier() === $this) {
+                $eFNC->setLastModifier(null);
+            }
+        }
 
         return $this;
     }
