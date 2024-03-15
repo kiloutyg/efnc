@@ -93,7 +93,7 @@ class EFNCController extends BaseController
         } else if ($request->getMethod() == 'POST') {
             if ($this->getUser() !== null) {
                 if ($this->authChecker->isGranted('ROLE_ADMIN')) {
-                    $user = $this->getUser();
+                    $user = $this->getUser()->getUsername();
                     $form1->handleRequest($request);
                     if ($form1->isValid() && $form1->isSubmitted()) {
                         $result = $this->formModificationService->modifyNCForm(
