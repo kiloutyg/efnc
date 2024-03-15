@@ -98,6 +98,9 @@ class EFNC
     #[ORM\ManyToOne(inversedBy: 'eFNCs')]
     private ?User $lastModifier = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $archivingCommentary = null;
+
 
     public function __construct()
     {
@@ -535,6 +538,18 @@ class EFNC
     public function setLastModifier(?User $lastModifier): static
     {
         $this->lastModifier = $lastModifier;
+
+        return $this;
+    }
+
+    public function getArchivingCommentary(): ?string
+    {
+        return $this->archivingCommentary;
+    }
+
+    public function setArchivingCommentary(?string $archivingCommentary): static
+    {
+        $this->archivingCommentary = $archivingCommentary;
 
         return $this;
     }

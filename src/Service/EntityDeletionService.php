@@ -6,8 +6,8 @@ namespace App\Service;
 
 
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 
+use Psr\Log\LoggerInterface;
 
 use App\Repository\UserRepository;
 use App\Repository\TeamRepository;
@@ -83,7 +83,7 @@ class EntityDeletionService
     }
 
     // This function is responsible for deleting an entity and its related entities from the database and the server filesystem
-    public function archivedEntity(string $entityType, int $id): bool
+    public function archivedEntity(string $entityType, int $id, string  $commentary = null, string $user = null): bool
     {
         // Get the repository for the entity type
         $repository = null;
@@ -141,6 +141,8 @@ class EntityDeletionService
             $this->em->remove($entity);
         }
         if ($entityType === 'efnc') {
+            $entity->setLastModifier($user);
+            $entity->setArchivingCommentary($commentary);
             $entity->setArchived(true);
         }
         if ($entityType === 'team') {
