@@ -11,10 +11,16 @@ services:
     volumes:
       - ./database_data:/var/lib/mysql
     ports:
-      - "3306"
+      - "3307:3306"
     networks:
       vpcbr:
         ipv4_address: 172.22.0.2
+    labels:
+      - "traefik.enable=false"
+      # - "traefik.http.routers.database-efnc.rule=PathPrefix(`/database-efnc`)"
+      # - "traefik.http.routers.database-efnc.entrypoints=mariadb"
+      # - "traefik.tcp.routers.tcp-database-efnc.entrypoints=mariadb"
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: unless-stopped
