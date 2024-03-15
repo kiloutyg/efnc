@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\EFNC;
+use App\Entity\User;
 
 use App\Service\PictureService;
 
@@ -49,7 +50,8 @@ class FormModificationService extends AbstractController
     public function modifyNCForm(
         EFNC $efnc,
         Request $request,
-        FormInterface $form1
+        FormInterface $form1,
+        User $user
     ) {
         $now = new \DateTime();
 
@@ -91,7 +93,7 @@ class FormModificationService extends AbstractController
                 $this->PictureService->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
             }
         }
-
+        $efnc->setLastModifier($user);
         $this->em->persist($efnc);
         $this->em->flush();
 
