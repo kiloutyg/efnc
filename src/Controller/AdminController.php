@@ -349,23 +349,32 @@ class AdminController extends FrontController
     #[Route('admin/archive/{entityType}/{id}', name: 'archive_entity')]
     public function archiveEntity(Request $request, string $entityType, int $id): Response
     {
-        $originUrl = $request->headers->get('referer');
-        $user = $this->getUser()->getUsername();
-        $commentary = $request->request->get('archivingCommentary');
-
-        $this->logger->info($user . ' archived entity: ' . $entityType . ' ' . $id .  ' ' . 'commentaire: ' . $commentary . ' full request: ' . json_encode($request->getContent()));
-
-        $result = $this->entityDeletionService->archivedEntity($entityType, $id, $commentary, $user);
-
-        if ($result == false) {
-            $this->addFlash('danger', 'L\'élément n\'a pas pu être archivé');
-            return $this->redirect($originUrl);
+        if ($this->getUser() !== null && $this->authChecker->isGranted('ROLE_ADMIN') == false) {
+            $this->addFlash('danger', 'Vous n\'avez pas les droits pour effectuer cette action');
+            return $this->redirectToRoute('app_base');
         } else {
-            $this->addFlash('success', 'L\'élément a bien été archivé');
-            if ($entityType == "efnc") {
-                return $this->redirectToRoute('app_base', []);
-            } else {
+
+            $originUrl = $request->headers->get('referer');
+            $user = $this->getUser()->getUsername();
+            $commentary = $request->request->get('archivingCommentary');
+
+            if ($entityType == "efnc" && $commentary == null) {
+                $this->addFlash('danger', 'Un commentaire est requis pour archiver une EFNC');
                 return $this->redirect($originUrl);
+            }
+
+            $result = $this->entityDeletionService->archivedEntity($entityType, $id, $commentary, $user);
+
+            if ($result == false) {
+                $this->addFlash('danger', 'L\'élément n\'a pas pu être archivé');
+                return $this->redirect($originUrl);
+            } else {
+                $this->addFlash('success', 'L\'élément a bien été archivé');
+                if ($entityType == "efnc") {
+                    return $this->redirectToRoute('app_base', []);
+                } else {
+                    return $this->redirect($originUrl);
+                }
             }
         }
     }
