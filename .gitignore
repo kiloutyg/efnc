@@ -61,8 +61,11 @@
 
 # Embedded web-server pid file
 /.web-server-pid
-
+###> mariadb/data ###
 database_data/
+create-power-bi-ronlyuser.sql
+
+
 # Ignore .env file containing app secrets
 /.env
 ###> symfony/webpack-encore-bundle ###
