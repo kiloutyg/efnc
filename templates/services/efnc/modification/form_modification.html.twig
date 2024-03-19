@@ -122,46 +122,51 @@
 							</div>
 						{% endfor %}
 					</div>
-					<button
-						type="button"
-						id="add-another-imcome"
-						class="btn btn-info">
-						Ajouter une autre Mesure
-					</button>
-					<h3>
-						<strong>
-							Priorisation de la non-conformité :
-						</strong>
-					</h3>
-					{% for riskWeightingFormEntry in form1.riskWeighting %}
-						{{ form_row(riskWeightingFormEntry) }}
-					{% endfor %}
-					<div
-						class="risk-priority-explanation"></div>
-					<div
-						id="rpi-high-risk"
-						style="color: #ffcccb;">
-						<strong>
-							Risque Élevé:
-						</strong>
-						Réaliser une analyse 8D.
-					</div>
-					<div
-						id="rpi-medium-risk"
-						style="color: #ffeda6;">
-						<strong>
-							Risque Moyen:
-						</strong>
-						Réaliser une analyse de causes potentielles.
-					</div>
-					<div
-						id="rpi-low-risk"
-						style="color: #c8f7c5;">
-						<strong>
-							Risque Faible:
-						</strong>
-						Pas d'analyse, affichage au poste : Alerte d'un Problème.
-					</div>
+					{% if is_granted('ROLE_ADMIN')%}
+						<button
+							type="button"
+							id="add-another-imcome"
+							class="btn btn-info">
+							Ajouter une autre Mesure
+						</button>
+					{% endif %}
+					{% if form1.riskWeighting is defined %}
+
+						<h3>
+							<strong>
+								Priorisation de la non-conformité :
+							</strong>
+						</h3>
+						{% for riskWeightingFormEntry in form1.riskWeighting %}
+							{{ form_row(riskWeightingFormEntry) }}
+						{% endfor %}
+						<div
+							class="risk-priority-explanation"></div>
+						<div
+							id="rpi-high-risk"
+							style="color: #ffcccb;">
+							<strong>
+								Risque Élevé:
+							</strong>
+							Réaliser une analyse 8D.
+						</div>
+						<div
+							id="rpi-medium-risk"
+							style="color: #ffeda6;">
+							<strong>
+								Risque Moyen:
+							</strong>
+							Réaliser une analyse de causes potentielles.
+						</div>
+						<div
+							id="rpi-low-risk"
+							style="color: #c8f7c5;">
+							<strong>
+								Risque Faible:
+							</strong>
+							Pas d'analyse, affichage au poste : Alerte d'un Problème.
+						</div>
+					{% endif %}
 				</div>
 
 				{% if is_granted('ROLE_ADMIN') %}

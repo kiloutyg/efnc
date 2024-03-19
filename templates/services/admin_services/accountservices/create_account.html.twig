@@ -1,61 +1,92 @@
 {% block body %}
 
 
-	<div class="card border-0 shadow rounded-3 my-5 bg-secondary">
-		<div class="card-body ">
-			<div class=" row d-flex align-items-center gy-lg-0 gy-5">
+	<div
+		class="card border-0 shadow rounded-3 my-5 bg-secondary">
+		<div
+			class="card-body ">
+			<div
+				class=" row d-flex align-items-center gy-lg-0 gy-5">
 
-				<div class="col-lg-8 col-12 mx-auto">
+				<div
+					class="col-lg-8 col-12 mx-auto">
 
-					<h3 class="card-title text-center mb-5" style="color:white">
+					<h3
+						class="card-title text-center mb-5"
+						style="color:white">
 						<strong>
 							Création de compte
 
 						</strong>
 					</h3>
-					<form class="d-flex flex-column " method="post" action="{{ path('app_create_account') }}">
+					<form
+						class="d-flex flex-column "
+						method="post"
+						action="{{ path('app_create_account') }}">
 
 						{% if error is defined %}
 							{% if error %}
-								<div class="alert alert-danger">
+								<div
+									class="alert alert-danger">
 									{{ error.messageKey|trans(error.messageData, 'security') }}
 								</div>
 							{% endif %}
 						{% endif %}
 
-						<div class="form-control mb-3">
-							<label for="username">
+						<div
+							class="form-control mb-3">
+							<label
+								for="username">
 								Nom d'utilisateur
 
 							</label>
-							<div data-controller="username-validation">
-								<input type="text" 
-										class="form-control"
-										data-username-validation-target="username" 
-										data-action="keyup->username-validation#validateUsername" 
-										placeholder="prénom.nom"
-										id="username"
-										name="username"
-										required>
+							<div
+								data-controller="username-validation">
+								<input
+									type="text"
+									class="form-control"
+									data-username-validation-target="username"
+									data-action="keyup->username-validation#validateUsername"
+									placeholder="prénom.nom"
+									id="username"
+									name="username"
+									required>
 
-								<div data-username-validation-target="message" 
+								<div
+									data-username-validation-target="message"
 									class="username-message"></div>
-							</div>						</div>
-						<div class="form-control mb-3">
-							<label for="emailAddress">
+							</div>
+						</div>
+						<div
+							class="form-control mb-3">
+							<label
+								for="emailAddress">
 								Adresse Mail
 
 							</label>
-							<input type="email" id="emailAddress" placeholder="Adresse Mail" name="emailAddress" required class="form-control">
+							<input
+								type="email"
+								id="emailAddress"
+								placeholder="Adresse Mail"
+								name="emailAddress"
+								required
+								class="form-control">
 						</div>
-						<div class="form-control mb-3">
+						<div
+							class="form-control mb-3">
 							{% include 'services/admin_services/accountservices/role_affectation.html.twig' %}
 
 						</div>
 
-						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-						<div class="d-grid col-6 mx-auto">
-							<button class="btn btn-primary btn-login text-uppercase fw-bold mt-2 mb-5 submit-user-creation" type="submit">
+						<input
+							type="hidden"
+							name="_csrf_token"
+							value="{{ csrf_token('authenticate') }}">
+						<div
+							class="d-grid col-6 mx-auto">
+							<button
+								class="btn btn-primary btn-login text-uppercase fw-bold mt-2 mb-5 submit-user-creation"
+								type="submit">
 								Création du compte
 
 							</button>
@@ -65,27 +96,38 @@
 			</div>
 
 			{% if users is not empty and users|length > 1 %}
-				<hr class="my-4">
-				<div class=" row d-flex align-items-center gy-lg-0 gy-5">
-					<div class="col-12 mx-auto">
-						<div class="form-control">
-							<div class="table-responsive">
-								<table class="table table-striped table-hover">
+				<hr
+					class="my-4">
+				<div
+					class=" row d-flex align-items-center gy-lg-0 gy-5">
+					<div
+						class="col-12 mx-auto">
+						<div
+							class="form-control">
+							<div
+								class="table-responsive">
+								<table
+									class="table table-striped table-hover">
 									<thead>
 										<tr>
-											<th scope="col">
+											<th
+												scope="col">
 												Nom d'utilisateur
 											</th>
-											<th scope="col">
+											<th
+												scope="col">
 												Role
 											</th>
-											<th scope="col">
+											<th
+												scope="col">
 												Email
 											</th>
-											<th scope="col">
+											<th
+												scope="col">
 												Supprimer
 											</th>
-											<th scope="col">
+											<th
+												scope="col">
 												Modifier
 											</th>
 										</tr>
@@ -110,12 +152,14 @@
 														{% endif %}
 													</td>
 													<td>
-														<a href="{{ path('app_delete_account_basic', {userId: user.id}) }}" class="btn btn-danger delete-user">
+														<a
+															href="{{ path('app_delete_account_basic', {userId: user.id}) }}" class="btn btn-danger delete-user">
 															Supprimer
 														</a>
 													</td>
 													<td>
-														<a href="{{ path('app_modify_account', {userid: user.id}) }}" class="btn btn-danger">
+														<a
+															href="{{ path('app_modify_account', {userid: user.id}) }}" class="btn btn-danger">
 															modifier
 														</a>
 													</td>

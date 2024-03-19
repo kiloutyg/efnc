@@ -123,16 +123,9 @@
 						class="btn btn-info">
 						Ajouter une autre Mesure
 					</button>
-					<div
-						class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
-						<button
-							type="submit"
-							class="btn btn-primary mb-3 submit-EFNCform-creation">
-							Créer
-						</button>
-					</div>
-					<div
-						hidden>
+
+					{% if form1.riskWeighting is defined %}
+
 						<h3>
 							<strong>
 								Priorisation de la non-conformité :
@@ -167,6 +160,14 @@
 							</strong>
 							Pas d'analyse, affichage au poste : Alerte d'un Problème.
 						</div>
+					{% endif %}
+					<div
+						class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+						<button
+							type="submit"
+							class="btn btn-primary mb-3 submit-EFNCform-creation">
+							Créer
+						</button>
 					</div>
 				</div>
 
