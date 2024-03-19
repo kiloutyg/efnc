@@ -3,7 +3,7 @@
 # Create the create-power-bi-ronlyuser.sql file 
 cat > create-power-bi-ronlyuser.sql <<'EOL'
 CREATE USER 'powerbi'@'%' IDENTIFIED BY 'powerbi';
-GRANT SELECT ON ${MYSQL_DATABASE}.* TO 'powerbi'@'%';
+GRANT SELECT ON {{MYSQL_DATABASE}}.* TO 'powerbi'@'%';
 FLUSH PRIVILEGES;
 EOL
 
