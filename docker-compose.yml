@@ -10,7 +10,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./database_data:/var/lib/mysql
-      - ./create-readonly-user.sql:/docker-entrypoint-initdb.d/create-readonly-user.sql
+      - ./create-power-bi-ronlyuser.sql:/docker-entrypoint-initdb.d/create-readonly-user.sql
     ports:
       - "3307:3306"
     networks:
