@@ -15,6 +15,8 @@ use App\Form\ProductType;
 
 use Symfony\Component\Form\AbstractType;
 
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -34,6 +36,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormCreationType extends AbstractType
 {
+    private $authChecker;
+    public function __construct(
+        AuthorizationCheckerInterface $authChecker
+    ) {
+        $this->authChecker = $authChecker;
+    }
+
     private function getDefaultOptions($placeholder = '')
     {
         return [
@@ -426,8 +435,9 @@ class FormCreationType extends AbstractType
                     ],
                     $this->getDefaultOptions('')
                 )
-            )
-            ->add(
+            );
+        if ($this->authChecker->isGranted('ROLE_ADMIN')) {
+            $builder->add(
                 'riskWeighting',
                 RiskWeightingType::class,
                 array_merge(
@@ -437,6 +447,7 @@ class FormCreationType extends AbstractType
                     $this->getDefaultOptions('')
                 )
             );
+        }
     }
 
 
