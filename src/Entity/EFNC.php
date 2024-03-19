@@ -63,7 +63,7 @@ class EFNC
     private ?\DateTimeInterface $ClosedDate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $PilotVisa = null;
+    private ?string $Archiver = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $DetectionTime = null;
@@ -100,6 +100,9 @@ class EFNC
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $archivingCommentary = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $closer = null;
 
 
     public function __construct()
@@ -383,14 +386,14 @@ class EFNC
         return $this;
     }
 
-    public function getPilotVisa(): ?string
+    public function getArchiver(): ?string
     {
-        return $this->PilotVisa;
+        return $this->Archiver;
     }
 
-    public function setPilotVisa(?string $PilotVisa): static
+    public function setArchiver(?string $Archiver): static
     {
-        $this->PilotVisa = $PilotVisa;
+        $this->Archiver = $Archiver;
 
         return $this;
     }
@@ -550,6 +553,18 @@ class EFNC
     public function setArchivingCommentary(?string $archivingCommentary): static
     {
         $this->archivingCommentary = $archivingCommentary;
+
+        return $this;
+    }
+
+    public function getCloser(): ?string
+    {
+        return $this->closer;
+    }
+
+    public function setCloser(?string $closer): static
+    {
+        $this->closer = $closer;
 
         return $this;
     }
