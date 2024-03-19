@@ -1,8 +1,10 @@
 #!/bin/bash
 
-cat > ~/.ssh/config <<EOL
-Host github.com
-    StrictHostKeyChecking no
+# Create the create-power-bi-ronlyuser.sql file 
+cat > create-power-bi-ronlyuser.sql <<EOL
+CREATE USER 'powerbi'@'%' IDENTIFIED BY 'powerbi';
+GRANT SELECT ON ${MYSQL_DATABASE}.* TO 'powerbi'@'%';
+FLUSH PRIVILEGES;
 EOL
 
 read -p "What Timezone to use? (default Europe/Paris) " TIMEZONE

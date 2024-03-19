@@ -10,6 +10,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./database_data:/var/lib/mysql
+      - ./create-power-bi-ronlyuser.sql:/docker-entrypoint-initdb.d/create-readonly-user.sql
     ports:
       - "3307:3306"
     networks:
@@ -20,6 +21,7 @@ services:
       # - "traefik.http.routers.database-efnc.rule=PathPrefix(`/database-efnc`)"
       # - "traefik.http.routers.database-efnc.entrypoints=mariadb"
       # - "traefik.tcp.routers.tcp-database-efnc.entrypoints=mariadb"
+    command: ['--init-file', '/docker-entrypoint-initdb.d/create-readonly-user.sql']
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
