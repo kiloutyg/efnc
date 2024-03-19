@@ -222,7 +222,7 @@
 								</div>
 							</div>
 							<div
-								class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
+								class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2">
 								<button
 									type="submit"
 									class="btn btn-danger archive-EFNC"
@@ -252,6 +252,16 @@
 						avec le commentaire suivant :
 						{{ EFNC.archivingCommentary }}
 					</div>
+					{% if is_granted('ROLE_MASTER_ADMIN') %}
+						<div
+							class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2">
+							<a
+								class="btn btn-danger archive-EFNC"
+								href="{{path('app_close_entity', {entityType: 'efnc', id: EFNC.id})}}">
+								Cloturer
+							</a>
+						</div>
+					{% endif %}
 				{% elseif EFNC.archived is same as(true) and EFNC.status is not null %}
 					<div
 						class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2 text-white">
