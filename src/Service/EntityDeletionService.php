@@ -141,7 +141,7 @@ class EntityDeletionService
             $this->em->remove($entity);
         }
         if ($entityType === 'efnc') {
-            $entity->setLastModifier($user);
+            $entity->setArchiver($user);
             $entity->setArchivingCommentary($commentary);
             $entity->setArchived(true);
         }
@@ -553,7 +553,7 @@ class EntityDeletionService
         }
 
         if ($entityType === 'efnc') {
-            $entity->setLastModifier($user);
+            $entity->setCloser($user);
             $entity->setArchived(true);
             $entity->setStatus(true);
         }

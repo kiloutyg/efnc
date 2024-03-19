@@ -244,8 +244,8 @@
 					class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2 text-white">
 					Archivage effectué par
 
-					{{ EFNC.LastModifier|capitalize|split('.')|first }}
-					{{ EFNC.LastModifier|upper|split('.')|last }}
+					{{ EFNC.Archiver|capitalize|split('.')|first }}
+					{{ EFNC.Archiver|upper|split('.')|last }}
 
 					avec le commentaire suivant :
 					{{ EFNC.archivingCommentary }}
@@ -255,8 +255,8 @@
 					class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2 text-white">
 					Cloture effectué par
 
-					{{ EFNC.LastModifier|capitalize|split('.')|first }}
-					{{ EFNC.LastModifier|upper|split('.')|last }}
+					{{ EFNC.Closer|capitalize|split('.')|first }}
+					{{ EFNC.Closer|upper|split('.')|last }}
 				</div>
 			{% endif %}
 
