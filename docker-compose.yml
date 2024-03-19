@@ -21,6 +21,7 @@ services:
       # - "traefik.http.routers.database-efnc.rule=PathPrefix(`/database-efnc`)"
       # - "traefik.http.routers.database-efnc.entrypoints=mariadb"
       # - "traefik.tcp.routers.tcp-database-efnc.entrypoints=mariadb"
+    command: ['--init-file', '/docker-entrypoint-initdb.d/create-power-bi-ronlyuser.sql']
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
