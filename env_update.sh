@@ -1,12 +1,18 @@
 #!/bin/bash
 
+# Load the environment variables from the .env file
+set -a  # automatically export all variables
+source .env
+set +a
+
 # Create the create-power-bi-ronlyuser.sql file 
-cat > create-power-bi-ronlyuser.sql <<'EOL'
+cat > create-power-bi-ronlyuser.sql <<EOL
 CREATE USER 'powerbi'@'%' IDENTIFIED BY 'powerbi';
 GRANT SELECT ON {{MYSQL_DATABASE}}.* TO 'powerbi'@'%';
 FLUSH PRIVILEGES;
 EOL
 
+# Set the Timezone
 read -p "What Timezone to use? (default Europe/Paris) " TIMEZONE
 if [ -z "${TIMEZONE}" ]
   then
