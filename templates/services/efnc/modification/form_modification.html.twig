@@ -171,70 +171,95 @@
 								class="d-grid gap-2 d-md-flex justify-content-md-center mt-5 text-white">
 								Derniere modification effectué par
 
-								{{ EFNC.LastModifier.username|capitalize|split('.')|first }}
-								{{ EFNC.LastModifier.username|upper|split('.')|last }}
+								{{ EFNC.LastModifier|capitalize|split('.')|first }}
+								{{ EFNC.LastModifier|upper|split('.')|last }}
 							</div>
 					{% endif %}
-					<div
-						class="d-grid gap-2 d-md-flex justify-content-md-center mt-1 textwhite">
-						<button
-							type="submit"
-							class="btn btn-primary mb-3 submit-EFNCform-modification">
-							Modifier
-						</button>
-					</div>
+					{% if EFNC.archived is null and EFNC.status is null %}
+						<div
+							class="d-grid gap-2 d-md-flex justify-content-md-center mt-3 textwhite">
+							<button
+								type="submit"
+								class="btn btn-primary mb-1 submit-EFNCform-modification">
+								Modifier
+							</button>
+						</div>
+					{% endif %}
 
 
 				{% endif %}
 			</div>
 			{{ form_end(form1) }}
-			<form
-				method="post"
-				action="{{ path('app_archive_entity', {entityType: 'efnc', id: EFNC.id}) }}">
+			{% if EFNC.archived is null and EFNC.status is null %}
 
-				<div
-					class="container mt-2 mb-2"
-					data-controller="archiving-commentary">
+				<form
+					method="post"
+					action="{{ path('app_archive_entity', {entityType: 'efnc', id: EFNC.id}) }}">
+
 					<div
-						class="row justify-content-md-center">
+						class="container mt-2 mb-2"
+						data-controller="archiving-commentary">
 						<div
-							class="col-md-12">
-							<label
-								for="archivingCommentary"
-								class="form-label text-white">
-								Commentaire d'archivage obligatoire
-								<div
-									data-archiving-commentary-target="archivingCommentaryMessage"
-									class="archivingCommentaryMessage-message d-flex justify-content-evenly"></div>
-							</label>
-							<textarea
-								class="form-control"
-								id="archivingCommentary"
-								name="archivingCommentary"
-								data-archiving-commentary-target="archivingCommentary"
-								data-action="keyup->archiving-commentary#archivingCommentary"></textarea>
+							class="row justify-content-md-center">
+							<div
+								class="col-md-12">
+								<label
+									for="archivingCommentary"
+									class="form-label text-white">
+									Commentaire d'archivage obligatoire
+									<div
+										data-archiving-commentary-target="archivingCommentaryMessage"
+										class="archivingCommentaryMessage-message d-flex justify-content-evenly"></div>
+								</label>
+								<textarea
+									class="form-control"
+									id="archivingCommentary"
+									name="archivingCommentary"
+									data-archiving-commentary-target="archivingCommentary"
+									data-action="keyup->archiving-commentary#archivingCommentary"></textarea>
+							</div>
+						</div>
+						<div
+							class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
+							<button
+								type="submit"
+								class="btn btn-danger archive-EFNC"
+								data-archiving-commentary-target="archivingButton"
+								hidden
+								disabled>
+								Archiver
+							</button>
+							{% if is_granted('ROLE_MASTER_ADMIN') %}
+								<a
+									class="btn btn-danger archive-EFNC"
+									href="{{path('app_close_entity', {entityType: 'efnc', id: EFNC.id})}}">
+									Cloturer
+								</a>
+							{% endif %}
 						</div>
 					</div>
-					<div
-						class="d-grid gap-2 d-md-flex justify-content-md-center mt-2">
-						<button
-							type="submit"
-							class="btn btn-danger archive-EFNC"
-							data-archiving-commentary-target="archivingButton"
-							hidden
-							disabled>
-							Archiver
-						</button>
-						{% if is_granted('ROLE_MASTER_ADMIN') %}
-							<a
-								class="btn btn-danger archive-EFNC"
-								href="{{path('app_close_entity', {entityType: 'efnc', id: EFNC.id})}}">
-								Cloturer
-							</a>
-						{% endif %}
-					</div>
+				</form>
+			{% elseif EFNC.archived is same as(true) and EFNC.status is null %}
+				<div
+					class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2 text-white">
+					Archivage effectué par
+
+					{{ EFNC.LastModifier|capitalize|split('.')|first }}
+					{{ EFNC.LastModifier|upper|split('.')|last }}
+
+					avec le commentaire suivant :
+					{{ EFNC.archivingCommentary }}
 				</div>
-			</form>
+			{% elseif EFNC.archived is same as(true) and EFNC.status is not null %}
+				<div
+					class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2 text-white">
+					Cloture effectué par
+
+					{{ EFNC.LastModifier|capitalize|split('.')|first }}
+					{{ EFNC.LastModifier|upper|split('.')|last }}
+				</div>
+			{% endif %}
+
 		</div>
 	</div>
 {% endblock %}

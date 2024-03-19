@@ -533,7 +533,7 @@ class EntityDeletionService
     }
 
 
-    public function closeEntity(string $entityType, int $id): bool
+    public function closeEntity(string $entityType, int $id, string $commentary = null, string $user = null): bool
     {
         $repository = null;
         switch ($entityType) {
@@ -553,6 +553,7 @@ class EntityDeletionService
         }
 
         if ($entityType === 'efnc') {
+            $entity->setLastModifier($user);
             $entity->setArchived(true);
             $entity->setStatus(true);
         }

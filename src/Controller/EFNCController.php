@@ -93,7 +93,7 @@ class EFNCController extends BaseController
         } else if ($request->getMethod() == 'POST') {
             if ($this->getUser() !== null) {
                 if ($this->authChecker->isGranted('ROLE_ADMIN')) {
-                    $user = $this->getUser();
+                    $user = $this->getUser()->getUsername();
                     $form1->handleRequest($request);
                     if ($form1->isValid() && $form1->isSubmitted()) {
                         $result = $this->formModificationService->modifyNCForm(
@@ -151,7 +151,8 @@ class EFNCController extends BaseController
 
         if ($this->getUser() !== null) {
             if ($this->authChecker->isGranted('ROLE_MASTER_ADMIN')) {
-                $result = $this->entityDeletionService->closeEntity($entityType, $id); // Implement this method in your service
+                $user = $this->getUser()->getUsername();
+                $result = $this->entityDeletionService->closeEntity($entityType, $id, $commentary = null, $user); // Implement this method in your service
                 if ($result == false) {
                     $this->addFlash('danger', 'L\'élément n\'a pas pu être clôturé');
                     return $this->redirectToRoute('app_base', []);
