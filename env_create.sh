@@ -99,6 +99,13 @@ class Kernel extends BaseKernel
 }
 EOL
 
+# Create the create-power-bi-ronlyuser.sql file 
+cat > create-power-bi-ronlyuser.sql <<EOL
+CREATE USER 'powerbi'@'%' IDENTIFIED BY 'powerbi';
+GRANT SELECT ON ${MYSQL_DATABASE}.* TO 'powerbi'@'%';
+FLUSH PRIVILEGES;
+EOL
+
 # Create .env file
 cat > .env <<EOL
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
