@@ -5,21 +5,30 @@
 
 {% block body %}
 
-	<h3 class="text-white mb-5">
-		<strong>Création de la Fiche de Non-Conformité :</strong>
+	<h3
+		class="text-white mb-5">
+		<strong>
+			Création de la Fiche de Non-Conformité :
+		</strong>
 	</h3>
-	<div class="col-lg-8 mx-auto">
-		<div class="card border-0 shadow rounded-3 my-5 bg-secondary">
-			<div class="card-body">
+	<div
+		class="col-lg-8 mx-auto">
+		<div
+			class="card border-0 shadow rounded-3 my-5 bg-secondary">
+			<div
+				class="card-body">
 
 				{{ form_start(form1, { 
 					attr: { 
 						id: 'formCreationForm', 
 						method: 'POST', 
 						enctype: 'multipart/form-data' }, action: path('app_form_creation') }) }}
-				<div class="row g-3">
+				<div
+					class="row g-3">
 					<h3>
-						<strong>Enregistrement de la Non-Conformité:</strong>
+						<strong>
+							Enregistrement de la Non-Conformité:
+						</strong>
 					</h3>
 					{% set fields = [
 						'Creator', 'DetectionDate', 'DetectionTime', 'Team','UAP',
@@ -30,55 +39,134 @@
 						{{ form_row(form1[field]) }}
 					{% endfor %}
 					<h3>
-						<strong>Description du Probléme :</strong>
+						<strong>
+							Description du Probléme :
+						</strong>
 					</h3>
 					{% set problemDetails = ['AnomalyType', 'Quantity', 'QuantityToBlock', 'DetailedDescription'] %}
 					{% for detail in problemDetails %}
 						{{ form_row(form1[detail]) }}
 					{% endfor %}
-					<div id="TraceabilityPictureSizeWarning" style="color: red; display: none;">La taille du fichier doit être inferieur à 4Mo.</div>
-					<div class="mb-3" id="traceability-picture-container">
-						<label class="form-label" style="font-weight: bold; color: #ffffff;" for="picture_TraceabilityPicture">Photo de Traçabilité Obligatoire :</label>
-						<input required type="file" accept="image/*" size="4194304" id="picture_TraceabilityPicture" name="picture[TraceabilityPicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de Traçabilité Obligatoire">
-						<div id="TraceabilityPicturePreview"></div>
+					<div
+						id="TraceabilityPictureSizeWarning"
+						style="color: red; display: none;">
+						La taille du fichier doit être inferieur à 4Mo.
 					</div>
-					<div id="NCpictureSizeWarning" style="color: red; display: none;">La taille du fichier doit être inferieur à 4Mo.</div>
-					<div class="mb-3" id="nc-picture-container">
-						<label class="form-label" style="font-weight: bold; color: #ffffff;" for="picture_NCpicture">Photo de non-conformité :</label>
-						<input required type="file" accept="image/*" size="4194304" id="picture_NCpicture" name="picture[NCpicture][]" multiple="multiple" class="form-control mx-auto" placeholder="Photo de non-conformité">
-						<div id="NCpicturePreview"></div>
+					<div
+						class="mb-3"
+						id="traceability-picture-container">
+						<label
+							class="form-label"
+							style="font-weight: bold; color: #ffffff;"
+							for="picture_TraceabilityPicture">
+							Photo de Traçabilité Obligatoire :
+						</label>
+						<input
+							required
+							type="file"
+							accept="image/*"
+							size="4194304"
+							id="picture_TraceabilityPicture"
+							name="picture[TraceabilityPicture][]"
+							multiple="multiple"
+							class="form-control mx-auto"
+							placeholder="Photo de Traçabilité Obligatoire">
+						<div
+							id="TraceabilityPicturePreview"></div>
+					</div>
+					<div
+						id="NCpictureSizeWarning"
+						style="color: red; display: none;">
+						La taille du fichier doit être inferieur à 4Mo.
+					</div>
+					<div
+						class="mb-3"
+						id="nc-picture-container">
+						<label
+							class="form-label"
+							style="font-weight: bold; color: #ffffff;"
+							for="picture_NCpicture">
+							Photo de non-conformité :
+						</label>
+						<input
+							required
+							type="file"
+							accept="image/*"
+							size="4194304"
+							id="picture_NCpicture"
+							name="picture[NCpicture][]"
+							multiple="multiple"
+							class="form-control mx-auto"
+							placeholder="Photo de non-conformité">
+						<div
+							id="NCpicturePreview"></div>
 					</div>
 					<h3>
-						<strong>Mesures Conservatoire Immediates:</strong>
+						<strong>
+							Mesures Conservatoire Immediates:
+						</strong>
 					</h3>
-					<div id="imcome-container" data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
+					<div
+						id="imcome-container"
+						data-prototype="{{ form_widget(form1.immediateConservatoryMeasures.vars.prototype)|e('html_attr') }}">
 						{% for imcomeFormEntry in form1.immediateConservatoryMeasures %}
-							<div class="imcome-entry">
-								{{ form_widget(imcomeFormEntry, {'attr': {'class': 'row'}}) }}
+							<div
+								class="imcome-entry">
+								{{ form_widget(imcomeFormEntry, {'attr': {'class': 'row'}}
+								) }}
 							</div>
 						{% endfor %}
 					</div>
-					<button type="button" id="add-another-imcome" class="btn btn-info">Ajouter une autre Mesure</button>
-					<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
-						<button type="submit" class="btn btn-primary mb-3 submit-EFNCform-creation">Créer</button>
+					<button
+						type="button"
+						id="add-another-imcome"
+						class="btn btn-info">
+						Ajouter une autre Mesure
+					</button>
+					<div
+						class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+						<button
+							type="submit"
+							class="btn btn-primary mb-3 submit-EFNCform-creation">
+							Créer
+						</button>
 					</div>
-					<div hidden>
+					<div
+						hidden>
 						<h3>
-							<strong>Priorisation de la non-conformité :</strong>
+							<strong>
+								Priorisation de la non-conformité :
+							</strong>
 						</h3>
 						{% for riskWeightingFormEntry in form1.riskWeighting %}
 							{{ form_row(riskWeightingFormEntry) }}
 						{% endfor %}
-						<div class="risk-priority-explanation"></div>
-						<div id="rpi-high-risk" style="color: #ffcccb;">
-							<strong>Risque Élevé:</strong>
-							Réaliser une analyse 8D.</div>
-						<div id="rpi-medium-risk" style="color: #ffeda6;">
-							<strong>Risque Moyen:</strong>
-							Réaliser une analyse de causes potentielles.</div>
-						<div id="rpi-low-risk" style="color: #c8f7c5;">
-							<strong>Risque Faible:</strong>
-							Pas d'analyse, affichage au poste : Alerte d'un Problème.</div>
+						<div
+							class="risk-priority-explanation"></div>
+						<div
+							id="rpi-high-risk"
+							style="color: #ffcccb;">
+							<strong>
+								Risque Élevé:
+							</strong>
+							Réaliser une analyse 8D.
+						</div>
+						<div
+							id="rpi-medium-risk"
+							style="color: #ffeda6;">
+							<strong>
+								Risque Moyen:
+							</strong>
+							Réaliser une analyse de causes potentielles.
+						</div>
+						<div
+							id="rpi-low-risk"
+							style="color: #c8f7c5;">
+							<strong>
+								Risque Faible:
+							</strong>
+							Pas d'analyse, affichage au poste : Alerte d'un Problème.
+						</div>
 					</div>
 				</div>
 

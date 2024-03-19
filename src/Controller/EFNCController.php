@@ -27,8 +27,9 @@ class EFNCController extends BaseController
     {
         $efnc = new EFNC();
         $imcome = new ImmediateConservatoryMeasures();
-        $riskWeighting = new RiskWeighting();
         $product = new Product();
+        $riskWeighting = new RiskWeighting();
+
         $efnc->getImmediateConservatoryMeasures()->add($imcome);
         $efnc->getProduct($product);
         $efnc->getRiskWeighting($riskWeighting);
