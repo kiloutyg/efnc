@@ -1,30 +1,30 @@
 import { Controller } from '@hotwired/stimulus';
 
-export default class archivingCommentaryController extends Controller {
+export default class closingCommentaryController extends Controller {
 
-    static targets = ['archivingCommentary', 'archivingCommentaryMessage', 'archivingButton'];
+    static targets = ['closingCommentary', 'closingCommentaryMessage', 'closingButton'];
 
     connect() {
         // Initialization code or leave empty if not needed
     }
 
-    archivingCommentary() {
-        console.log("archivingCommentary" + this.archivingCommentaryTarget.value);
-        const commentary = this.archivingCommentaryTarget.value.trim();
+    closingCommentary() {
+        console.log("closingCommentary" + this.closingCommentaryTarget.value);
+        const commentary = this.closingCommentaryTarget.value.trim();
         const isValid = commentary.length > 5;
 
         if (isValid) {
-            this.archivingCommentaryMessageTarget.textContent = "";
-            this.archivingButtonTarget.disabled = false;
-            this.archivingButtonTarget.hidden = false;
+            this.closingCommentaryMessageTarget.textContent = "";
+            this.closingButtonTarget.disabled = false;
+            this.closingButtonTarget.hidden = false;
         } else {
-            this.archivingCommentaryMessageTarget.textContent = "Format invalide. Veuillez saisir un commentaire plus complet.";
-            this.archivingCommentaryMessageTarget.style.color = "red"; // Display the message in red color.
+            this.closingCommentaryMessageTarget.textContent = "Format invalide. Veuillez saisir un commentaire plus complet.";
+            this.closingCommentaryMessageTarget.style.color = "red"; // Display the message in red color.
         }
     }
 
 
-    archiveWithCommentary(event) {
+    closeWithCommentary(event) {
 
         const entityType = this.trainingOperatorCodeTarget.dataset.entityType;
         const efncid = this.trainingOperatorCodeTarget.dataset.efncid;
@@ -35,13 +35,13 @@ export default class archivingCommentaryController extends Controller {
         // Validate commentary as per your logic; here directly using validateCommentary method
         this.validateCommentary();
 
-        if (!this.archivingButtonTarget.disabled) {
-            const url = '/efnc/admin/archive/'; // Replace with your actual endpoint
-            const commentary = this.archivingCommentaryTarget.value;
+        if (!this.closingButtonTarget.disabled) {
+            const url = '/efnc/admin/close/'; // Replace with your actual endpoint
+            const commentary = this.closingCommentaryTarget.value;
 
             fetch(url, {
                 method: 'POST',
-                body: JSON.stringify({ archivingCommentary: commentary }),
+                body: JSON.stringify({ closingCommentary: commentary }),
                 headers: {
                     'Content-Type': 'application/json',
                     // Add other headers like CSRF token if necessary

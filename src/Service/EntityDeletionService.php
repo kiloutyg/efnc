@@ -233,6 +233,7 @@ class EntityDeletionService
 
         return true;
     }
+
     public function deleteEntity(string $entityType, int $id): bool
     {
         // Get the repository for the entity type
@@ -535,6 +536,7 @@ class EntityDeletionService
 
     public function closeEntity(string $entityType, int $id, string $commentary = null, string $user = null): bool
     {
+        $this->logger->info('Closing entity with commentary: ' . $commentary);
         $repository = null;
         switch ($entityType) {
             case "efnc":
@@ -554,6 +556,7 @@ class EntityDeletionService
 
         if ($entityType === 'efnc') {
             $entity->setCloser($user);
+            $entity->setClosingCommentary($commentary);
             $entity->setArchived(true);
             $entity->setStatus(true);
         }

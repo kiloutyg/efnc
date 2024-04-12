@@ -236,15 +236,51 @@
 									disabled>
 									Archiver
 								</button>
-								{% if is_granted('ROLE_MASTER_ADMIN') %}
-									<a
-										class="btn btn-danger archive-EFNC"
-										href="{{path('app_close_entity', {entityType: 'efnc', id: EFNC.id})}}">
-										Cloturer
-									</a>
-								{% endif %}
+
 							</div>
 						</div>
+
+					</form>
+					<form
+						method="post"
+						action="{{path('app_close_entity', {entityType: 'efnc', id: EFNC.id})}}">
+
+						<div
+							class="container mt-2 mb-2"
+							data-controller="closing-commentary">
+							<div
+								class="row justify-content-md-center">
+								<div
+									class="col-md-12">
+									<label
+										for="closingCommentary"
+										class="form-label text-white">
+										Commentaire de cloture obligatoire
+										<div
+											data-closing-commentary-target="closingCommentaryMessage"
+											class="closingCommentaryMessage-message d-flex justify-content-evenly"></div>
+									</label>
+									<textarea
+										class="form-control"
+										id="closingCommentary"
+										name="closingCommentary"
+										data-closing-commentary-target="closingCommentary"
+										data-action="keyup->closing-commentary#closingCommentary"></textarea>
+								</div>
+							</div>
+							<div
+								class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2">
+								<button
+									type="submit"
+									class="btn btn-danger close-EFNC"
+									data-closing-commentary-target="closingButton"
+									hidden
+									disabled>
+									Cloturer
+								</button>
+							</div>
+						</div>
+
 					</form>
 				{% elseif EFNC.archived is same as(true) and EFNC.status is null %}
 					<div
@@ -261,7 +297,7 @@
 						<div
 							class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2">
 							<a
-								class="btn btn-danger archive-EFNC"
+								class="btn btn-danger close-EFNC"
 								href="{{path('app_close_entity', {entityType: 'efnc', id: EFNC.id})}}">
 								Cloturer
 							</a>
@@ -274,6 +310,9 @@
 
 						{{ EFNC.Closer|capitalize|split('.')|first }}
 						{{ EFNC.Closer|upper|split('.')|last }}
+
+						avec le commentaire suivant :
+						{{ EFNC.ClosingCommentary }}
 					</div>
 				{% endif %}
 			{% endif %}

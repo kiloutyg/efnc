@@ -15,7 +15,7 @@
 		<link
 			rel="icon"
 			type="image/ico"
-			href="{{ asset('favicon.ico') }}"/>
+			href="{{ asset('Plastic_Omnium.svg') }}"/>
 
 		{% block stylesheets %}
 			{{
@@ -192,15 +192,15 @@
 								class="d-flex mb-3 rounded-3 flex-grow-1"
 								name="form_list"
 								src="{{ path('app_archived_form_list')}}" frameborder="0"></iframe>
-							{% if is_granted('ROLE_MASTER_ADMIN')  and closed > 0 %}
-								<strong>
-									FNC CLOSES
-								</strong>
-								<iframe
-									class="d-flex mb-3 rounded-3 flex-grow-1"
-									name="form_list"
-									src="{{ path('app_closed_form_list')}}" frameborder="0"></iframe>
-							{% endif %}
+							{# {% if is_granted('ROLE_MASTER_ADMIN')  and closed > 0 %} #}
+							<strong>
+								FNC CLOSES
+							</strong>
+							<iframe
+								class="d-flex mb-3 rounded-3 flex-grow-1"
+								name="form_list"
+								src="{{ path('app_closed_form_list')}}" frameborder="0"></iframe>
+							{# {% endif %} #}
 						{% endif %}
 
 					{% endblock %}
