@@ -94,22 +94,27 @@ class EFNCController extends BaseController
         } else if ($request->getMethod() == 'POST') {
             if ($this->getUser() !== null) {
                 if ($this->authChecker->isGranted('ROLE_ADMIN')) {
-                    $user = $this->getUser()->getUsername();
-                    $form1->handleRequest($request);
-                    if ($form1->isValid() && $form1->isSubmitted()) {
-                        $result = $this->formModificationService->modifyNCForm(
-                            $efnc,
-                            $request,
-                            $form1,
-                            $user
-                        );
-                    }
-                    if ($result === true) {
+                    if ($efnc->isArchived() == null || $efnc->isArchived() == false || $efnc->isStatus() == false || $efnc->isStatus() == null) {
+                        $user = $this->getUser()->getUsername();
+                        $form1->handleRequest($request);
+                        if ($form1->isValid() && $form1->isSubmitted()) {
+                            $result = $this->formModificationService->modifyNCForm(
+                                $efnc,
+                                $request,
+                                $form1,
+                                $user
+                            );
+                        }
+                        if ($result === true) {
 
-                        $this->addFlash('success', 'Fiche correctement modifiée!');
-                        return $this->redirectToRoute('app_base', []);
+                            $this->addFlash('success', 'Fiche correctement modifiée!');
+                            return $this->redirectToRoute('app_base', []);
+                        } else {
+                            $this->addFlash('error', 'Erreur lors de la modification de la fiche!');
+                            return $this->redirectToRoute('app_base', []);
+                        }
                     } else {
-                        $this->addFlash('error', 'Erreur lors de la modification de la fiche!');
+                        $this->addFlash('error', 'Vous ne pouvez pas modifier une fiche archivée ou cloturée!');
                         return $this->redirectToRoute('app_base', []);
                     }
                 } else {
@@ -143,31 +148,5 @@ class EFNCController extends BaseController
             $picture->getFilename()
         );
         return $response;
-    }
-
-    #[Route('admin/close/{entityType}/{id}', name: 'close_entity')]
-    public function closeEntity(Request $request, string $entityType, int $id): Response
-    {
-        $originUrl = $request->headers->get('referer');
-
-        if ($this->getUser() !== null) {
-            if ($this->authChecker->isGranted('ROLE_MASTER_ADMIN')) {
-                $user = $this->getUser()->getUsername();
-                $result = $this->entityDeletionService->closeEntity($entityType, $id, $commentary = null, $user); // Implement this method in your service
-                if ($result == false) {
-                    $this->addFlash('danger', 'L\'élément n\'a pas pu être clôturé');
-                    return $this->redirectToRoute('app_base', []);
-                } else {
-                    $this->addFlash('success', 'L\'élément a bien été clôturé');
-                    return $this->redirectToRoute('app_base', []);
-                }
-            } else {
-                $this->addFlash('error', 'Vous n\'avez pas les droits pour clôturer un élément');
-                return $this->redirectToRoute('app_base', []);
-            }
-        } else {
-            $this->addFlash('error', 'Vous devez être connecté pour clôturer un élément');
-            return $this->redirectToRoute('app_base', []);
-        }
     }
 }

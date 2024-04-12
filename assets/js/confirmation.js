@@ -97,6 +97,7 @@ document.addEventListener('turbo:load', function () {
   const creationUserButtons = document.querySelectorAll(".submit-user-creation");
   const deleteUserButtons = document.querySelectorAll(".delete-user");
   const archiveEFNCButtons = document.querySelectorAll(".archive-EFNC");
+  const closeEFNCButtons = document.querySelectorAll(".close-EFNC");
 
   const entityCreationButtons = document.querySelectorAll(".submit-entity-creation");
 
@@ -150,6 +151,15 @@ document.addEventListener('turbo:load', function () {
       confirmationHandler(
         event,
         "Êtes vous sûr de vouloir archiver cette EFNC?"
+      );
+    });
+  });
+
+  closeEFNCButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      confirmationHandler(
+        event,
+        "Êtes vous sûr de vouloir clore cette EFNC?"
       );
     });
   });

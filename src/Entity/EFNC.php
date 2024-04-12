@@ -104,6 +104,9 @@ class EFNC
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $closer = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $closingCommentary = null;
+
 
     public function __construct()
     {
@@ -565,6 +568,18 @@ class EFNC
     public function setCloser(?string $closer): static
     {
         $this->closer = $closer;
+
+        return $this;
+    }
+
+    public function getClosingCommentary(): ?string
+    {
+        return $this->closingCommentary;
+    }
+
+    public function setClosingCommentary(?string $closingCommentary): static
+    {
+        $this->closingCommentary = $closingCommentary;
 
         return $this;
     }

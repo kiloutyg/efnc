@@ -346,6 +346,41 @@ class AdminController extends FrontController
     }
 
 
+    #[Route('admin/close/{entityType}/{id}', name: 'close_entity')]
+    public function closeEntity(Request $request, string $entityType, int $id): Response
+    {
+
+        $this->logger->info('Closing entity full reques' . $request);
+        $originUrl = $request->headers->get('referer');
+
+        if ($this->getUser() !== null) {
+            if ($this->authChecker->isGranted('ROLE_ADMIN')) {
+                $user = $this->getUser()->getUsername();
+
+                $commentary = $request->request->get('closingCommentary');
+                if ($entityType == "efnc" && $commentary == null) {
+                    $this->addFlash('danger', 'Un commentaire est requis pour archiver une EFNC');
+                    return $this->redirect($originUrl);
+                }
+                $result = $this->entityDeletionService->closeEntity($entityType, $id, $commentary, $user); // Implement this method in your service
+                if ($result == false) {
+                    $this->addFlash('danger', 'L\'élément n\'a pas pu être clôturé');
+                    return $this->redirectToRoute('app_base', []);
+                } else {
+                    $this->addFlash('success', 'L\'élément a bien été clôturé');
+                    return $this->redirectToRoute('app_base', []);
+                }
+            } else {
+                $this->addFlash('error', 'Vous n\'avez pas les droits pour clôturer un élément');
+                return $this->redirectToRoute('app_base', []);
+            }
+        } else {
+            $this->addFlash('error', 'Vous devez être connecté pour clôturer un élément');
+            return $this->redirectToRoute('app_base', []);
+        }
+    }
+
+
     #[Route('admin/archive/{entityType}/{id}', name: 'archive_entity')]
     public function archiveEntity(Request $request, string $entityType, int $id): Response
     {
@@ -380,19 +415,7 @@ class AdminController extends FrontController
     }
 
 
-    #[Route('admin/delete/{entityType}/{id}', name: 'delete_entity')]
-    public function deleteEntity(Request $request, string $entityType, int $id): Response
-    {
-        $originUrl = $request->headers->get('referer');
-        $result = $this->entityDeletionService->deleteEntity($entityType, $id);
-        if ($result == false) {
-            $this->addFlash('danger', 'L\'élément n\'a pas pu être supprimé');
-            return $this->redirect($originUrl);
-        } else {
-            $this->addFlash('success', 'L\'élément a bien été supprimé');
-            return $this->redirect($originUrl);
-        }
-    }
+
 
 
     #[Route('admin/unarchive/{entityType}/{id}', name: 'unarchive_entity')]
@@ -405,6 +428,22 @@ class AdminController extends FrontController
             return $this->redirect($originUrl);
         } else {
             $this->addFlash('success', 'L\'élément a bien été restauré');
+            return $this->redirect($originUrl);
+        }
+    }
+
+
+
+    #[Route('admin/delete/{entityType}/{id}', name: 'delete_entity')]
+    public function deleteEntity(Request $request, string $entityType, int $id): Response
+    {
+        $originUrl = $request->headers->get('referer');
+        $result = $this->entityDeletionService->deleteEntity($entityType, $id);
+        if ($result == false) {
+            $this->addFlash('danger', 'L\'élément n\'a pas pu être supprimé');
+            return $this->redirect($originUrl);
+        } else {
+            $this->addFlash('success', 'L\'élément a bien été supprimé');
             return $this->redirect($originUrl);
         }
     }
