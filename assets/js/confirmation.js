@@ -101,6 +101,8 @@ document.addEventListener('turbo:load', function () {
 
   const entityCreationButtons = document.querySelectorAll(".submit-entity-creation");
 
+  const ncfCreationButtons = document.querySelectorAll(".new-ncf-alert");
+
   const confirmationHandler = (event, message) => {
     const confirmed = confirm(message);
     if (!confirmed) {
@@ -169,6 +171,16 @@ document.addEventListener('turbo:load', function () {
       confirmationHandler(
         event,
         "Êtes vous sûr de vouloir créer cette entitée?"
+      );
+    });
+  });
+
+  ncfCreationButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      confirmationHandler(
+        event,
+        " ⚠️ Une FNC ne doit être crée que si le défaut represente ❗ UN NOMBRE DE PIECES SUPERIEUR OU EGAL A 5  ❗  Êtes vous sûr de vouloir continuer ? "
+
       );
     });
   });
