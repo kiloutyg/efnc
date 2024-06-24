@@ -8,7 +8,7 @@ use App\Repository\UserRepository;
 use App\Repository\EFNCRepository;
 
 use Symfony\Component\Mailer\MailerInterface;
-
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\DataPart;
 
@@ -17,6 +17,8 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\SecurityBundle\Security;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+use App\Entity\User;
 
 
 class MailerService extends AbstractController

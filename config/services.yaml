@@ -26,3 +26,5 @@ services:
     App\Service\MailerService:
         arguments:
             $senderEmail: "%env(MAILER_SENDER_EMAIL)%"
+
+            
