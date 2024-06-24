@@ -8,7 +8,7 @@ use App\Repository\UserRepository;
 use App\Repository\EFNCRepository;
 
 use Symfony\Component\Mailer\MailerInterface;
-
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\DataPart;
 
@@ -18,6 +18,8 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use App\Entity\User;
+
 
 class MailerService extends AbstractController
 {
@@ -26,16 +28,22 @@ class MailerService extends AbstractController
     private $userRepository;
     private $EFNCRepository;
 
+    private $senderEmail;
+
     public function __construct(
         MailerInterface $mailer,
 
         UserRepository $userRepository,
-        EFNCRepository $EFNCRepository
+        EFNCRepository $EFNCRepository,
+
+        string $senderEmail
     ) {
         $this->mailer               = $mailer;
 
         $this->userRepository       = $userRepository;
         $this->EFNCRepository       = $EFNCRepository;
+
+        $this->senderEmail              = $senderEmail;
     }
 
     public function notificationEmail(EFNC $EFNC)
@@ -96,5 +104,24 @@ class MailerService extends AbstractController
         // Send the email as usual
         $this->mailer->send($email);
         return true;
+    }
+
+
+
+    public function sendEmail(User $recipient, string $subject, string $html)
+    {
+
+        $emailRecipientsAddress = $recipient->getEmailAddress();
+        $email = (new Email())
+            ->from($this->senderEmail)
+            ->to($emailRecipientsAddress)
+            ->subject($subject)
+            ->html($html);
+        try {
+            $this->mailer->send($email);
+            return true;
+        } catch (TransportExceptionInterface $e) {
+            return $e->getMessage();
+        }
     }
 }
