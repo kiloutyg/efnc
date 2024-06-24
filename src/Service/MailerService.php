@@ -124,4 +124,35 @@ class MailerService extends AbstractController
             return $e->getMessage();
         }
     }
+
+    public function sendReminderEmailToUploader()
+    {
+        $senderEmail = $this->senderEmail;
+
+        $recipientsEmail = [];
+        $users = $this->userRepository->findAll();
+        foreach ($users as $user) {
+            if ($user !== $this->getUser() && filter_var($user->getEmailAddress(), FILTER_VALIDATE_EMAIL) && in_array('ROLE_ADMIN', $user->getRoles()) === true) {
+                $recipientsEmail[] = $user->getEmailAddress();
+            }
+        }
+        $monthOldNcf = $this->EFNCRepository->getMonthOldLowLevelRiskNcf();
+
+
+        $email = (new TemplatedEmail())
+            ->from($senderEmail)
+            ->to(...$recipientsEmail)
+            ->subject('EFNC - Rappel des fiches à cloturer.')
+            ->htmlTemplate('.html.twig')
+            ->context([
+                'oldNcfs'                    => $monthOldNcf,
+            ]);
+
+        try {
+            $this->mailer->send($email);
+            return true;
+        } catch (TransportExceptionInterface $e) {
+            return false;
+        }
+    }
 }

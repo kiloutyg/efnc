@@ -191,7 +191,7 @@
 						{% endfor %}
 						{% if is_granted('ROLE_USER') and archive > 0  %}
 							<strong>
-								FNC ARCHIVÉES
+								FNC ARCHIVÉES (Ne respecte le standard des FNC)
 							</strong>
 							<iframe
 								class="d-flex mb-3 rounded-3 flex-grow-1"
@@ -199,7 +199,7 @@
 								src="{{ path('app_archived_form_list')}}" frameborder="0"></iframe>
 							{# {% if is_granted('ROLE_MASTER_ADMIN')  and closed > 0 %} #}
 							<strong>
-								FNC CLOSES
+								FNC CLOSES (Actions cloturées dans PDCA UAP)
 							</strong>
 							<iframe
 								class="d-flex mb-3 rounded-3 flex-grow-1"
