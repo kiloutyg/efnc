@@ -146,7 +146,7 @@ class MailerService extends AbstractController
         $fileName = 'email_sent.txt';
         $filePath = $this->projectDir . '/public/doc/' . $fileName;
 
-        if ($today->format('d') % 1 == 0 && (!file_exists($filePath) || strpos(file_get_contents($filePath), $today->format('Y-m-d')) === false)) {
+        if ($today->format('d') % 2 == 0 && (!file_exists($filePath) || strpos(file_get_contents($filePath), $today->format('Y-m-d')) === false)) {
 
             $senderEmail = $this->senderEmail;
 
@@ -164,8 +164,6 @@ class MailerService extends AbstractController
             $email = (new TemplatedEmail())
                 ->from($senderEmail)
                 ->to(...$recipientsEmail)
-                // ->to('florian.dkhissi@opmobility.com')
-
                 ->subject('EFNC - Rappel des fiches à cloturer.')
                 ->htmlTemplate('/services/email_templates/reminderEmailToAdmin.html.twig')
                 ->context([
