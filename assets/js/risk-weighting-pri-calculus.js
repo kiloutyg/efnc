@@ -28,7 +28,7 @@ document.addEventListener('turbo:load', function () {
             } else {
                 riskPriorityIndexField.style.backgroundColor = '#c8f7c5'; // Green-ish
                 riskPriorityExplanation.classList.add('alert-success');
-                riskPriorityExplanation.innerHTML = 'Faire communication par mail au TOP 5 (informer les manager) + Présentation piéces et affichage au poste : Alerte d\'un Problème.<br><strong>➥ Cloture manuelle aprés un mois si pas de récurrence, si récurrence conserver la nouvelle FNC et cloturer la premiére occurrence.</strong>';
+                riskPriorityExplanation.innerHTML = 'Faire communication par mail au TOP 5 (informer les manager) + Présentation piéces et affichage au poste : Alerte d\'un Problème.<br><strong>➥ Cloture manuelle aprés un mois si absence de récurrence, si récurrence conserver la nouvelle FNC et cloturer la premiére occurrence.</strong>';
             }
         }
 
