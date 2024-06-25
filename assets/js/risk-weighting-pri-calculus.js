@@ -20,15 +20,15 @@ document.addEventListener('turbo:load', function () {
             if (riskPriorityIndex > 300) {
                 riskPriorityIndexField.style.backgroundColor = '#ffcccb'; // Red-ish
                 riskPriorityExplanation.classList.add('alert-danger');
-                riskPriorityExplanation.textContent = 'Réaliser une analyse 8D';
+                riskPriorityExplanation.textContent = 'Réaliser une analyse 8D ou PSA3';
             } else if (riskPriorityIndex > 100) {
                 riskPriorityIndexField.style.backgroundColor = '#ffeda6'; // Orange-ish
                 riskPriorityExplanation.classList.add('alert-warning');
-                riskPriorityExplanation.textContent = 'Réaliser une analyse de causes potentielles';
+                riskPriorityExplanation.textContent = 'Réaliser une analyse de causes potentielles et les actions de suivis dans le PDCA de l\'UAP concerné';
             } else {
                 riskPriorityIndexField.style.backgroundColor = '#c8f7c5'; // Green-ish
                 riskPriorityExplanation.classList.add('alert-success');
-                riskPriorityExplanation.textContent = 'Pas d\'analyse, affichage au poste : Alerte d\'un Problème';
+                riskPriorityExplanation.innerHTML = 'Faire communication par mail au TOP 5 (informer les manager) + Présentation piéces et affichage au poste : Alerte d\'un Problème.<br><strong>➥ Cloture manuelle aprés un mois si absence de récurrence, si récurrence conserver la nouvelle FNC et cloturer la premiére occurrence.</strong>';
             }
         }
 

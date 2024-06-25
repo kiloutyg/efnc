@@ -21,28 +21,45 @@ class EFNCRepository extends ServiceEntityRepository
         parent::__construct($registry, EFNC::class);
     }
 
-//    /**
-//     * @return EFNC[] Returns an array of EFNC objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getMonthOldLowLevelRiskEfnc()
+    {
+        $date = new \DateTime();
+        $date->modify('-1 month');
+        $date = $date->format('Y-m-d');
+        return $this->createQueryBuilder('e')
+            ->leftJoin('e.riskWeighting', 'r')
+            ->andWhere('r.RiskPriorityIndex < :val')
+            ->andWhere('e.CreatedAt < :date')
+            ->andWhere('e.Status IS NULL')
+            ->andWhere('e.archived IS NULL')
+            ->setParameter('val', '100')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?EFNC
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * @return EFNC[] Returns an array of EFNC objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('e')
+    //            ->andWhere('e.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('e.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?EFNC
+    //    {
+    //        return $this->createQueryBuilder('e')
+    //            ->andWhere('e.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

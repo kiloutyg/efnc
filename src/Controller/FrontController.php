@@ -12,6 +12,8 @@ class FrontController extends BaseController
     #[Route('/', name: 'base')]
     public function base(): Response
     {
+        $this->mailerService->sendReminderEmailToAdmin();
+
         return $this->render('base.html.twig', []);
     }
 
@@ -30,4 +32,12 @@ class FrontController extends BaseController
     {
         return $this->render('/services/efnc/display/closed_efnc_list.html.twig', []);
     }
+
+    // #[Route('/admin/old', name: 'old')]
+    // public function testForOld(): Response
+    // {
+    //     $this->mailerService->sendReminderEmailToAdmin();
+
+    //     return $this->redirectToRoute('app_base');
+    // }
 }

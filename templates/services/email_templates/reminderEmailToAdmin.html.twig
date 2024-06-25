@@ -1,0 +1,72 @@
+<p>
+	Bonjour,
+</p>
+
+<p>
+	Voici la liste des Fiches de Non Conformités de risques faibles en attente de clotures (vous pouvez cliquer sur les liens pour les consulter) :
+</p>
+
+<div
+	name="form_list"
+	style="margin-bottom: 20px; border-radius: 10px; flex-grow: 1; padding: 0;">
+	<ul
+		style="background-color: azure; list-style-type: none; padding: 0; margin: 0;">
+
+		{% for efnc in oldEfncs %}
+			<li
+				style="margin: 0; padding: 0;">
+				<a
+					target="_top"
+					href="http://slanlp0040/efnc/form{{efnc.id}}_modification_display"
+					style="display: block; padding: 10px; text-decoration: none; color: inherit; background-color: lightgrey; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
+
+					<span
+						style="display: flex; justify-content: space-between; align-items: center;">
+						<span
+							style="flex: 1; text-align: center; display: inline-block;">
+							{{ efnc.Title|upper|split('_')|first }}
+							{{ efnc.id|upper }}
+						</span>
+						<span
+							style="flex: 0; padding: 0 5px; display: inline-block;">
+							|
+						</span>
+						<span
+							style="flex: 2; text-align: center; display: inline-block;">
+							{{ efnc.nonConformityOrigin.name|upper }}
+						</span>
+						<span
+							style="flex: 0; padding: 0 5px; display: inline-block;">
+							|
+						</span>
+						<span
+							style="flex: 5; text-align: center; display: inline-block;">
+							{{ efnc.product.category.name|upper }}
+							-
+							{{ efnc.product.version.name|upper }}
+							-
+							{{ efnc.product.color.name|upper }}
+						</span>
+						<span
+							style="flex: 0; padding: 0 5px; display: inline-block;">
+							|
+						</span>
+						<span
+							style="flex: 1; text-align: center; display: inline-block;">
+							{{ efnc.Project.name|upper }}
+						</span>
+						<span
+							style="flex: 0; padding: 0 5px; display: inline-block;">
+							|
+						</span>
+						<span
+							style="flex: 1; text-align: center; display: inline-block;">
+							{{ efnc.CreatedAt|date('d/m/Y') }}
+						</span>
+					</span>
+
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+</div>
