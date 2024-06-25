@@ -172,6 +172,8 @@ class MailerService extends AbstractController
 
             try {
                 $this->mailer->send($email);
+                $fileWriting = file_put_contents($filePath, $today->format('Y-m-d'));
+                $this->logger->info('fileWriting: ' . $fileWriting);
                 return true;
             } catch (TransportExceptionInterface $e) {
                 return false;
