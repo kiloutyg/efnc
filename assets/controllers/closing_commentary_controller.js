@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class closingCommentaryController extends Controller {
 
-    static targets = ['closingCommentary', 'closingCommentaryMessage', 'closingButton'];
+    static targets = ['closingCommentary', 'closingCommentaryMessage', 'closingButton', 'closingCheckbox'];
 
     connect() {
         // Initialization code or leave empty if not needed
@@ -13,13 +13,18 @@ export default class closingCommentaryController extends Controller {
         const commentary = this.closingCommentaryTarget.value.trim();
         const isValid = commentary.length > 5;
 
-        if (isValid) {
+        console.log("has the checkbox been checked? " + this.closingCheckboxTarget.checked);
+        const checked = this.closingCheckboxTarget.checked;
+
+        if (isValid || checked) {
             this.closingCommentaryMessageTarget.textContent = "";
             this.closingButtonTarget.disabled = false;
             this.closingButtonTarget.hidden = false;
         } else {
             this.closingCommentaryMessageTarget.textContent = "Format invalide. Veuillez saisir un commentaire plus complet.";
-            this.closingCommentaryMessageTarget.style.color = "red"; // Display the message in red color.
+            this.closingCommentaryMessageTarget.style.color = "darkred"; // Display the message in red color.
+            this.closingButtonTarget.disabled = true;
+            this.closingButtonTarget.hidden = true;
         }
     }
 

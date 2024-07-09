@@ -358,7 +358,7 @@ class AdminController extends FrontController
                 $user = $this->getUser()->getUsername();
 
                 $commentary = $request->request->get('closingCommentary');
-                if ($entityType == "efnc" && $commentary == null) {
+                if ($entityType == "efnc" && $commentary == null && $request->request->get('closingCheckbox') === "false") {
                     $this->addFlash('danger', 'Un commentaire est requis pour archiver une EFNC');
                     return $this->redirect($originUrl);
                 }
@@ -393,7 +393,7 @@ class AdminController extends FrontController
             $user = $this->getUser()->getUsername();
             $commentary = $request->request->get('archivingCommentary');
 
-            if ($entityType == "efnc" && $commentary == null) {
+            if ($entityType == "efnc" && $commentary == null && $request->request->get('archivingCheckbox') === "false") {
                 $this->addFlash('danger', 'Un commentaire est requis pour archiver une EFNC');
                 return $this->redirect($originUrl);
             }

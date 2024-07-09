@@ -212,10 +212,26 @@
 								class="row justify-content-md-center">
 								<div
 									class="col-md-12">
+
 									<label
 										for="archivingCommentary"
 										class="form-label text-white">
-										Commentaire d'archivage obligatoire, si la fiche ne respecte pas le standard prévu (Ecrire le commentaire pour faire apparaitre le bouton d'archivage)
+										Commentaire d'archivage obligatoire, si la fiche ne respecte pas le standard prévu (Ecrire le commentaire pour faire apparaitre le bouton d'archivage ou, si pas de commentaire, cocher:
+										<input
+											class="btn-check m-0"
+											type="checkbox"
+											id="archivingCheckbox"
+											name="archivingCheckbox"
+											value="true"
+											data-archiving-commentary-target="archivingCheckbox"
+											data-action="click->archiving-commentary#archivingCommentary">
+										<label
+											autocomplete="off"
+											class="btn btn-outline-info m-0 mb-1"
+											for="archivingCheckbox">
+											Archiver la FNC pour non validité
+										</label>
+										)
 										<div
 											data-archiving-commentary-target="archivingCommentaryMessage"
 											class="archivingCommentaryMessage-message d-flex justify-content-evenly"></div>
@@ -257,7 +273,22 @@
 									<label
 										for="closingCommentary"
 										class="form-label text-white">
-										Commentaire de cloture obligatoire, si les actions sont cloturées dans le PDCA de l'UAP concerné (Ecrire le commentaire pour faire apparaitre le bouton de cloture)
+										Commentaire de cloture obligatoire, si les actions sont cloturées dans le PDCA de l'UAP concerné (Ecrire le commentaire pour faire apparaitre le bouton de cloture ou si absence de récurrence cocher :
+										<input
+											class="btn-check m-0"
+											type="checkbox"
+											id="closingCheckbox"
+											name="closingCheckbox"
+											value="true"
+											data-closing-commentary-target="closingCheckbox"
+											data-action="click->closing-commentary#closingCommentary">
+										<label
+											autocomplete="off"
+											class="btn btn-outline-info m-0 mb-1"
+											for="closingCheckbox">
+											Clore la FNC pour non récurrence
+										</label>
+										)
 										<div
 											data-closing-commentary-target="closingCommentaryMessage"
 											class="closingCommentaryMessage-message d-flex justify-content-evenly"></div>
