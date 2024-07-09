@@ -2,8 +2,8 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class archivingCommentaryController extends Controller {
 
-    static targets = ['archivingCommentary', 'archivingCommentaryMessage', 'archivingButton'];
-
+    static targets = ['archivingCommentary', 'archivingCommentaryMessage', 'archivingButton', 'archivingCheckbox'
+    ];
     connect() {
         // Initialization code or leave empty if not needed
     }
@@ -13,13 +13,18 @@ export default class archivingCommentaryController extends Controller {
         const commentary = this.archivingCommentaryTarget.value.trim();
         const isValid = commentary.length > 5;
 
-        if (isValid) {
+        console.log("has the checkbox been checked? " + this.archivingCheckboxTarget.checked);
+        const checked = this.archivingCheckboxTarget.checked;
+
+        if (isValid || checked) {
             this.archivingCommentaryMessageTarget.textContent = "";
             this.archivingButtonTarget.disabled = false;
             this.archivingButtonTarget.hidden = false;
         } else {
-            this.archivingCommentaryMessageTarget.textContent = "Format invalide. Veuillez saisir un commentaire plus complet.";
-            this.archivingCommentaryMessageTarget.style.color = "red"; // Display the message in red color.
+            this.archivingCommentaryMessageTarget.textContent = "Format invalide. Veuillez saisir un commentaire plus complet ou cocher la case.";
+            this.archivingCommentaryMessageTarget.style.color = "darkred"; // Display the message in red color.
+            this.archivingButtonTarget.disabled = true;
+            this.archivingButtonTarget.hidden = true;
         }
     }
 
