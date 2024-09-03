@@ -1,5 +1,39 @@
 #!/bin/bash
 
+# Get the github user from the argument
+GITHUB_USER=$1
+echo "GitHub User: $GITHUB_USER"
+
+# Function to check for uppercase characters
+contains_uppercase() {
+    [[ "$1" =~ [A-Z] ]]
+}
+# function to check if the site name is valid and has the first letter uppercase
+is_FACILITY_name_valid() {
+    [[ "$1" = ^[A-Z] ]]
+}
+
+# Prompt for plant trigram
+while true; do
+    read -p "Please enter your plant trigram (example: lan): " PLANT_TRIGRAM
+    if contains_uppercase "$PLANT_TRIGRAM"; then
+        echo "The plant trigram should not contain uppercase characters. Please try again."
+    else
+        break
+    fi
+done
+
+# Ask the name of the site or plant
+while true; do
+read -p "Please enter the name of the facility or plant (example: Langres or Andance): " FACILITY_NAME
+if is_FACILITY_name_valid "$FACILITY_NAME"; then
+    echo "The site name should contain the first letter uppercase. Please try again."
+else
+        break
+    fi
+done
+
+
 # Prompt for database details
 read -p "Please enter your MySQL root password: " MYSQL_ROOT_PASSWORD
 read -p "Please enter your MySQL username: " MYSQL_USER
@@ -53,11 +87,9 @@ APP_SECRET=$(openssl rand -hex 16)
 
 # Create docker-compose.override.yml file to use the good entrypoint
 cat > docker-compose.override.yml <<EOL
-version: '3.8'
-
 services:
   webefnc:
-    image: ghcr.io/polangres/efnc:main
+    image: ghcr.io/${GITHUB_USER}/efnc:main
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
@@ -113,6 +145,9 @@ MYSQL_DATABASE=${MYSQL_DATABASE}
 MYSQL_USER=${MYSQL_USER}
 MYSQL_PASSWORD=${MYSQL_PASSWORD}
 HOSTNAME=${HOSTNAME}
+PLANT_TRIGRAM=${PLANT_TRIGRAM}
+GITHUB_USER=${GITHUB_USER}
+FACILITY_NAME=${FACILITY_NAME}
 
 ###> symfony/framework-bundle ###
 APP_ENV=${APP_CONTEXT}
@@ -143,6 +178,7 @@ DATABASE_URL=mysql://root:\${MYSQL_ROOT_PASSWORD}@database/\${MYSQL_DATABASE}?se
 
 ###> symfony/mailer ###
 MAILER_DSN=smtp://smtp.corp.ponet:25?verify_peer=0
+MAILER_SENDER_EMAIL=${PLANT_TRIGRAM}.efnc@opmobility.com
 ###< symfony/mailer ###
 EOL
 
@@ -158,11 +194,9 @@ sed -i "s|^# MAILER_DSN=.*|MAILER_DSN=smtp://smtp.corp.ponet:25?verify_peer=0|" 
 
 # Create docker-compose.override.yml file to use the good entrypoint
 cat > docker-compose.override.yml <<EOL
-version: '3.8'
-
 services:
   web:
-    image: ghcr.io/polangres/efnc:main
+    image: ghcr.io/${GITHUB_USER}/efnc:main
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
@@ -184,7 +218,7 @@ ${PROXY_ENV}
 EOL
 
 
-sg docker -c "docker compose up --build -d"
+sg docker -c "docker compose up --build &"
 
 sleep 90
 
@@ -198,11 +232,9 @@ APP_CONTEXT="prod"
 
 # Create docker-compose.override.yml file to use the good entrypoint
 cat > docker-compose.override.yml <<EOL
-version: '3.8'
-
 services:
   web:
-    image: ghcr.io/polangres/efnc:main
+    image: ghcr.io/${GITHUB_USER}/efnc:main
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:

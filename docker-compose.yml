@@ -1,7 +1,6 @@
-version: '3.8'
 services:
   database:
-    image: mariadb:latest
+    image: docker.io/mariadb:latest
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -16,15 +15,10 @@ services:
     networks:
       vpcbr:
         ipv4_address: 172.22.0.2
-    labels:
-      - "traefik.enable=false"
-      # - "traefik.http.routers.database-efnc.rule=PathPrefix(`/database-efnc`)"
-      # - "traefik.http.routers.database-efnc.entrypoints=mariadb"
-      # - "traefik.tcp.routers.tcp-database-efnc.entrypoints=mariadb"
     command: ['--init-file', '/docker-entrypoint-initdb.d/create-power-bi-ronlyuser.sql']
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: docker.iophpmyadmin/phpmyadmin
     restart: unless-stopped
     environment:
       PMA_HOST: database
