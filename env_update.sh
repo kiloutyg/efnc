@@ -1,5 +1,39 @@
 #!/bin/bash
 
+# Get the github user from the argument
+GITHUB_USER=$1
+echo "GitHub User: $GITHUB_USER"
+
+# function to check if the site name is valid and has the first letter uppercase
+is_FACILITY_name_valid() {
+    [[ "$1" = ^[A-Z] ]]
+}
+
+# Ask the name of the site or plant
+while true; do
+read -p "Please enter the name of the facility or plant (example: Langres or Andance): " FACILITY_NAME
+if is_FACILITY_name_valid "$FACILITY_NAME"; then
+    echo "The site name should contain the first letter uppercase. Please try again."
+else
+        break
+    fi
+done
+
+# Function to check for uppercase characters
+contains_uppercase() {
+    [[ "$1" =~ [A-Z] ]]
+}
+
+# Prompt for plant trigram
+while true; do
+    read -p "Please enter your plant trigram (example: lan): " PLANT_TRIGRAM
+    if contains_uppercase "$PLANT_TRIGRAM"; then
+        echo "The plant trigram should not contain uppercase characters. Please try again."
+    else
+        break
+    fi
+done
+
 # Load the environment variables from the .env file
 set -a  # automatically export all variables
 source .env
@@ -49,7 +83,13 @@ fi
 APP_CONTEXT="dev"
 sed -i "s|^APP_ENV=prod.*|APP_ENV=dev|" .env
 sed -i "s|^# MAILER_DSN=.*|MAILER_DSN=smtp://smtp.corp.ponet:25?verify_peer=0|" .env
-sed -i "s|^# MAILER_SENDER_EMAIL=.* |MAILER_SENDER_EMAIL=lan.docauposte@opmobility.com|" .env
+sed -i "s|^# MAILER_SENDER_EMAIL=.* |MAILER_SENDER_EMAIL=${PLANT_TRIGRAM}.efnc@opmobility.com|" .env
+sed -i '/^MYSQL_PASSWORD=/a\
+HOSTNAME='"$HOSTNAME"'\
+PLANT_TRIGRAM='"$PLANT_TRIGRAM"'\
+GITHUB_USER='"$GITHUB_USER"'\
+FACILITY_NAME='"$FACILITY_NAME"'' .env
+
 cat > src/Kernel.php <<EOL
 <?php
 
@@ -73,11 +113,9 @@ EOL
 
 # Create docker-compose.override.yml file to use the good entrypoint
 cat > docker-compose.override.yml <<EOL
-version: '3.8'
-
 services:
   web:
-    image: ghcr.io/polangres/efnc:main
+    image: ghcr.io/${GITHUB_USER}/efnc:main
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
@@ -99,7 +137,7 @@ ${PROXY_ENV}
 EOL
 
 
-sg docker -c "docker compose up --build -d"
+sg docker -c "docker compose up --build &"
 
 sleep 90
 
@@ -113,11 +151,9 @@ APP_CONTEXT="prod"
 
 # Create docker-compose.override.yml file to use the good entrypoint
 cat > docker-compose.override.yml <<EOL
-version: '3.8'
-
 services:
   web:
-    image: ghcr.io/polangres/efnc:main
+    image: ghcr.io/${GITHUB_USER}/efnc:main
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:

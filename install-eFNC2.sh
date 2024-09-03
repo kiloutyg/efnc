@@ -15,8 +15,8 @@ if [ "${ANSWER}" == "yes" ]
 then 
 
 # Install git and PlasticOmnium docker repo
-    sudo yum install -y git;
-    sudo subscription-manager repo-override --repo=PlasticOmnium_Docker_Docker_CE_Stable --add=enabled:1;
+    sudo yum install -y git yum-utils;
+    sudo yum-config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo;
 
 # Remove old docker version and install docker-ce
     sudo yum remove docker \
@@ -30,7 +30,7 @@ then
                 podman \
                 runc;
 
-    sudo yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y;
+    sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y;
 
 # Add the user to the docker group
     sudo groupadd docker;
@@ -43,11 +43,26 @@ sg docker -c "
     sudo systemctl enable docker.service;
     sudo systemctl enable containerd.service;"
 
+# Function to check for uppercase characters
+    contains_uppercase() {
+        [[ "$1" =~ [A-Z] ]]
+    }
+
+# Ask the user for name of its github user 
+    while true; do
+        read -p "Name of your github user (example: polangres) :  " GITHUB_USER
+        if contains_uppercase "$GITHUB_USER"; then
+            echo "The github user name should not contain uppercase characters. Please try again."
+        else
+            break
+        fi
+    done
+
 # Ask the user for the git repository address either in ssh or http
-    read -p "Address of the git repository (ssh or http // default: https://github.com/polangres/efnc ) :  " GIT_ADDRESS;
+    read -p "Address of the git repository (ssh or http // default: https://github.com/${GITHUB_USER}/efnc ) :  " GIT_ADDRESS;
     if [ -z "${GIT_ADDRESS}" ]
     then
-        GIT_ADDRESS="https://github.com/polangres/efnc"
+        GIT_ADDRESS="https://github.com/${GITHUB_USER}/efnc"
     fi
 
 # Clone the git repository and run the env_create.sh script
@@ -55,11 +70,12 @@ sg docker -c "
     
     cd efnc;
 
-    bash ./env_create.sh;
+    bash ./env_create.sh  ${GITHUB_USER};
 
 # Build the docker containers
-    sg docker -c "docker compose up --build -d"
+    sg docker -c "docker compose up --build &"
 else
+
 # If the user answered no, we will ask if he wants to launch the app or if he wants to update it
 while true; do
     read -p "Do you wish to launch the app ? (yes/no) " LAUNCH_ANSWER;
@@ -69,6 +85,7 @@ while true; do
             echo "Please answer by yes or no";
     fi
 done
+
 # If the user answered yes, we launch the app
     if [ "${LAUNCH_ANSWER}" == "yes" ]; then
         cd efnc;
@@ -82,21 +99,41 @@ done
                         echo "Please answer by yes or no";
                 fi
             done
+
         if [ "${UPDATE_ANSWER}" == "yes" ]; then
+        
+            # Function to check for uppercase characters
+            contains_uppercase() {
+                [[ "$1" =~ [A-Z] ]]
+            }
+
+        # Ask the user for name of its github user 
+            while true; do
+                read -p "Name of your github user (example: polangres) :  " GITHUB_USER
+                if contains_uppercase "$GITHUB_USER"; then
+                    echo "The github user name should not contain uppercase characters. Please try again."
+                else
+                    break
+                fi
+            done
+
         # Ask the user for the git repository address either in ssh or http
-            read -p "Address of the git repository (ssh or http // default: https://github.com/polangres/efnc ) :  " GIT_ADDRESS;
+            read -p "Address of the git repository (ssh or http // default: https://github.com/${GITHUB_USER}/efnc ) :  " GIT_ADDRESS;
             if [ -z "${GIT_ADDRESS}" ]
-            then
-                GIT_ADDRESS="https://github.com/polangres/efnc"
+                then
+                GIT_ADDRESS="https://github.com/${GITHUB_USER}/efnc"
             fi
             cd efnc;
             sg docker -c "docker compose stop";
+            sg docker -c "docker system prune -fa";
             git remote remove origin;
+        # Remove everything before https in the GIT_ADDRESS
+            GIT_ADDRESS=$(echo ${GIT_ADDRESS} | sed 's|.*\(https\)|\1|')
             git remote add origin ${GIT_ADDRESS};
             git fetch origin --force;
             git reset --hard origin/main;
             git pull --rebase origin main;
-            bash ./env_update.sh;
+            bash ./env_update.sh ${GITHUB_USER};
             sg docker -c "docker compose up --build -d"
         fi
     fi
