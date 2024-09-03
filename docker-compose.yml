@@ -18,7 +18,7 @@ services:
     command: ['--init-file', '/docker-entrypoint-initdb.d/create-power-bi-ronlyuser.sql']
 
   phpmyadmin:
-    image: docker.iophpmyadmin/phpmyadmin
+    image: docker.io/phpmyadmin/phpmyadmin
     restart: unless-stopped
     environment:
       PMA_HOST: database
