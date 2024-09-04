@@ -12,7 +12,9 @@ class FrontController extends BaseController
     #[Route('/', name: 'base')]
     public function base(): Response
     {
-        $this->mailerService->sendReminderEmailToAdmin();
+        if (count($this->EFNCRepository->getMonthOldLowLevelRiskEfnc()) > 0) {
+            $this->mailerService->sendReminderEmailToAdmin();
+        }
 
         return $this->render('base.html.twig', []);
     }
