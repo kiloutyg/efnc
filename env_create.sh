@@ -218,13 +218,13 @@ ${PROXY_ENV}
 EOL
 
 
-sg docker -c "docker compose up --build -d"
+sg docker -c "docker compose up --build &"
 
-sleep 90
+sleep 180
 
 sg docker -c "docker compose stop"
 
-sleep 30
+sleep 60
 
 sed -i "s|^APP_ENV=dev.*|APP_ENV=prod|" .env
 APP_CONTEXT="prod"
