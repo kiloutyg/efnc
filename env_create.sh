@@ -146,6 +146,8 @@ GRANT SELECT ON ${MYSQL_DATABASE}.* TO 'powerbi'@'%';
 FLUSH PRIVILEGES;
 EOL
 
+chmod 777 create-power-bi-ronlyuser.sql
+
 # Create .env file
 cat > .env <<EOL
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
