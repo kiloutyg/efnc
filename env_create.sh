@@ -21,6 +21,10 @@ while true; do
     else
         break
     fi
+    if [ -z "${PLANT_TRIGRAM}" ]
+      then
+        echo "The plant trigram should not be empty. Please try again."
+    fi
 done
 
 # Ask the name of the site or plant
@@ -28,9 +32,13 @@ while true; do
 read -p "Please enter the name of the facility or plant (example: Langres or Andance): " FACILITY_NAME
 if is_FACILITY_name_valid "$FACILITY_NAME"; then
     echo "The site name should contain the first letter uppercase. Please try again."
-else
-        break
-    fi
+  else
+    break
+  fi
+  if [ -z "${FACILITY_NAME}" ]
+    then
+      echo "The site name should not be empty. Please try again."
+  fi
 done
 
 
