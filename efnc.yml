@@ -6,7 +6,7 @@ spec:
   selector:
     app: efnc-database
   ports:
-    - port: 3306
+    - port: 3307
 ---
 apiVersion: v1
 kind: Pod
@@ -29,7 +29,7 @@ spec:
         - name: MARIADB_PASSWORD_FILE
           value: run/secrets/database_password
       ports:
-        - containerPort: 3306
+        - containerPort: 3307
       volumeMounts :
         - name: secrets
           mountPath: /run/secrets
@@ -68,7 +68,7 @@ spec:
         - name: PMA_HOST
           value: database
         - name: PMA_ABSOLUTE_URI
-          value: http://${HOSTNAME}/dappma/
+          value: http://sanclp0031/dappma/
       volumeMounts:
         - mountPath: /etc/phpmyadmin/config.user.inc.php
           name: phpmyadmin-config
@@ -95,17 +95,17 @@ spec:
   restartPolicy: Always
   containers:
     - name: web
-      image: ghcr.io/${GITHUB_USER}/efnc:main
-      command: ["./${APP_CONTEXT}-entrypoint.sh"]
+      image: ghcr.io/kiloutyg/efnc:main
+      command: ["./dev-entrypoint.sh"]
       env:
         - name: no_proxy
           value: .ponet
         - name: http_proxy
-          value: ${PROXY_ENV}
+          value: http://10.0.0.1:80
         - name: APP_TIMEZONE
-          value: ${APP_TIMEZONE}
+          value: Europe/Paris
         - name: https_proxy
-          value: ${PROXY_ENV}
+          value: http://10.0.0.1:80
       volumeMounts:
         - mountPath: /var/www
           name: web-data
