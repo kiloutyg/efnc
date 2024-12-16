@@ -87,3 +87,4 @@ docker-compose.override.yml
 database.test.tar.gz
 doc.test.tar.gz
 efnc.yml
+/secrets
