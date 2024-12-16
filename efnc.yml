@@ -66,9 +66,9 @@ spec:
       image: docker.io/phpmyadmin/phpmyadmin
       env:
         - name: PMA_HOST
-          value: database
+          value: efnc-database-pod
         - name: PMA_ABSOLUTE_URI
-          value: http://sanclp0031/dappma/
+          value: http://sanclp0031/efncpma/
       volumeMounts:
         - mountPath: /etc/phpmyadmin/config.user.inc.php
           name: phpmyadmin-config
