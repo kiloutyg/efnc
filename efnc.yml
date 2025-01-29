@@ -30,7 +30,7 @@ spec:
           value: run/secrets/database_password
       ports:
         - containerPort: 3307
-      volumeMounts :
+      volumeMounts:
         - name: secrets
           mountPath: /run/secrets
           readOnly: true
@@ -54,8 +54,11 @@ metadata:
   labels:
     app: efnc-phpmyadmin
     traefik.enable: true
-    traefik.http.routers.efnc-phpmyadmin.rule: PathPrefix(`/efncpma`)
-    traefik.http.routers.efnc-phpmyadmin.entrypoints: web
+    traefik.http.routers.efnc-phpmyadmin.rule: "Host(`sanclp0031`) && PathPrefix(`/efncpma`)"
+    traefik.http.routers.efnc-phpmyadmin.entrypoints: websecure
+    traefik.http.routers.efnc-phpmyadmin.tls: true
+    # Remove or comment out the certresolver if using dedicated certificate files
+    # traefik.http.routers.efnc-phpmyadmin.tls.certresolver: myresolver
     traefik.http.routers.efnc-phpmyadmin.middlewares: strip-efnc-phpmyadmin-prefix
     traefik.http.services.efnc-phpmyadmin.loadbalancer.server.port: 80
     traefik.http.middlewares.strip-efnc-phpmyadmin-prefix.stripPrefix.prefixes: /efncpma
@@ -86,8 +89,11 @@ metadata:
   labels:
     app: efnc-web
     traefik.enable: true
-    traefik.http.routers.efnc-web.rule: PathPrefix(`/efnc`)
-    traefik.http.routers.efnc-web.entrypoints: web
+    traefik.http.routers.efnc-web.rule: "Host(`sanclp0031`) && PathPrefix(`/efnc`)"
+    traefik.http.routers.efnc-web.entrypoints: websecure
+    traefik.http.routers.efnc-web.tls: true
+    # Remove or comment out the certresolver if using dedicated certificate files
+    # traefik.http.routers.efnc-web.tls.certresolver: myresolver
     traefik.http.routers.efnc-web.middlewares: strip-efnc-web-prefix
     traefik.http.services.efnc-web.loadbalancer.server.port: 80
     traefik.http.middlewares.strip-efnc-web-prefix.stripPrefix.prefixes: /efnc
