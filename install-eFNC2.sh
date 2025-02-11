@@ -30,6 +30,7 @@ if [ "${ANSWER}" == "yes" ]; then
         GIT_ADDRESS="https://github.com/${GITHUB_USER}/efnc"
     fi
 
+
     # Clone the git repository and run the env_create.sh script
     git clone ${GIT_ADDRESS};
 
@@ -41,17 +42,6 @@ if [ "${ANSWER}" == "yes" ]; then
         contains_uppercase() {
             [[ "$1" =~ [A-Z] ]]
         }
-
-        # Ask the user for its github token
-        # while true; do
-        #     read -p "Github Personal Access Token ( ):  " GITHUB_TOKEN;
-        #     if [ -z "${GITHUB_TOKEN}" ]
-        #     then
-        #         echo "The github token should not be empty. Please try again."
-        #     else
-        #         break
-        #     fi
-        # done
 
         # Install git and PlasticOmnium docker repo
         sudo yum-config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo;
@@ -153,6 +143,7 @@ done
             git remote remove origin;
             # Remove everything before https in the GIT_ADDRESS
             GIT_ADDRESS=$(echo ${GIT_ADDRESS} | sed 's|.*\(https\)|\1|')
+
             git remote add origin ${GIT_ADDRESS};
             git fetch origin --force;
             git reset --hard origin/main;
@@ -161,9 +152,22 @@ done
             if [ "${PODMAN}" == "no" ]; then
                 bash ./env_update_docker.sh ${GITHUB_USER};
                 sg docker -c "docker compose up --build -d"
+                # Wait until the webpack compiled successfully
+                until docker compose logs --since 10s --tail 10 web 2>&1 | grep -q "webpack compiled successfully"; do
+                    echo "Waiting for the app to be updated" 
+                    sleep 10
+                done
+                echo "EFNC updated successfully";
             else
                 bash ./env_update_podman.sh ${GITHUB_USER};
                 podman play kube --replace ./efnc.yml;
+                # Wait until the webpack compiled successfully
+                until podman logs --since 10s --tail 10 web-docauposte 2>&1 | grep -q "webpack compiled successfully"; do
+                echo "Waiting for the app to be updated" 
+                sleep 10
+                done
+                echo "EFNC updated successfully";
+
             fi
         fi
     fi
