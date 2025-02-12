@@ -68,28 +68,28 @@ spec:
         - containerPort: 3307
       volumeMounts:
         - mountPath: /run/secrets/root_password
-          # readOnly: true
+          readOnly: true
           name: root_password
         - mountPath: /run/secrets/database_name
-          # readOnly: true
+          readOnly: true
           name: database_name
         - mountPath: /run/secrets/database_user
-          # readOnly: true
+          readOnly: true
           name: database_user
         - mountPath: /run/secrets/database_password
-          # readOnly: true
+          readOnly: true
           name: database_password
         - mountPath: /var/lib/mysql
           name: database-data
         - mountPath: /etc/localtime
           name: localtime-settings
-          # readOnly: true
+          readOnly: true
         - mountPath: /etc/mysql/my.cnf
-          # readOnly: true
+          readOnly: true
           name: mysql-config
         - mountPath: /etc/mysql/ssl
           name: efnc-db-certs
-          # readOnly: true
+          readOnly: true
       resources:
         limits:
           memory: 4000Mi
@@ -190,13 +190,13 @@ spec:
       volumeMounts:
         - mountPath: /etc/phpmyadmin/config.user.inc.php
           name: phpmyadmin-config
-          # readOnly: true
+          readOnly: true
         - mountPath: /etc/localtime
           name: localtime-settings
-          # readOnly: true
+          readOnly: true
         - mountPath: /etc/phpmyadmin/ssl/ca-cert.pem
           name: ca-cert
-          # readOnly: true
+          readOnly: true
       resources:
         limits:
           memory: 1000Mi

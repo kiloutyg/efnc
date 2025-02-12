@@ -15,10 +15,10 @@ php bin/console cache:warmup --env=dev;
 chmod 755 . -R;
 
 # Set the permissions
-chown -R www-data:www-data /var/www/var/cache/dev/pools;
+chown -R www-data:www-data .;
 
 # Create the migrations directory
-# mkdir -p migrations;
+mkdir -p migrations;
 
 # Create the database and run the migrations
 php bin/console make:migration;
