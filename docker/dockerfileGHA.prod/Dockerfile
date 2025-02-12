@@ -26,11 +26,11 @@ RUN \
   curl \
   git \
   gnupg \
+  libcap2-bin \
   libmagickwand-dev \
   libxslt-dev \
   libzip-dev \
   wget \
-  libcap2-bin \
   # Install PHP extensions
   && docker-php-ext-install \
   bcmath \
@@ -125,10 +125,9 @@ COPY migrations/ migrations/
 
 # Copy the entrypoint script and set execution permissions
 COPY ./docker/dockerfileGHA.prod/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
+RUN chmod +x /usr/local/bin/entrypoint.sh \
 # Adjust ownership and permissions
-RUN chown -R www-data:www-data /var/www
+&& chown -R www-data:www-data /var/www
 
 # Switch to non-root user
 USER www-data
