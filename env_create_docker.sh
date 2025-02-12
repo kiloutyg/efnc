@@ -73,6 +73,7 @@ while true; do
     fi
 done
 
+
 if [ "${PROXY_ANSWER}" == "yes" ]
   then
     read -p "Please enter your proxy address(default will be 'http://10.0.0.1'): " PROXY_ADDRESS
@@ -85,10 +86,12 @@ if [ "${PROXY_ANSWER}" == "yes" ]
         then
         PROXY_PORT="80"
       fi
-    PROXY_ENV="      http_proxy: ${PROXY_ADDRESS}:${PROXY_PORT}"
+    HTTP_PROXY_ENV="      http_proxy: ${PROXY_ADDRESS}:${PROXY_PORT}"
+    HTTPS_PROXY_ENV="      https_proxy: ${PROXY_ADDRESS}:${PROXY_PORT}"
     PROXY_DOCKERFILE="ENV http_proxy=\'${PROXY_ADDRESS}:${PROXY_PORT}\'"
     sed -i "3s|.*|$PROXY_DOCKERFILE|" docker/dockerfile/Dockerfile
 fi
+
 
 # Generate a new secret key
 APP_SECRET=$(openssl rand -hex 16)
@@ -101,7 +104,8 @@ services:
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
-${PROXY_ENV}
+${HTTP_PROXY_ENV}
+${HTTPS_PROXY_ENV}
       APP_TIMEZONE: "${TIMEZONE}"
     volumes:
       - ./:/var/www
@@ -139,6 +143,30 @@ class Kernel extends BaseKernel
 }
 EOL
 
+
+# Define the SSL directory
+SSL_DIR="./secrets/ssl"
+
+# Check if SSL directory exists
+if [ -d "$SSL_DIR" ]; then
+    echo "SSL directory exists: $SSL_DIR"
+else
+    echo "SSL directory does not exist: $SSL_DIR"
+    echo "Executing script to create SSL directory and certificates..."
+
+    # Execute the script to create the directory and certificates
+    ./cert-gen.sh
+
+    # Check if the SSL directory now exists
+    if [ -d "$SSL_DIR" ]; then
+        echo "SSL directory and certificates created successfully."
+    else
+        echo "Error: Failed to create SSL directory and certificates."
+        exit 1
+    fi
+fi
+
+
 # Create the create-power-bi-ronlyuser.sql file 
 cat > create-power-bi-ronlyuser.sql <<EOL
 CREATE USER IF NOT EXISTS 'powerbi'@'%' IDENTIFIED BY 'powerbi';
@@ -175,7 +203,7 @@ MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
 # DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 # DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8&charset=utf8mb4"
 
-DATABASE_URL=mysql://root:\${MYSQL_ROOT_PASSWORD}@database/\${MYSQL_DATABASE}?serverVersion=MariaDB-10.11.4
+DATABASE_URL=mysql://root:\${MYSQL_ROOT_PASSWORD}@efnc-database-pod/\${MYSQL_DATABASE}?charset=utf8mb4&serverVersion=MariaDB-11.6.2&sslmode=verify_ca&sslrootcert=/etc/ssl/certs/ca-cert.pem
 
 ###< doctrine/doctrine-bundle ###
 
@@ -190,6 +218,12 @@ DATABASE_URL=mysql://root:\${MYSQL_ROOT_PASSWORD}@database/\${MYSQL_DATABASE}?se
 MAILER_DSN=smtp://smtp.corp.ponet:25?verify_peer=0
 MAILER_SENDER_EMAIL=${PLANT_TRIGRAM}.efnc@opmobility.com
 ###< symfony/mailer ###
+
+###> certificate for SSL connection to DB ###
+MYSQL_SSL_KEY=/etc/ssl/certs/server-key.pem
+MYSQL_SSL_CERT=/etc/ssl/certs/server-cert.pem
+MYSQL_SSL_CA=/etc/ssl/certs/ca-cert.pem
+###< certificate for SSL connection to DB  ###
 EOL
 
 
@@ -210,7 +244,8 @@ services:
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
-${PROXY_ENV}
+${HTTP_PROXY_ENV}
+${HTTPS_PROXY_ENV}
       APP_TIMEZONE: "${TIMEZONE}"
     volumes:
       - ./:/var/www
@@ -248,7 +283,8 @@ services:
     restart: unless-stopped 
     entrypoint: "./${APP_CONTEXT}-entrypoint.sh"
     environment:
-${PROXY_ENV}
+${HTTP_PROXY_ENV}
+${HTTPS_PROXY_ENV}
       APP_TIMEZONE: "${TIMEZONE}"
     volumes:
       - ./:/var/www

@@ -1,0 +1,345 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: efnc-database-service
+spec:
+  selector:
+    app: efnc-database
+  ports:
+    - port: 3307
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: efnc-database-pod-limits-range
+  namespace: efnc-database-pod-limits
+spec:
+  limits:
+    - defaultRequest:
+        memory: 4000Mi
+        ephemeral-storage: 5000Mi
+        cpu: 4
+      type: Container
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efnc-database-pod
+  namespace: efnc-database-pod-limits
+  labels:
+    app: efnc-database
+spec:
+  automountServiceAccountToken: false
+  restartPolicy: Always
+  initContainers:
+    - name: copy-certificates-and-fix-permission-for-efnc-db
+      image: docker.io/library/busybox:stable
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          cp /source/ca-cert.pem /efnc-db-certs/;
+          cp /source/server-cert.pem /efnc-db-certs/;
+          cp /source/server-key.pem /efnc-db-certs/;
+          chmod +x /tmp/fix-permissions-db.sh;
+          sh /tmp/fix-permissions-db.sh;
+      volumeMounts:
+        - mountPath: /source/ca-cert.pem
+          name: ca-cert
+        - mountPath: /source/server-cert.pem
+          name: server-cert
+        - mountPath: /source/server-key.pem
+          name: server-key
+        - mountPath: /efnc-db-certs
+          name: efnc-db-certs
+        - mountPath: /tmp/fix-permissions-db.sh
+          name: fix-permissions-db-script
+          readOnly: true
+  containers:
+    - name: database
+      image: docker.io/library/mariadb:11.6.1
+      env:
+        - name: MARIADB_ROOT_PASSWORD_FILE
+          value: run/secrets/root_password
+        - name: MARIADB_DATABASE_FILE
+          value: run/secrets/database_name
+        - name: MARIADB_USER_FILE
+          value: run/secrets/database_user
+        - name: MARIADB_PASSWORD_FILE
+          value: run/secrets/database_password
+      ports:
+        - containerPort: 3307
+      volumeMounts:
+        - mountPath: /run/secrets/root_password
+          readOnly: true
+          name: root_password
+        - mountPath: /run/secrets/database_name
+          readOnly: true
+          name: database_name
+        - mountPath: /run/secrets/database_user
+          readOnly: true
+          name: database_user
+        - mountPath: /run/secrets/database_password
+          readOnly: true
+          name: database_password
+        - mountPath: /var/lib/mysql
+          name: database-data
+        - mountPath: /etc/localtime
+          name: localtime-settings
+          readOnly: true
+        - mountPath: /etc/mysql/my.cnf
+          readOnly: true
+          name: mysql-config
+        - mountPath: /etc/mysql/ssl
+          name: efnc-db-certs
+          readOnly: true
+      resources:
+        limits:
+          memory: 4000Mi
+          ephemeral-storage: 5000Mi
+        requests:
+          cpu: 4
+  dnsPolicy: Default
+  volumes:
+    - hostPath:
+        path: ${PWD}/secrets/root_password
+        type: File
+      name: root_password
+    - hostPath:
+        path: ${PWD}/secrets/database_name
+        type: File
+      name: database_name
+    - hostPath:
+        path: ${PWD}/secrets/database_user
+        type: File
+      name: database_user
+    - hostPath:
+        path: ${PWD}/secrets/database_password
+        type: File
+      name: database_password
+    - hostPath:
+        path: ${PWD}/database_data
+        type: DirectoryOrCreate
+      name: database-data
+    - hostPath:
+        path: /etc/localtime
+      name: localtime-settings
+    - hostPath:
+        path: ${PWD}/secrets/ssl/ca-cert.pem
+        type: File
+      name: ca-cert
+    - hostPath:
+        path: ${PWD}/secrets/ssl/server-cert.pem
+        type: File
+      name: server-cert
+    - hostPath:
+        path: ${PWD}/secrets/ssl/server-key.pem
+        type: File
+      name: server-key
+    - hostPath:
+        path: ${PWD}/my.cnf
+        type: File
+      name: mysql-config
+    - hostPath:
+        path: ${PWD}/fix-permissions-db.sh
+        type: File
+      name: fix-permissions-db-script
+    - name: efnc-db-certs
+      emptyDir: {}
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: efnc-phpmyadmin-pod-limits-range
+  namespace: efnc-phpmyadmin-pod-limits
+spec:
+  limits:
+    - defaultRequest:
+        memory: 1000Mi
+        ephemeral-storage: 500Mi
+        cpu: 1
+      type: Container
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efnc-phpmyadmin-pod
+  namespace: efnc-phpmyadmin-pod-limits
+  labels:
+    app: efnc-phpmyadmin
+    traefik.enable: true
+    traefik.http.routers.efnc-phpmyadmin.rule: "Host(`${DOMAIN_NAME}`) && PathPrefix(`/efncpma`) || Host(`${DOMAIN_NAME}.ad.ponet`) && PathPrefix(`/efncpma`) || Host(`${HOSTNAME}`) && PathPrefix(`/efncpma`)"
+    traefik.http.routers.efnc-phpmyadmin.entrypoints: websecure
+    traefik.http.routers.efnc-phpmyadmin.tls: true
+    # Remove or comment out the certresolver if using dedicated certificate files
+    # traefik.http.routers.efnc-phpmyadmin.tls.certresolver: myresolver
+    traefik.http.routers.efnc-phpmyadmin.middlewares: strip-efnc-phpmyadmin-prefix
+    traefik.http.services.efnc-phpmyadmin.loadbalancer.server.port: 80
+    traefik.http.middlewares.strip-efnc-phpmyadmin-prefix.stripPrefix.prefixes: /efncpma
+spec:
+  automountServiceAccountToken: false
+  restartPolicy: Always
+  containers:
+    - name: phpmyadmin
+      image: docker.io/phpmyadmin/phpmyadmin:5.2.2
+      env:
+        - name: PMA_HOST
+          value: database
+        - name: PMA_ABSOLUTE_URI
+          value: https://${HOSTNAME}/efncpma/
+        - name: PMA_SSL
+          value: "true"
+        - name: PMA_SSL_CA
+          value: /etc/phpmyadmin/ssl/ca-cert.pem
+      volumeMounts:
+        - mountPath: /etc/phpmyadmin/config.user.inc.php
+          name: phpmyadmin-config
+          readOnly: true
+        - mountPath: /etc/localtime
+          name: localtime-settings
+          readOnly: true
+        - mountPath: /etc/phpmyadmin/ssl/ca-cert.pem
+          name: ca-cert
+          readOnly: true
+      resources:
+        limits:
+          memory: 1000Mi
+          ephemeral-storage: 500Mi
+        requests:
+          cpu: 1
+  dnsPolicy: Default
+  volumes:
+    - hostPath:
+        path: ${PWD}/config.user.inc.php
+        type: File
+      name: phpmyadmin-config
+    - hostPath:
+        path: /etc/localtime
+      name: localtime-settings
+    - hostPath:
+        path: ${PWD}/secrets/ssl/ca-cert.pem
+        type: File
+      name: ca-cert
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: efnc-web-pod-limits-range
+  namespace: efnc-web-pod-limits
+spec:
+  limits:
+    - defaultRequest:
+        memory: 2000Mi
+        ephemeral-storage: 10000Mi
+        cpu: 4
+      type: Container
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efnc-web-pod
+  namespace: efnc-web-pod-limits
+  labels:
+    app: efnc-web
+    traefik.enable: true
+    traefik.http.routers.efnc-web.rule: "Host(`${HOSTNAME}`) && PathPrefix(`/efnc`) || Host(`${HOSTNAME}`) && PathPrefix(`/efnc`)"
+    traefik.http.routers.efnc-web.entrypoints: websecure
+    traefik.http.routers.efnc-web.tls: true
+    # Remove or comment out the certresolver if using dedicated certificate files
+    # traefik.http.routers.efnc-web.tls.certresolver: myresolver
+    traefik.http.routers.efnc-web.middlewares: strip-efnc-web-prefix
+    traefik.http.services.efnc-web.loadbalancer.server.port: 80
+    traefik.http.middlewares.strip-efnc-web-prefix.stripPrefix.prefixes: /efnc
+spec:
+  automountServiceAccountToken: false
+  restartPolicy: Always
+  initContainers:
+    - name: copy-certificates-and-fix-permission-for-efnc
+      image: docker.io/library/busybox:stable
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          cp /source/ca-cert.pem /efnc-certs/;
+          cp /source/server-cert.pem /efnc-certs/;
+          cp /source/server-key.pem /efnc-certs/;
+          chmod +x /tmp/fix-permissions-efnc.sh;
+          sh /tmp/fix-permissions-efnc.sh;
+      volumeMounts:
+        - mountPath: /source/ca-cert.pem
+          name: ca-cert
+        - mountPath: /source/server-cert.pem
+          name: server-cert
+        - mountPath: /source/server-key.pem
+          name: server-key
+        - mountPath: /efnc-certs
+          name: efnc-certs
+        - mountPath: /var/www/public/doc
+          name: doc
+        - mountPath: /var/www/.env
+          name: dotenv
+        - mountPath: /tmp/fix-permissions-efnc.sh
+          name: fix-permissions-efnc-script
+  containers:
+    - name: web
+      image: ghcr.io/${GITHUB_USER}/efnc:${APP_CONTEXT}-latest
+      # command: ["./dev-entrypoint.sh"]
+      env:
+        - name: no_proxy
+          value: .ponet
+        - name: http_proxy
+          value: ${PROXY_ENV}
+        - name: APP_TIMEZONE
+          value: ${APP_TIMEZONE}
+        - name: https_proxy
+          value: ${PROXY_ENV}
+      volumeMounts:
+        # - mountPath: /var/www
+        #   name: web-data
+        # - mountPath: /var/www/dev-entrypoint.sh
+        #   name: dev-entrypoint
+        - mountPath: /var/www/public/doc
+          name: doc
+        - mountPath: /etc/ssl/my-certs
+          name: efnc-certs
+          readOnly: true
+      resources:
+        limits:
+          memory: 2000Mi
+          ephemeral-storage: 10000Mi
+        requests:
+          cpu: 4
+  dnsPolicy: Default
+  volumes:
+    # - hostPath:
+    #     path: ${PWD}/
+    #     type: DirectoryOrCreate
+    #   name: web-data
+    # - hostPath:
+    #     path: ./dev-entrypoint.sh
+    #     type: File
+    #   name: dev-entrypoint
+    - hostPath:
+        path: ${PWD}/public/doc
+        type: DirectoryOrCreate
+      name: doc
+    - hostPath:
+        path: ${PWD}/.env
+        type: File
+      name: dotenv
+    - hostPath:
+        path: ${PWD}/fix-permissions-efnc.sh
+        type: File
+      name: fix-permissions-efnc-script
+    - hostPath:
+        path: ${PWD}/secrets/ssl/ca-cert.pem
+        type: File
+      name: ca-cert
+    - hostPath:
+        path: ${PWD}/secrets/ssl/server-cert.pem
+        type: File
+      name: server-cert
+    - hostPath:
+        path: ${PWD}/secrets/ssl/server-key.pem
+        type: File
+      name: server-key
+    - name: efnc-certs
+      emptyDir: {}

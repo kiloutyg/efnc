@@ -75,7 +75,7 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 ###> symfony/maker-bundle ###
-/migrations/*
+# /migrations/*
 ###> symfony/maker-bundle ###
 
 ###> VSC stuff ###
@@ -86,3 +86,6 @@ temp
 docker-compose.override.yml
 database.test.tar.gz
 doc.test.tar.gz
+/efnc.yml
+/secrets/*
+efnc.yml
