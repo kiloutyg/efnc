@@ -56,40 +56,40 @@ spec:
     - name: database
       image: docker.io/library/mariadb:latest
       env:
-        - name: MARIADB_ROOT_PASSWORD_File
-          value: run/secrets/root_password
-        - name: MARIADB_DATABASE_File
-          value: run/secrets/database_name
-        - name: MARIADB_USER_File
-          value: run/secrets/database_user
-        - name: MARIADB_PASSWORD_File
-          value: run/secrets/database_password
+        - name: MARIADB_ROOT_PASSWORD_FILE
+          value: /run/secrets/root_password
+        - name: MARIADB_DATABASE_FILE
+          value: /run/secrets/database_name
+        - name: MARIADB_USER_FILE
+          value: /run/secrets/database_user
+        - name: MARIADB_PASSWORD_FILE
+          value: /run/secrets/database_password
       ports:
         - containerPort: 3307
       volumeMounts:
         - mountPath: /run/secrets/root_password
-          readOnly: true
+          # readOnly: true
           name: root_password
         - mountPath: /run/secrets/database_name
-          readOnly: true
+          # readOnly: true
           name: database_name
         - mountPath: /run/secrets/database_user
-          readOnly: true
+          # readOnly: true
           name: database_user
         - mountPath: /run/secrets/database_password
-          readOnly: true
+          # readOnly: true
           name: database_password
         - mountPath: /var/lib/mysql
           name: database-data
         - mountPath: /etc/localtime
           name: localtime-settings
-          readOnly: true
+          # readOnly: true
         - mountPath: /etc/mysql/my.cnf
-          readOnly: true
+          # readOnly: true
           name: mysql-config
         - mountPath: /etc/mysql/ssl
           name: efnc-db-certs
-          readOnly: true
+          # readOnly: true
       resources:
         limits:
           memory: 4000Mi
@@ -116,7 +116,7 @@ spec:
       name: database_password
     - hostPath:
         path: ./database_data
-        type: Directory
+        type: DirectoryOrCreate
       name: database-data
     - hostPath:
         path: /etc/localtime
@@ -165,14 +165,14 @@ metadata:
   labels:
     app: efnc-phpmyadmin
     traefik.enable: true
-    traefik.http.routers.efnc-phpmyadmin.rule: "Host(`sanclp0031`) && PathPrefix(`/dappma`) || Host(`sanclp0031.ad.ponet`) && PathPrefix(`/dappma`)"
+    traefik.http.routers.efnc-phpmyadmin.rule: "Host(`sanclp0031`) && PathPrefix(`/efncpma`) || Host(`sanclp0031.ad.ponet`) && PathPrefix(`/efncpma`)"
     traefik.http.routers.efnc-phpmyadmin.entrypoints: websecure
     traefik.http.routers.efnc-phpmyadmin.tls: true
     # Remove or comment out the certresolver if using dedicated certificate Files
     # traefik.http.routers.efnc-phpmyadmin.tls.certresolver: myResolver
     traefik.http.routers.efnc-phpmyadmin.middlewares: strip-efnc-phpmyadmin-prefix
     traefik.http.services.efnc-phpmyadmin.loadbalancer.server.port: 80
-    traefik.http.middlewares.strip-efnc-phpmyadmin-prefix.stripPrefix.prefixes: /dappma
+    traefik.http.middlewares.strip-efnc-phpmyadmin-prefix.stripPrefix.prefixes: /efncpma
 spec:
   restartPolicy: Always
   containers:
@@ -182,7 +182,7 @@ spec:
         - name: PMA_HOST
           value: database
         - name: PMA_ABSOLUTE_URI
-          value: https://sanclp0031/dappma
+          value: https://sanclp0031/efncpma
         - name: PMA_SSL
           value: "true"
         - name: PMA_SSL_CA
@@ -190,13 +190,13 @@ spec:
       volumeMounts:
         - mountPath: /etc/phpmyadmin/config.user.inc.php
           name: phpmyadmin-config
-          readOnly: true
+          # readOnly: true
         - mountPath: /etc/localtime
           name: localtime-settings
-          readOnly: true
+          # readOnly: true
         - mountPath: /etc/phpmyadmin/ssl/ca-cert.pem
           name: ca-cert
-          readOnly: true
+          # readOnly: true
       resources:
         limits:
           memory: 1000Mi
@@ -249,17 +249,17 @@ metadata:
 spec:
   restartPolicy: Always
   initContainers:
-    - name: copy-certificates-and-fix-permission-for-dap
+    - name: copy-certificates-and-fix-permission-for-efnc
       image: docker.io/library/busybox:stable
       command: ["/bin/sh", "-c"]
       args:
         - |
-          cp /source/ca-cert.pem /dap-certs/;
-          cp /source/server-cert.pem /dap-certs/;
-          cp /source/server-key.pem /dap-certs/;
-          cp /source/.env /dap-certs/;
-          chmod +x /tmp/fix-permissions-dap.sh;
-          sh /tmp/fix-permissions-dap.sh;
+          cp /source/ca-cert.pem /efnc-certs/;
+          cp /source/server-cert.pem /efnc-certs/;
+          cp /source/server-key.pem /efnc-certs/;
+          cp /source/.env /efnc-certs/;
+          chmod +x /tmp/fix-permissions-efnc.sh;
+          sh /tmp/fix-permissions-efnc.sh;
       volumeMounts:
         - mountPath: /source/ca-cert.pem
           name: ca-cert
@@ -267,18 +267,18 @@ spec:
           name: server-cert
         - mountPath: /source/server-key.pem
           name: server-key
-        - mountPath: /dap-certs
-          name: dap-certs
+        - mountPath: /efnc-certs
+          name: efnc-certs
         - mountPath: /var/www/public/doc
           name: doc
         - mountPath: /source/.env
           name: dotenv
-        - mountPath: /tmp/fix-permissions-dap.sh
-          name: fix-permissions-dap-script
+        - mountPath: /tmp/fix-permissions-efnc.sh
+          name: fix-permissions-efnc-script
   containers:
     - name: web
-      image: ghcr.io/kiloutyg/efnc2:prod-latest
-      # command: ["./dev-entrypoint.sh"]
+      image: ghcr.io/kiloutyg/efnc:main
+      command: ["./dev-entrypoint.sh"]
       env:
         - name: no_proxy
           value: .ponet
@@ -289,14 +289,14 @@ spec:
         - name: https_proxy
           value: http://10.0.0.1:80
       volumeMounts:
-        # - mountPath: /var/www
-        #   name: web-data
-        # - mountPath: /var/www/dev-entrypoint.sh
-        #   name: dev-entrypoint
+        - mountPath: /var/www
+          name: web-data
+        - mountPath: /var/www/dev-entrypoint.sh
+          name: dev-entrypoint
         - mountPath: /var/www/public/doc
           name: doc
         - mountPath: /etc/ssl/my-certs
-          name: dap-certs
+          name: efnc-certs
         - mountPath: /etc/localtime
           name: localtime-settings
       resources:
@@ -307,26 +307,26 @@ spec:
           cpu: 4
   dnsPolicy: Default
   volumes:
-    # - hostPath:
-    #     path: ./
-    #     type: Directory
-    #   name: web-data
-    # - hostPath:
-    #     path: ./dev-entrypoint.sh
-    #     type: File
-    #   name: dev-entrypoint
+    - hostPath:
+        path: ./
+        type: DirectoryOrCreate
+      name: web-data
+    - hostPath:
+        path: ./dev-entrypoint.sh
+        type: File
+      name: dev-entrypoint
     - hostPath:
         path: ./public/doc
-        type: Directory
+        type: DirectoryOrCreate
       name: doc
     - hostPath:
         path: ./.env
         type: File
       name: dotenv
     - hostPath:
-        path: ./fix-permissions-dap.sh
+        path: ./fix-permissions-efnc.sh
         type: File
-      name: fix-permissions-dap-script
+      name: fix-permissions-efnc-script
     - hostPath:
         path: ./secrets/ssl/ca-cert.pem
         type: File
@@ -342,5 +342,5 @@ spec:
     - hostPath:
         path: /etc/localtime
       name: localtime-settings
-    - name: dap-certs
+    - name: efnc-certs
       emptyDir: {}

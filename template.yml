@@ -118,7 +118,7 @@ spec:
       name: database_password
     - hostPath:
         path: ${PWD}/database_data
-        type: Directory
+        type: DirectoryOrCreate
       name: database-data
     - hostPath:
         path: /etc/localtime
@@ -311,7 +311,7 @@ spec:
   volumes:
     # - hostPath:
     #     path: ${PWD}/
-    #     type: Directory
+    #     type: DirectoryOrCreate
     #   name: web-data
     # - hostPath:
     #     path: ./dev-entrypoint.sh
@@ -319,7 +319,7 @@ spec:
     #   name: dev-entrypoint
     - hostPath:
         path: ${PWD}/public/doc
-        type: Directory
+        type: DirectoryOrCreate
       name: doc
     - hostPath:
         path: ${PWD}/.env
