@@ -90,3 +90,5 @@ doc.test.tar.gz
 /secrets/*
 efnc.yml
 /test/
+doc
+/doc/
