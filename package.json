@@ -25,13 +25,10 @@
     "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
     "@symfony/webpack-encore": "^4.5.0",
     "bootstrap": "^5.3.2",
-    "bootstrap-datepicker": "^1.10.0",
     "core-js": "^3.33.1",
-    "favicon": "^0.0.2",
     "jquery": "^3.7.1",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
-    "select2": "^4.1.0-rc.0",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
     "webpack-notifier": "^1.15.0"
