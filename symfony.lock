@@ -38,18 +38,6 @@
             "bin/console"
         ]
     },
-    "symfony/debug-bundle": {
-        "version": "6.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.3",
-            "ref": "5aa8aa48234c8eb6dbdd7b3cd5d791485d2cec4b"
-        },
-        "files": [
-            "config/packages/debug.yaml"
-        ]
-    },
     "symfony/flex": {
         "version": "2.4",
         "recipe": {
@@ -112,18 +100,6 @@
         },
         "files": [
             "config/packages/monolog.yaml"
-        ]
-    },
-    "symfony/notifier": {
-        "version": "6.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.0",
-            "ref": "178877daf79d2dbd62129dd03612cb1a2cb407cc"
-        },
-        "files": [
-            "config/packages/notifier.yaml"
         ]
     },
     "symfony/routing": {
@@ -221,8 +197,5 @@
             "package.json",
             "webpack.config.js"
         ]
-    },
-    "twig/extra-bundle": {
-        "version": "v3.7.1"
     }
 }
