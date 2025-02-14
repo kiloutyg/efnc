@@ -21,16 +21,16 @@
     "@hotwired/stimulus": "^3.0.0",
     "@hotwired/turbo": "^7.0.1",
     "@popperjs/core": "^2.11.8",
-    "@symfony/stimulus-bridge": "^3.2.0",
+    "@symfony/stimulus-bridge": "4.0.0",
     "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
-    "@symfony/webpack-encore": "^4.5.0",
+    "@symfony/webpack-encore": "5.0.1",
     "bootstrap": "^5.3.2",
     "core-js": "^3.33.1",
     "jquery": "^3.7.1",
     "sass": "^1.69.5",
-    "sass-loader": "^13.3.2",
+    "sass-loader": "16.0.4",
     "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4",
+    "webpack-cli": "6.0.1",
     "webpack-notifier": "^1.15.0"
   }
 }
