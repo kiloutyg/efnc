@@ -343,7 +343,7 @@ spec:
     #     type: File
     #   name: dev-entrypoint
     - hostPath:
-        path: ${PWD}/doc
+        path: ${PWD}/public/doc
         type: DirectoryOrCreate
       name: doc
     - hostPath:
