@@ -16,8 +16,8 @@ metadata:
 spec:
   limits:
     - defaultRequest:
-        memory: 4000Mi
-        ephemeral-storage: 5000Mi
+        memory: 8000Mi
+        ephemeral-storage: 10000Mi
         cpu: 4
       type: Container
 ---
@@ -94,8 +94,8 @@ spec:
           name: sql-script
       resources:
         limits:
-          memory: 4000Mi
-          ephemeral-storage: 5000Mi
+          memory: 8000Mi
+          ephemeral-storage: 10000Mi
         requests:
           cpu: 4
   dnsPolicy: Default
@@ -227,8 +227,8 @@ metadata:
 spec:
   limits:
     - defaultRequest:
-        memory: 2000Mi
-        ephemeral-storage: 10000Mi
+        memory: 4000Mi
+        ephemeral-storage: 15000Mi
         cpu: 4
       type: Container
 ---
@@ -305,8 +305,8 @@ spec:
           readOnly: true
       resources:
         limits:
-          memory: 2000Mi
-          ephemeral-storage: 10000Mi
+          memory: 4000Mi
+          ephemeral-storage: 15000Mi
         requests:
           cpu: 4
   dnsPolicy: Default
