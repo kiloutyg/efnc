@@ -16,8 +16,8 @@ metadata:
 spec:
   limits:
     - defaultRequest:
-        memory: 4000Mi
-        ephemeral-storage: 5000Mi
+        memory: 8000Mi
+        ephemeral-storage: 10000Mi
         cpu: 4
       type: Container
 ---
@@ -29,6 +29,8 @@ metadata:
   labels:
     app: efnc-database
 spec:
+  securityContext:
+    runAsNonRoot: true
   automountServiceAccountToken: false
   restartPolicy: Always
   initContainers:
@@ -54,7 +56,12 @@ spec:
           name: efnc-db-certs
   containers:
     - name: database
-      image: docker.io/library/mariadb:11.6.1
+      image: docker.io/library/mariadb:lts-noble
+      securityContext:
+        allowPrivilegeEscalation: false
+        # capabilities:
+        #   drop:
+        #     - ALL
       env:
         - name: MARIADB_ROOT_PASSWORD_FILE
           value: run/secrets/root_password
@@ -94,8 +101,8 @@ spec:
           name: sql-script
       resources:
         limits:
-          memory: 4000Mi
-          ephemeral-storage: 5000Mi
+          memory: 8000Mi
+          ephemeral-storage: 10000Mi
         requests:
           cpu: 4
   dnsPolicy: Default
@@ -175,11 +182,18 @@ metadata:
     traefik.http.services.efnc-phpmyadmin.loadbalancer.server.port: 80
     traefik.http.middlewares.strip-efnc-phpmyadmin-prefix.stripPrefix.prefixes: /efncpma
 spec:
+  securityContext:
+    runAsNonRoot: true
   automountServiceAccountToken: false
   restartPolicy: Always
   containers:
     - name: phpmyadmin
       image: docker.io/phpmyadmin/phpmyadmin:5.2.2
+      securityContext:
+        allowPrivilegeEscalation: false
+        # capabilities:
+        #   drop:
+        #     - ALL
       env:
         - name: PMA_HOST
           value: database
@@ -227,8 +241,8 @@ metadata:
 spec:
   limits:
     - defaultRequest:
-        memory: 2000Mi
-        ephemeral-storage: 10000Mi
+        memory: 4000Mi
+        ephemeral-storage: 15000Mi
         cpu: 4
       type: Container
 ---
@@ -249,6 +263,8 @@ metadata:
     traefik.http.services.efnc-web.loadbalancer.server.port: 80
     traefik.http.middlewares.strip-efnc-web-prefix.stripPrefix.prefixes: /efnc
 spec:
+  securityContext:
+    runAsNonRoot: true
   automountServiceAccountToken: false
   restartPolicy: Always
   initContainers:
@@ -283,6 +299,13 @@ spec:
   containers:
     - name: web
       image: ghcr.io/${GITHUB_USER}/efnc:${APP_CONTEXT}-latest
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          add:
+            - CAP_NET_BIND_SERVICE
+          drop:
+            - ALL
       # command: ["./dev-entrypoint.sh"]
       env:
         - name: no_proxy
@@ -305,8 +328,8 @@ spec:
           readOnly: true
       resources:
         limits:
-          memory: 2000Mi
-          ephemeral-storage: 10000Mi
+          memory: 4000Mi
+          ephemeral-storage: 15000Mi
         requests:
           cpu: 4
   dnsPolicy: Default

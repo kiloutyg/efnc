@@ -15,10 +15,10 @@ php bin/console cache:clear --no-warmup --env=dev;
 php bin/console cache:warmup --env=dev;
 
 # Set the permissions
-chmod 777 . -R;
+chmod 755 . -R;
 
 # Set the permissions
-# chown -R www-data:www-data .;
+chown -R www-data:www-data /var/www/var/;
 
 # Create the migrations directory
 mkdir -p migrations;
