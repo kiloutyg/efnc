@@ -9,18 +9,40 @@
 	<h1>
 		Page d'Administration
 	</h1>
-	<div class="col-lg-8 col-12 mx-auto ">
+	<div
+		class="col-lg-8 col-12 mx-auto ">
+		<aside
+			class="position-absolute end-0">
+			<a
+				href="{{ path('export_csv') }}" class="btn shadow  bg-dark "
+				style="color:white">
+				<span
+					class="fa fa-gear"></span>
+				<strong>
+					<span
+						class="button-text">
+						export csv
+					</span>
+				</strong>
+			</a>
+		</aside>
 
-		<div class="card border-0 shadow rounded-3 my-5">
-			<div class="card-body">
-				<div class="row">
+		<div
+			class="card border-0 shadow rounded-3 my-5">
+			<div
+				class="card-body">
+				<div
+					class="row">
 					{{render(controller('App\\Controller\\AccountController::createAccount'))}}
 				</div>
 			</div>
 		</div>
-		<div class="card border-0 shadow rounded-3 my-5">
-			<div class="card-body">
-				<div class="row ">
+		<div
+			class="card border-0 shadow rounded-3 my-5">
+			<div
+				class="card-body">
+				<div
+					class="row ">
 					{% set fields = [
 					'teamCreation', 
 					'projectCreation', 
@@ -34,7 +56,8 @@
 					'productCategoryCreation'
 					] %}
 					{% for field in fields %}
-						<div class="card border-0 shadow rounded-3 my-2 bg-secondary">
+						<div
+							class="card border-0 shadow rounded-3 my-2 bg-secondary">
 							{{ render(controller('App\\Controller\\AdminController::' ~ field )) }}
 						</div>
 					{% endfor %}
