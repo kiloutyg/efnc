@@ -54,7 +54,7 @@ spec:
           name: efnc-db-certs
   containers:
     - name: database
-      image: docker.io/library/mariadb:11.6.1
+      image: docker.io/library/mariadb:lts-noble
       env:
         - name: MARIADB_ROOT_PASSWORD_FILE
           value: run/secrets/root_password
