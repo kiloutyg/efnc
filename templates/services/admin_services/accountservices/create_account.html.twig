@@ -15,15 +15,13 @@
 						class="card-title text-center mb-5"
 						style="color:white">
 						<strong>
-							Création de compte
-
+							Ajouter un destinataire à la mailing list
 						</strong>
 					</h3>
 					<form
 						class="d-flex flex-column "
 						method="post"
 						action="{{ path('app_create_account') }}">
-
 						{% if error is defined %}
 							{% if error %}
 								<div
@@ -38,7 +36,6 @@
 							<label
 								for="username">
 								Nom d'utilisateur
-
 							</label>
 							<div
 								data-controller="username-validation">
@@ -87,7 +84,7 @@
 							<button
 								class="btn btn-primary btn-login text-uppercase fw-bold mt-2 mb-5 submit-user-creation"
 								type="submit">
-								Création du compte
+								Ajouter
 
 							</button>
 						</div>
