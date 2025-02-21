@@ -4,9 +4,9 @@ function previewImage(previewSelector) {
 
     if (this.files) {
         [].forEach.call(this.files, function (file) {
-            // Ensure it's an image
+            // Ensure it's an image (jpeg or png)
             if (!/\.(jpe?g|png)$/i.test(file.name)) {
-                return; // Skip this file
+                return; // Skip non-image files
             }
 
             var reader = new FileReader();
@@ -38,7 +38,7 @@ document.addEventListener('turbo:load', () => {
             var maxSize = 4 * 1024 * 1024; // Maximum size in bytes (4MB in this example)
 
             if (fileSize > maxSize) {
-                alert('The file size must be less than 4MB.');
+                alert('Le fichier doit faire un maximum 4Mo.');
                 this.value = ''; // Clear the file input
                 document.getElementById('TraceabilityPictureSizeWarning').style.display = 'block';
             } else {
@@ -50,7 +50,7 @@ document.addEventListener('turbo:load', () => {
             var maxSize = 4 * 1024 * 1024; // Maximum size in bytes (4MB in this example)
 
             if (fileSize > maxSize) {
-                alert('The file size must be less than 4MB.');
+                alert('Le fichier doit faire un maximum 4Mo.');
                 this.value = ''; // Clear the file input
                 document.getElementById('NCpictureSizeWarning').style.display = 'block';
             } else {
