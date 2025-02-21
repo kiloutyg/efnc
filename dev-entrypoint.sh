@@ -15,7 +15,7 @@ php bin/console cache:clear --no-warmup --env=dev;
 php bin/console cache:warmup --env=dev;
 
 # Set the permissions
-chmod 755 . -R;
+chmod 777 . -R;
 
 # Set the permissions
 chown -R www-data:www-data /var/www/var/;
