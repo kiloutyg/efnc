@@ -62,16 +62,11 @@ class PictureService extends AbstractController
 
         $allowedExtensions = ['jpg', 'png', 'jpeg', 'gif'];
         $extension = $file->guessExtension();
-        if (!in_array($extension, $allowedExtensions)) {
-            return $this->addFlash('error', 'Le fichier doit être un jpg, png, jpeg ou gif');
-        }
-
         // Get MIME type and define allowed MIME types
         $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
         $mimeType = $file->getMimeType();
 
-        // Check if the MIME type is allowed
-        if (!in_array($mimeType, $allowedMimeTypes)) {
+        if (!in_array($extension, $allowedExtensions) || !in_array($mimeType, $allowedMimeTypes)) {
             return $this->addFlash('error', 'Le fichier doit être un jpg, png, jpeg ou gif');
         }
 
@@ -96,7 +91,7 @@ class PictureService extends AbstractController
 
         // Check file size
         if ($file->getSize() > $maxSize) {
-            return $this->addFlash('error', 'Le fichier doit être inférieur à 4MB');
+            return $this->addFlash('error', 'Le fichier doit être inférieur à 6MB');
         } else {
             $file->move($folderPath . '/', $filename);
         }
