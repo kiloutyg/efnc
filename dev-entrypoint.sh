@@ -24,7 +24,7 @@ chown -R www-data:www-data /var/www/var/;
 mkdir -p migrations;
 
 # Delete any past migration file
-rm -rf migrations/*;
+rm -rf migrations/*.php;
 
 # Create the database and run the migrations
 php bin/console make:migration;
