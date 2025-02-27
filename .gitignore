@@ -91,3 +91,4 @@ efnc.yml
 /test/
 doc
 /doc/
+*.code-workspace

@@ -20,6 +20,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\EFNC;
 use App\Entity\Picture;
 
+use App\Repository\PictureRepository;
+
 class PictureService extends AbstractController
 {
     // private $logger;
@@ -27,6 +29,8 @@ class PictureService extends AbstractController
     private $projectDir;
 
     private $em;
+
+    private $pictureRepository;
 
     // private $imagine;
 
@@ -38,6 +42,8 @@ class PictureService extends AbstractController
 
         EntityManagerInterface              $em,
 
+        PictureRepository                   $pictureRepository,
+
 
     ) {
         // $this->logger                       = $logger;
@@ -46,24 +52,21 @@ class PictureService extends AbstractController
 
         $this->em                           = $em;
 
+        $this->pictureRepository            = $pictureRepository;
+
         // $this->imagine = new Imagine();
     }
 
-    public function pictureUpload(UploadedFile $file, EFNC $efnc, $efncFolderName, string $category, $newFileName = null)
+    public function pictureUpload(UploadedFile $file, EFNC $efnc, $efncFolderName, string $category)
     {
 
         $allowedExtensions = ['jpg', 'png', 'jpeg', 'gif'];
         $extension = $file->guessExtension();
-        if (!in_array($extension, $allowedExtensions)) {
-            return $this->addFlash('error', 'Le fichier doit être un jpg, png, jpeg ou gif');
-        }
-
         // Get MIME type and define allowed MIME types
         $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
         $mimeType = $file->getMimeType();
 
-        // Check if the MIME type is allowed
-        if (!in_array($mimeType, $allowedMimeTypes)) {
+        if (!in_array($extension, $allowedExtensions) || !in_array($mimeType, $allowedMimeTypes)) {
             return $this->addFlash('error', 'Le fichier doit être un jpg, png, jpeg ou gif');
         }
 
@@ -75,8 +78,12 @@ class PictureService extends AbstractController
             $folderPath .= '/' . $part;
         }
 
-        // Initialize the filename using the provided new filename or original name.
-        $filename = $newFileName ? $newFileName : $file->getClientOriginalName();
+        do {
+            // Generate a more secure unique ID and preserve only the file extension
+            $extension = $file->guessExtension() ?: pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+            $filename = uniqid('', true) . '_' . (new \DateTime())->format('YmdHis') . '.' . $extension;
+            $existingFile = $this->pictureRepository->findOneBy(["filename" => $filename]);
+        } while ($existingFile != null);
 
         $path = $folderPath . '/' . $filename;
 
@@ -84,16 +91,7 @@ class PictureService extends AbstractController
 
         // Check file size
         if ($file->getSize() > $maxSize) {
-            // Always move the file first, then work off the moved file.
-            // $movedFile = $file->move($folderPath, $filename);
-            // $stablePath = $movedFile->getPathname(); // Get the new, stable file path
-            // $image = $this->imagine->open($stablePath);
-            // $image
-            //     ->save($path, [
-            //         'jpeg_quality' => 80,
-            //         'format'       => 'jpeg'
-            //     ]);
-            return $this->addFlash('error', 'Le fichier doit être inférieur à 4MB');
+            return $this->addFlash('error', 'Le fichier doit être inférieur à 6MB');
         } else {
             $file->move($folderPath . '/', $filename);
         }
