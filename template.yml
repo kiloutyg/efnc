@@ -56,7 +56,7 @@ spec:
           name: efnc-db-certs
   containers:
     - name: database
-      image: docker.io/library/mariadb:lts-noble
+      image: docker.io/library/mariadb:11.0.2
       securityContext:
         allowPrivilegeEscalation: false
         # capabilities:
