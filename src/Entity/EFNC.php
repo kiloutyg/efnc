@@ -108,7 +108,7 @@ class EFNC
     private ?string $closingCommentary = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $flag = null;
+    private ?string $status = null;
 
 
     public function __construct()
@@ -587,14 +587,14 @@ class EFNC
         return $this;
     }
 
-    public function getFlag(): ?string
+    public function getStatus(): ?string
     {
-        return $this->flag;
+        return $this->status;
     }
 
-    public function setFlag(?string $flag): static
+    public function setStatus(?string $status): static
     {
-        $this->flag = $flag;
+        $this->status = $status;
 
         return $this;
     }
