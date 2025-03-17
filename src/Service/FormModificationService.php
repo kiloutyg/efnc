@@ -51,7 +51,7 @@ class FormModificationService extends AbstractController
         EFNC $efnc,
         Request $request,
         FormInterface $form1,
-        string $user = null
+        ?string $user = null
     ) {
         $now = new \DateTime();
 

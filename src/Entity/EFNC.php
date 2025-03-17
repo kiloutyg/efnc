@@ -107,6 +107,9 @@ class EFNC
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $closingCommentary = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $flag = null;
+
 
     public function __construct()
     {
@@ -580,6 +583,18 @@ class EFNC
     public function setClosingCommentary(?string $closingCommentary): static
     {
         $this->closingCommentary = $closingCommentary;
+
+        return $this;
+    }
+
+    public function getFlag(): ?string
+    {
+        return $this->flag;
+    }
+
+    public function setFlag(?string $flag): static
+    {
+        $this->flag = $flag;
 
         return $this;
     }

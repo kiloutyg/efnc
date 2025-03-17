@@ -10,15 +10,10 @@ use App\Repository\EFNCRepository;
 
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Mime\Part\DataPart;
-
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-
-use Symfony\Bundle\SecurityBundle\Security;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -63,8 +58,6 @@ class MailerService extends AbstractController
 
     public function notificationEmail(EFNC $EFNC)
     {
-
-
         $users = $this->userRepository->findAll();
         $recipientsEmail = [];
         foreach ($users as $user) {
@@ -91,10 +84,6 @@ class MailerService extends AbstractController
 
             // Attach the picture to the email
             $email
-                // ->attachFromPath(
-                //     $picture->getPath(),
-                //     $picture->getFilename()
-                // )
                 ->embed(
                     fopen($picture->getPath(), 'r'),
                     $cid

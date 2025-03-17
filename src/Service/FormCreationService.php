@@ -53,7 +53,7 @@ class FormCreationService extends AbstractController
     public function createNCForm(
         EFNC $efnc,
         Request $request,
-        FormInterface $form1 = null
+        ?FormInterface $form1 = null
 
     ) {
         $now = new \DateTime();

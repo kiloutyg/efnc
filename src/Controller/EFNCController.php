@@ -60,7 +60,7 @@ class EFNCController extends BaseController
                 $this->addFlash('error', 'Erreur lors de la création de la fiche!');
                 return $this->redirectToRoute('app_base', []);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
 
             return $this->render('services/efnc/creation/form_creation.html.twig', [
                 'form1' => $form1->createView(),
@@ -86,15 +86,10 @@ class EFNCController extends BaseController
 
         $form1 = $this->createForm(FormCreationType::class, $efnc);
 
-        if ($request->getMethod() == 'GET') {
-            return $this->render('/services/efnc/modification/form_modification.html.twig', [
-                'form1' => $form1->createView(),
-                'EFNC' => $efnc,
-            ]);
-        } else if ($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             if ($this->getUser() !== null) {
                 if ($this->authChecker->isGranted('ROLE_ADMIN')) {
-                    if ($efnc->isArchived() == null || $efnc->isArchived() == false || $efnc->isStatus() == false || $efnc->isStatus() == null) {
+                    if ($efnc->isArchived()!== true || $efnc->isStatus() !== true) {
                         $user = $this->getUser()->getUsername();
                         $form1->handleRequest($request);
                         if ($form1->isValid() && $form1->isSubmitted()) {
@@ -125,6 +120,11 @@ class EFNCController extends BaseController
                 $this->addFlash('error', 'Vous devez êtres connecté pour modifier cette fiche!');
                 return $this->redirectToRoute('app_base', []);
             }
+        } else {
+            return $this->render('/services/efnc/modification/form_modification.html.twig', [
+                'form1' => $form1->createView(),
+                'EFNC' => $efnc,
+            ]);
         }
     }
 

@@ -83,8 +83,12 @@ class EntityDeletionService
     }
 
     // This function is responsible for deleting an entity and its related entities from the database and the server filesystem
-    public function archivedEntity(string $entityType, int $id, string  $commentary = null, string $user = null): bool
-    {
+    public function archivedEntity(
+        string $entityType,
+        int $id,
+        ?string  $commentary = null,
+        ?string $user = null
+    ): bool {
         // Get the repository for the entity type
         $repository = null;
         switch ($entityType) {
@@ -234,8 +238,10 @@ class EntityDeletionService
         return true;
     }
 
-    public function deleteEntity(string $entityType, int $id): bool
-    {
+    public function deleteEntity(
+        string $entityType,
+        int $id
+    ): bool {
         // Get the repository for the entity type
         $repository = null;
         switch ($entityType) {
@@ -384,8 +390,10 @@ class EntityDeletionService
     }
 
 
-    public function unarchiveEntity(string $entityType, int $id): bool
-    {
+    public function unarchiveEntity(
+        string $entityType,
+        int $id
+    ): bool {
         // Get the repository for the entity type
         $repository = null;
         switch ($entityType) {
@@ -534,10 +542,16 @@ class EntityDeletionService
     }
 
 
-    public function closeEntity(string $entityType, int $id, string $commentary = null, string $user = null): bool
-    {
+    public function closeEntity(
+        string $entityType,
+        int $id,
+        ?string $commentary = null,
+        ?string $user = null
+    ): bool {
+
         $this->logger->info('Closing entity with commentary: ' . $commentary);
         $repository = null;
+        
         switch ($entityType) {
             case "efnc":
                 $repository = $this->EFNCRepository;
