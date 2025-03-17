@@ -355,14 +355,13 @@ class AdminController extends FrontController
 
         if ($this->getUser() !== null) {
             if ($this->authChecker->isGranted('ROLE_ADMIN')) {
-                $user = $this->getUser()->getUsername();
 
                 $commentary = $request->request->get('closingCommentary');
                 if ($entityType == "efnc" && $commentary == null && $request->request->get('closingCheckbox') === "false") {
                     $this->addFlash('danger', 'Un commentaire est requis pour archiver une EFNC');
                     return $this->redirect($originUrl);
                 }
-                $result = $this->entityDeletionService->closeEntity($entityType, $id, $commentary, $user); // Implement this method in your service
+                $result = $this->entityDeletionService->closeEntity($entityType, $id, $commentary); // Implement this method in your service
                 if ($result == false) {
                     $this->addFlash('danger', 'L\'élément n\'a pas pu être clôturé');
                     return $this->redirectToRoute('app_base', []);
@@ -390,7 +389,6 @@ class AdminController extends FrontController
         } else {
 
             $originUrl = $request->headers->get('referer');
-            $user = $this->getUser()->getUsername();
             $commentary = $request->request->get('archivingCommentary');
 
             if ($entityType == "efnc" && $commentary == null && $request->request->get('archivingCheckbox') === "false") {
@@ -398,7 +396,7 @@ class AdminController extends FrontController
                 return $this->redirect($originUrl);
             }
 
-            $result = $this->entityDeletionService->archivedEntity($entityType, $id, $commentary, $user);
+            $result = $this->entityDeletionService->archivedEntity($entityType, $id, $commentary);
 
             if ($result == false) {
                 $this->addFlash('danger', 'L\'élément n\'a pas pu être archivé');
