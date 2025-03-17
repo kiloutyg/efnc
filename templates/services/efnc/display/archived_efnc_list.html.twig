@@ -10,7 +10,7 @@
 		style="background-color:red">
 
 		{% for EFNC in EFNCs|sort((a,b) => b.id <=> a.id) %}
-			{% if EFNC.archived == true and EFNC.status == false %}
+			{% if EFNC.archived == true and EFNC.closed == false %}
 
 				<div
 					class="ml-auto">

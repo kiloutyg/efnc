@@ -59,8 +59,8 @@ class FormModificationService extends AbstractController
 
         $efncFolderName = $form1->get('Project')->getData()->getName() . '.' . $now->format('Y-m-d') . '.' . $efnc->getTitle();
 
-        if ((key_exists('Status', $request->request->all()) == true) && ($request->request->get('Status')) != null) {
-            $efnc->setStatus(true);
+        if ((key_exists('closed', $request->request->all()) == true) && ($request->request->get('closed')) != null) {
+            $efnc->setClosed(true);
         };
         // Check if 'picture' key exists and is not null
         if (key_exists('picture', $request->files->all()) && $request->files->get('picture') != null) {

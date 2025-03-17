@@ -551,7 +551,7 @@ class EntityDeletionService
 
         $this->logger->info('Closing entity with commentary: ' . $commentary);
         $repository = null;
-        
+
         switch ($entityType) {
             case "efnc":
                 $repository = $this->EFNCRepository;
@@ -572,7 +572,7 @@ class EntityDeletionService
             $entity->setCloser($user);
             $entity->setClosingCommentary($commentary);
             $entity->setArchived(true);
-            $entity->setStatus(true);
+            $entity->setClosed(true);
         }
 
         $this->em->flush();

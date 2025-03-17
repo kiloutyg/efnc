@@ -30,7 +30,7 @@ class EFNCRepository extends ServiceEntityRepository
             ->leftJoin('e.riskWeighting', 'r')
             ->andWhere('r.RiskPriorityIndex < :val')
             ->andWhere('e.CreatedAt < :date')
-            ->andWhere('e.Status IS NULL')
+            ->andWhere('e.closed IS NULL')
             ->andWhere('e.archived IS NULL')
             ->setParameter('val', '100')
             ->setParameter('date', $date)

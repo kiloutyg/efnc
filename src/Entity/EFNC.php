@@ -57,10 +57,10 @@ class EFNC
     private Collection $rootCausesAnalyses;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $Status = null;
+    private ?bool $closed = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $ClosedDate = null;
+    private ?\DateTimeInterface $closedDate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Archiver = null;
@@ -365,29 +365,29 @@ class EFNC
         return $this;
     }
 
-    public function isStatus(): ?bool
+    public function isClosed(): ?bool
     {
-        return $this->Status;
+        return $this->closed;
     }
 
-    public function setStatus(?bool $Status): static
+    public function setClosed(?bool $closed): static
     {
-        $this->Status = $Status;
-        // If the status is set to true, we set the ClosedDate to the current date
-        if ($Status === true) {
-            $this->ClosedDate = new \DateTime();
+        $this->closed = $closed;
+        // If the closed status is set to true, we set the ClosedDate to the current date
+        if ($closed === true) {
+            $this->closedDate = new \DateTime();
         }
         return $this;
     }
 
     public function getClosedDate(): ?\DateTimeInterface
     {
-        return $this->ClosedDate;
+        return $this->closedDate;
     }
 
-    public function setClosedDate(\DateTimeInterface $ClosedDate): static
+    public function setClosedDate(\DateTimeInterface $closedDate): static
     {
-        $this->ClosedDate = $ClosedDate;
+        $this->closedDate = $closedDate;
 
         return $this;
     }

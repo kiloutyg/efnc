@@ -179,9 +179,9 @@
 						{% set archive = 0 %}
 						{% set closed = 0 %}
 						{% for efnc in EFNCs %}
-							{% if efnc.isArchived == true %}
+							{% if efnc.archived == true %}
 								{% set archive = archive + 1 %}
-								{% if efnc.Status == true %}
+								{% if efnc.isClosed == true %}
 									{% set closed = closed + 1 %}
 								{% endif %}
 							{% else %}

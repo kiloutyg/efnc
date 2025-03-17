@@ -49,15 +49,10 @@ class ImCoMeService extends AbstractController
 
     public function imcomeAssignation(
         EFNC $efnc,
-        // ImmediateConservatoryMeasures $imcome,
         FormInterface $efncform,
-        // Request $request
     ) {
         foreach ($efncform->get('immediateConservatoryMeasures')->getData() as $imcome) {
-            // if ($imcome->getAction() === $this->imcomeListRepo->findOneBy(['name' => 'Autre (Précisez l\'action prise)'])) {
-            // } else {
-            //     $imcome->setCustomAction(null);
-            // }
+
             $imcome->setEFNC($efnc);
             $this->em->persist($imcome);
         }
@@ -67,7 +62,8 @@ class ImCoMeService extends AbstractController
     }
 
 
-    public function imcomeListCreation(ImmediateConservatoryMeasuresList $imcomeList, Request $request, FormInterface $imcomeform)
+    public function imcomeListCreation(
+        ImmediateConservatoryMeasuresList $imcomeList)
     {
         $this->em->persist($imcomeList);
         $this->em->flush();

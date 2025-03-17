@@ -89,7 +89,7 @@ class EFNCController extends BaseController
         if ($request->getMethod() == 'POST') {
             if ($this->getUser() !== null) {
                 if ($this->authChecker->isGranted('ROLE_ADMIN')) {
-                    if ($efnc->isArchived()!== true || $efnc->isStatus() !== true) {
+                    if ($efnc->isArchived() !== true || $efnc->isClosed() !== true) {
                         $user = $this->getUser()->getUsername();
                         $form1->handleRequest($request);
                         if ($form1->isValid() && $form1->isSubmitted()) {
