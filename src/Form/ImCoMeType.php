@@ -82,7 +82,7 @@ class ImCoMeType extends AbstractType
                 )
             )
             ->add(
-                'Manager',
+                'manager',
                 TextType::class,
                 array_merge(
                     [
@@ -106,11 +106,10 @@ class ImCoMeType extends AbstractType
                 )
             )
             ->add(
-                'status',
+                'done',
                 ChoiceType::class,
                 array_merge(
                     [
-                        'placeholder' => 'L\'action est-elle réalisée ?',
                         'label' => 'Fait ?',
                         'choices' => [
                             'Oui' => true,
@@ -143,7 +142,7 @@ class ImCoMeType extends AbstractType
                 )
             )
             ->add(
-                'RealisedAt',
+                'realisedAt',
                 DateType::class,
                 array_merge(
                     [

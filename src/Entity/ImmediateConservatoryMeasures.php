@@ -18,13 +18,13 @@ class ImmediateConservatoryMeasures
     private ?EFNC $EFNC = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Manager = null;
+    private ?string $manager = null;
 
     #[ORM\Column]
-    private ?bool $status = null;
+    private ?bool $done = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $RealisedAt = null;
+    private ?\DateTimeInterface $realisedAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $customAction = null;
@@ -51,36 +51,36 @@ class ImmediateConservatoryMeasures
 
     public function getManager(): ?string
     {
-        return $this->Manager;
+        return $this->manager;
     }
 
-    public function setManager(string $Manager): static
+    public function setManager(string $manager): static
     {
-        $this->Manager = $Manager;
+        $this->manager = $manager;
 
         return $this;
     }
 
-    public function isStatus(): ?bool
+    public function isDone(): ?bool
     {
-        return $this->status;
+        return $this->done;
     }
 
-    public function setStatus(bool $status): static
+    public function setDone(bool $done): static
     {
-        $this->status = $status;
+        $this->done = $done;
 
         return $this;
     }
 
     public function getRealisedAt(): ?\DateTimeInterface
     {
-        return $this->RealisedAt;
+        return $this->realisedAt;
     }
 
-    public function setRealisedAt(\DateTimeInterface $RealisedAt): static
+    public function setRealisedAt(\DateTimeInterface $realisedAt): static
     {
-        $this->RealisedAt = $RealisedAt;
+        $this->realisedAt = $realisedAt;
 
         return $this;
     }

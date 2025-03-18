@@ -120,6 +120,7 @@
 								{{ form_widget(imcomeFormEntry, {'attr': {'class': 'row'}}
 								) }}
 							</div>
+							<hr/>
 						{% endfor %}
 					</div>
 					{% if is_granted('ROLE_ADMIN')%}
@@ -182,7 +183,7 @@
 								{{ EFNC.LastModifier|upper|split('.')|last }}
 							</div>
 					{% endif %}
-					{% if EFNC.archived is null and EFNC.status is null %}
+					{% if EFNC.archived is null and EFNC.closed is null %}
 						<div
 							class="d-grid gap-2 d-md-flex justify-content-md-center mt-3 textwhite">
 							<button
@@ -199,7 +200,7 @@
 			{{ form_end(form1) }}
 			{% if is_granted('ROLE_ADMIN') %}
 
-				{% if EFNC.archived is null and EFNC.status is null %}
+				{% if EFNC.archived is null and EFNC.closed is null %}
 
 					<form
 						method="post"
@@ -315,7 +316,7 @@
 						</div>
 
 					</form>
-				{% elseif EFNC.archived is same as(true) and EFNC.status is null %}
+				{% elseif EFNC.archived is same as(true) and EFNC.closed is null %}
 					<div
 						class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2 text-white">
 						Archivage effectué par
@@ -336,7 +337,7 @@
 							</a>
 						</div>
 					{% endif %}
-				{% elseif EFNC.archived is same as(true) and EFNC.status is not null %}
+				{% elseif EFNC.archived is same as(true) and EFNC.closed is not null %}
 					<div
 						class="d-grid gap-2 d-md-flex justify-content-md-center mt-2 mb-2 text-white">
 						Cloture effectué par

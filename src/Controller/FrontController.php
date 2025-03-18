@@ -2,20 +2,40 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use App\Repository\EFNCRepository;
+
+use App\Service\MailerService;
+use App\Service\EntityDeletionService;
 
 #[Route('/', name: 'app_')]
-class FrontController extends BaseController
+class FrontController extends AbstractController
 {
+    private $eFNCRepository;
+    private $mailerService;
+    private $entityDeletionService;
+
+    public function __construct(
+        EFNCRepository $eFNCRepository,
+        MailerService $mailerService,
+
+        EntityDeletionService $entityDeletionService
+    ) {
+        $this->eFNCRepository = $eFNCRepository;
+        $this->mailerService = $mailerService;
+
+        $this->entityDeletionService = $entityDeletionService;
+    }
+
     #[Route('/', name: 'base')]
     public function base(): Response
     {
-        if (count($this->EFNCRepository->getMonthOldLowLevelRiskEfnc()) > 0) {
+        if (count($this->eFNCRepository->getMonthOldLowLevelRiskEfnc()) > 0) {
             $this->mailerService->sendReminderEmailToAdmin();
         }
-
         return $this->render('base.html.twig', []);
     }
 
@@ -35,11 +55,13 @@ class FrontController extends BaseController
         return $this->render('/services/efnc/display/closed_efnc_list.html.twig', []);
     }
 
-    // #[Route('/admin/old', name: 'old')]
-    // public function testForOld(): Response
-    // {
-    //     $this->mailerService->sendReminderEmailToAdmin();
-
-    //     return $this->redirectToRoute('app_base');
-    // }
+    #[Route('/admin/statusflag', name: 'status_flag')]
+    public function statusFlagUpdate(): Response
+    {
+        foreach ($this->eFNCRepository->findAll() as $eFNC) {
+            $this->entityDeletionService->setStatusFlag($eFNC);
+        }
+        $this->addFlash('success', 'status_flag has been updated');
+        return $this->redirectToRoute('app_base');
+    }
 }

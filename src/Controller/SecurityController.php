@@ -2,12 +2,18 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 // This controller manage the logic of the security interface
-class SecurityController extends FrontController
+class SecurityController extends AbstractController
 {
+
+    public function __construct()
+    {
+        // Placeholder
+    }
 
     // This function is responsible for rendering the login interface 
     #[Route(path: '/login', name: 'app_login')]

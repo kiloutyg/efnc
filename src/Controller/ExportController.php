@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\EFNC;
@@ -31,7 +32,7 @@ class ExportController extends AbstractController
             'CreatedAt',
             'UpdatedAt',
             'SAPReference',
-            'Status',
+            'Closed',
             'ClosedDate',
             'Archiver',
             'DetectionTime',
@@ -66,7 +67,7 @@ class ExportController extends AbstractController
                 $efnc->getCreatedAt() ? $efnc->getCreatedAt()->format('Y-m-d H:i:s') : '',
                 $efnc->getUpdatedAt() ? $efnc->getUpdatedAt()->format('Y-m-d H:i:s') : '',
                 $efnc->getSAPReference(),
-                $efnc->isStatus() !== null ? ($efnc->isStatus() ? 'true' : 'false') : '',
+                $efnc->isClosed() !== null ? ($efnc->isClosed() ? 'true' : 'false') : '',
                 $efnc->getClosedDate() ? $efnc->getClosedDate()->format('Y-m-d H:i:s') : '',
                 $efnc->getArchiver(),
                 $efnc->getDetectionTime() ? $efnc->getDetectionTime()->format('H:i:s') : '',

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -10,40 +12,55 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Routing\Annotation\Route;
 
-use App\Controller\FrontController;
-
 use App\Entity\User;
 
+use App\Repository\UserRepository;
+
+use App\Service\AccountService;
 
 #[Route('/', name: 'app_')]
-class AccountController extends FrontController
+class AccountController extends AbstractController
 {
+    private $userRepository;
+
+    private $accountService;
+
+    public function __construct(
+        UserRepository $userRepository,
+
+        AccountService $accountService,
+    ) {
+        $this->userRepository = $userRepository;
+
+        $this->accountService = $accountService;
+    }
+
     #[Route('/createAccount', name: 'create_account')]
     public function createAccount(Request $request): Response
     {
         if ($request->isMethod('GET')) {
+            $url = 'services/admin_services/accountservices/create_account.html.twig';
             if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
-                return $this->render('services/admin_services/accountservices/superadmin_create_account.html.twig');
-            } else {
-                return $this->render('services/admin_services/accountservices/create_account.html.twig');
+                $url = 'services/admin_services/accountservices/superadmin_create_account.html.twig';
             }
+            return $this->render($url, [
+                'users' => $this->userRepository->findAll(),
+            ]);
         } else {
             $superAdmin = $this->userRepository->findOneBy(['roles' => 'ROLE_SUPER_ADMIN']);
             $requestedRole = $request->request->get('role');
             if ($requestedRole == 'ROLE_SUPER_ADMIN' && $superAdmin != null) {
                 $this->addFlash('danger', 'Le compte ne peut être créé');
-                return $this->redirectToRoute('app_base');
-            }
-            try {
-                $result = $this->accountService->createAccount($request);
-                if ($result) {
-                    $this->addFlash('success', 'Le compte a bien été créé.');
+            } else {
+                try {
+                    $result = $this->accountService->createAccount($request);
+                    if ($result) {
+                        $this->addFlash('success', 'Le compte a bien été créé.');
+                    }
+                } catch (\Exception $e) {
+                    $error = $e->getMessage();
+                    $this->addFlash('danger', $error);
                 }
-            } catch (\Exception $e) {
-                // Catch and handle the exception.
-                // Log it, add a flash message, etc.
-                $error = $e->getMessage();
-                $this->addFlash('danger', $error);
             }
             return $this->redirectToRoute('app_base');
         }
@@ -52,36 +69,25 @@ class AccountController extends FrontController
 
     // This function is responsible for rendering the account modifiying interface destined to the super admin
     #[Route(path: '/admin/modify_account/{userid}', name: 'modify_account')]
-    public function modify_account(UserInterface $currentUser, int $userid, AuthenticationUtils $authenticationUtils, Request $request): Response
+    public function modifyAccount(UserInterface $currentUser, int $userid, Request $request): Response
     {
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $user = $this->userRepository->findOneBy(['id' => $userid]);
-        if ($request->isMethod('GET')) {
+        $user = $this->userRepository->find($userid);
+        if ($request->isMethod('POST')) {
+            $usermod = $this->accountService->modifyAccount($request, $currentUser, $user);
             if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
                 $this->addFlash('danger', 'Le compte ne peut être modifié');
-                return $this->redirectToRoute('app_base');
-            }
-
-            if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
-                return $this->render('services/admin_services/accountservices/superadmin_modify_account_view.html.twig', [
-                    'user'          => $user,
-                    'error'         => $error,
-                ]);
-            } else {
-                return $this->render('services/admin_services/accountservices/modify_account_view.html.twig', [
-                    'user'          => $user,
-                    'error'         => $error,
-                ]);
-            }
-        } else if ($request->isMethod('POST')) {
-            $error = $authenticationUtils->getLastAuthenticationError();
-            $usermod = $this->accountService->modifyAccount($request, $currentUser, $user);
-            if ($usermod instanceof User) {
+            } elseif ($usermod instanceof User) {
                 $this->addFlash('success', 'Le compte ' . $usermod->getUsername() . ' a été modifié');
-                return $this->redirectToRoute('app_base');
             };
             return $this->redirectToRoute('app_base');
         }
+        $url = 'services/admin_services/accountservices/modify_account_view.html.twig';
+        if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
+            $url = 'services/admin_services/accountservices/superadmin_modify_account_view.html.twig';
+        }
+        return $this->render($url, [
+            'user'          => $user,
+        ]);
     }
 
 
@@ -92,6 +98,9 @@ class AccountController extends FrontController
         $result = $this->accountService->deleteUser($userId);
         if ($result) {
             $this->addFlash('success',  'Le compte a été supprimé');
+            return $this->redirectToRoute('app_base');
+        } else {
+            $this->addFlash('warning',  'Le compte n\'a pas été supprimé');
             return $this->redirectToRoute('app_base');
         }
     }
