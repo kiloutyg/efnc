@@ -586,7 +586,7 @@ class AdminController extends AbstractController
                 $errorMessages[] = $e->getMessage();
             }
         }
-        if (count($errorMessages) > 0) {
+        if (!empty($errorMessages)) {
             foreach ($errorMessages as $errorMessage) {
                 $this->logger->error('Error: ' . $errorMessage);
             }

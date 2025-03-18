@@ -232,10 +232,8 @@ class EntityDeletionService extends AbstractController
                 $repository = $this->productVersionRepository;
                 break;
         }
-        // Get the entity from the database
-        $entity = $repository->find($id);
 
-        return $entity;
+        return $repository->find($id);
     }
 
 
@@ -285,6 +283,5 @@ class EntityDeletionService extends AbstractController
                 $efnc->setStatus('open');
             }
         }
-
     }
 }

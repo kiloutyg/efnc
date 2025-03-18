@@ -2,20 +2,18 @@
 
 namespace App\Service;
 
-// use Imagine\Gd\Imagine;
-// Add liip_imagine if needed
+use Psr\Log\LoggerInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-// use Psr\Log\LoggerInterface;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 use App\Entity\EFNC;
 use App\Entity\Picture;
@@ -24,41 +22,68 @@ use App\Repository\PictureRepository;
 
 class PictureService extends AbstractController
 {
-    // private $logger;
-
+    private $logger;
     private $projectDir;
-
     private $em;
 
     private $pictureRepository;
 
-    // private $imagine;
-
-
     public function __construct(
-        // LoggerInterface                     $logger,
-
+        LoggerInterface                     $logger,
         ParameterBagInterface               $params,
-
         EntityManagerInterface              $em,
 
         PictureRepository                   $pictureRepository,
 
-
     ) {
-        // $this->logger                       = $logger;
-
+        $this->logger                       = $logger;
         $this->projectDir                   = $params->get('kernel.project_dir');
-
         $this->em                           = $em;
 
         $this->pictureRepository            = $pictureRepository;
-
-        // $this->imagine = new Imagine();
     }
+    public function formPictureManager(Request $request, EFNC $efnc, string $efncFolderName): bool
+    {
+        $response = true;
 
+        // Check if 'picture' key exists and is not null
+        if (key_exists('picture', $request->files->all()) && $request->files->get('picture') != null) {
+            $pictures = $request->files->all()['picture'];
+            // Process TraceabilityPictures
+            if (key_exists('TraceabilityPicture', $pictures)) {
+                foreach ($pictures['TraceabilityPicture'] as $traceabilityPicture) {
+                    $traceabilityPictures[] = $traceabilityPicture;
+                }
+            }
+            // Process NCpictures
+            if (key_exists('NCpicture', $pictures)) {
+                foreach ($pictures['NCpicture'] as $ncPicture) {
+                    $ncPictures[] = $ncPicture;
+                }
+            }
+        }
+        // Process each file, e.g., save them to the server
+        if (isset($traceabilityPictures)) {
+            foreach ($traceabilityPictures as $picture) {
+                // Save or process $pictures
+                $result = $this->pictureUpload($picture, $efnc, $efncFolderName, 'traceability');
+            }
+        }
+        if (isset($ncPictures)) {
+            foreach ($ncPictures as $picture) {
+                // Save or process $picture
+                $result = $this->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
+            }
+        }
+        if ($result != true) {
+            $response = false;
+        }
+
+        return $response;
+    }
     public function pictureUpload(UploadedFile $file, EFNC $efnc, $efncFolderName, string $category)
     {
+        $result = true;
 
         $allowedExtensions = ['jpg', 'png', 'jpeg', 'gif'];
         $extension = $file->guessExtension();
@@ -93,7 +118,12 @@ class PictureService extends AbstractController
         if ($file->getSize() > $maxSize) {
             return $this->addFlash('error', 'Le fichier doit être inférieur à 6MB');
         } else {
-            $file->move($folderPath . '/', $filename);
+            try {
+                $file->move($folderPath . '/', $filename);
+            } catch (\Exception $e) {
+                $this->logger->error('error in pictureService pictureUpload: ', [$e->getMessage()]);
+                $result = false;
+            }
         }
 
         $picture = new Picture();
@@ -107,6 +137,7 @@ class PictureService extends AbstractController
         $this->em->persist($picture);
         $this->em->persist($efnc);
         $this->em->flush();
-        return true;
+
+        return $result;
     }
 }

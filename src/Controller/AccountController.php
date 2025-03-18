@@ -69,15 +69,14 @@ class AccountController extends AbstractController
 
     // This function is responsible for rendering the account modifiying interface destined to the super admin
     #[Route(path: '/admin/modify_account/{userid}', name: 'modify_account')]
-    public function modifyAccount(UserInterface $currentUser, int $userid, AuthenticationUtils $authenticationUtils, Request $request): Response
+    public function modifyAccount(UserInterface $currentUser, int $userid, Request $request): Response
     {
         $user = $this->userRepository->find($userid);
         if ($request->isMethod('POST')) {
-            $error = $authenticationUtils->getLastAuthenticationError();
             $usermod = $this->accountService->modifyAccount($request, $currentUser, $user);
             if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
                 $this->addFlash('danger', 'Le compte ne peut être modifié');
-            } else if ($usermod instanceof User) {
+            } elseif ($usermod instanceof User) {
                 $this->addFlash('success', 'Le compte ' . $usermod->getUsername() . ' a été modifié');
             };
             return $this->redirectToRoute('app_base');

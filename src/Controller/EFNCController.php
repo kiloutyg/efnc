@@ -15,8 +15,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use App\Entity\EFNC;
 use App\Entity\ImmediateConservatoryMeasures;
-use App\Entity\RiskWeighting;
-use App\Entity\Product;
 
 use App\Repository\EFNCRepository;
 use App\Repository\PictureRepository;
@@ -66,25 +64,14 @@ class EFNCController extends BaseController
     #[Route('/form/creation', name: 'form_creation')]
     public function formCreation(Request $request): Response
     {
+
+        // Consider using proper setters instead of getters for association
         $efnc = new EFNC();
-        $imcome = new ImmediateConservatoryMeasures();
-        $product = new Product();
-        $riskWeighting = new RiskWeighting();
-        $efnc->getImmediateConservatoryMeasures()->add($imcome);
-        $efnc->getProduct($product);
-        $efnc->getRiskWeighting($riskWeighting);
 
-        // $efnc = new EFNC();
-        // $efnc->getImmediateConservatoryMeasures()->add(new ImmediateConservatoryMeasures());
-        // $efnc->getProduct(new Product());
-        // $efnc->getRiskWeighting(new RiskWeighting());
+        $efnc->addImmediateConservatoryMeasure(new ImmediateConservatoryMeasures());
 
-        // $efnc = new EFNC();
-        // // Consider using proper setters instead of getters for association
-        // $efnc->addImmediateConservatoryMeasure(new ImmediateConservatoryMeasures());
-        // $efnc->setProduct(new Product());
-        // $efnc->setRiskWeighting(new RiskWeighting());
         $form1 = $this->createForm(FormCreationType::class, $efnc);
+            $form1->remove('riskWeighting');
 
         if ($request->getMethod() == 'POST') {
             $form1->handleRequest($request);
@@ -126,10 +113,6 @@ class EFNCController extends BaseController
             $efnc->getImmediateConservatoryMeasures()->add($measure);
         }
 
-        // Either remove this line or replace with proper setter if needed
-        $riskWeighting = $efnc->getRiskWeighting();
-        $efnc->setRiskWeighting($riskWeighting);  // If you need to set it
-
         $form1 = $this->createForm(FormCreationType::class, $efnc);
 
         if ($request->getMethod() == 'POST') {
@@ -148,8 +131,7 @@ class EFNCController extends BaseController
                     $result = $this->formModificationService->modifyNCForm(
                         $efnc,
                         $request,
-                        $form1,
-                        $this->getUser()->getUsername()
+                        $form1
                     );
                 }
 

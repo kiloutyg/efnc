@@ -39,12 +39,10 @@ class RiskWeightingService extends AbstractController
         $this->em                           = $em;
     }
 
-    public function riskWeightingAssignation(EFNC $efnc, RiskWeighting $riskWeighting, FormInterface $riskWeightingForm, Request $request)
+    public function riskWeightingAssignation(FormInterface $form)
     {
-        $riskWeighting->setEFNC($efnc);
-        $this->em->persist($riskWeighting);
-        $this->em->persist($efnc);
-        $this->em->flush();
-        return true;
+
+        
+
     }
 }
