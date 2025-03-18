@@ -40,27 +40,29 @@ class AccountController extends AbstractController
     {
         if ($request->isMethod('GET')) {
             if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
-                return $this->render('services/admin_services/accountservices/superadmin_create_account.html.twig');
+                return $this->render('services/admin_services/accountservices/superadmin_create_account.html.twig', [
+                    'users' => $this->userRepository->findAll(),
+                ]);
             } else {
-                return $this->render('services/admin_services/accountservices/create_account.html.twig');
+                return $this->render('services/admin_services/accountservices/create_account.html.twig', [
+                    'users' => $this->userRepository->findAll(),
+                ]);
             }
         } else {
             $superAdmin = $this->userRepository->findOneBy(['roles' => 'ROLE_SUPER_ADMIN']);
             $requestedRole = $request->request->get('role');
             if ($requestedRole == 'ROLE_SUPER_ADMIN' && $superAdmin != null) {
                 $this->addFlash('danger', 'Le compte ne peut être créé');
-                return $this->redirectToRoute('app_base');
-            }
-            try {
-                $result = $this->accountService->createAccount($request);
-                if ($result) {
-                    $this->addFlash('success', 'Le compte a bien été créé.');
+            } else {
+                try {
+                    $result = $this->accountService->createAccount($request);
+                    if ($result) {
+                        $this->addFlash('success', 'Le compte a bien été créé.');
+                    }
+                } catch (\Exception $e) {
+                    $error = $e->getMessage();
+                    $this->addFlash('danger', $error);
                 }
-            } catch (\Exception $e) {
-                // Catch and handle the exception.
-                // Log it, add a flash message, etc.
-                $error = $e->getMessage();
-                $this->addFlash('danger', $error);
             }
             return $this->redirectToRoute('app_base');
         }
@@ -78,7 +80,6 @@ class AccountController extends AbstractController
             $usermod = $this->accountService->modifyAccount($request, $currentUser, $user);
             if ($usermod instanceof User) {
                 $this->addFlash('success', 'Le compte ' . $usermod->getUsername() . ' a été modifié');
-                return $this->redirectToRoute('app_base');
             };
             return $this->redirectToRoute('app_base');
         }
@@ -90,12 +91,11 @@ class AccountController extends AbstractController
                 'user'          => $user,
                 'error'         => $error,
             ]);
-        } else {
-            return $this->render('services/admin_services/accountservices/modify_account_view.html.twig', [
-                'user'          => $user,
-                'error'         => $error,
-            ]);
         }
+        return $this->render('services/admin_services/accountservices/modify_account_view.html.twig', [
+            'user'          => $user,
+            'error'         => $error,
+        ]);
     }
 
 

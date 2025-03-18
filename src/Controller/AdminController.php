@@ -32,6 +32,7 @@ use App\Form\ProductCategoryType;
 use App\Form\ProductColorType;
 use App\Form\ProductVersionType;
 
+use App\Repository\UserRepository;
 use App\Repository\TeamRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\OriginRepository;
@@ -65,7 +66,6 @@ class AdminController extends AbstractController
     protected $authChecker;
 
     // Repository methods
-
     protected $teamRepository;
     protected $projectRepository;
     protected $originRepository;
@@ -100,7 +100,6 @@ class AdminController extends AbstractController
         LoggerInterface                 $logger,
 
         // Repository methods
-
         TeamRepository                  $teamRepository,
         ProjectRepository               $projectRepository,
         OriginRepository                $originRepository,
@@ -133,7 +132,6 @@ class AdminController extends AbstractController
         $this->logger                       = $logger;
 
         // Variables related to the repositories
-
         $this->teamRepository               = $teamRepository;
         $this->projectRepository            = $projectRepository;
         $this->originRepository             = $originRepository;
@@ -166,7 +164,7 @@ class AdminController extends AbstractController
         if ($this->getUser() == null) {
             return $this->redirectToRoute('app_login');
         } else {
-            return $this->render('services/admin/admin_page.html.twig', []);
+            return $this->render('services/admin/admin_page.html.twig');
         }
     }
 
