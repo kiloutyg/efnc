@@ -2,6 +2,14 @@
 
 namespace App\Controller;
 
+use  \Psr\Log\LoggerInterface;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 use App\Entity\Team;
 use App\Entity\Project;
 use App\Entity\Origin;
@@ -24,15 +32,133 @@ use App\Form\ProductCategoryType;
 use App\Form\ProductColorType;
 use App\Form\ProductVersionType;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use App\Repository\TeamRepository;
+use App\Repository\ProjectRepository;
+use App\Repository\OriginRepository;
+use App\Repository\UAPRepository;
+use App\Repository\AnomalyTypeRepository;
+use App\Repository\PlaceRepository;
+use App\Repository\ImmediateConservatoryMeasuresListRepository;
+use App\Repository\ProductCategoryRepository;
+use App\Repository\ProductColorRepository;
+use App\Repository\ProductVersionRepository;
+use App\Repository\EFNCRepository;
 
-use Symfony\Component\Routing\Annotation\Route;
-
+use App\Service\EntityDeletionService;
+use App\Service\ProjectService;
+use App\Service\OriginService;
+use App\Service\UAPService;
+use App\Service\AnomalyTypeService;
+use App\Service\PlaceService;
+use App\Service\ImCoMeService;
+use App\Service\ProductCategoryService;
+use App\Service\ProductColorService;
+use App\Service\ProductVersionService;
 
 #[Route('/', name: 'app_')]
-class AdminController extends FrontController
+
+# This controller is extended to make it easier to access routes
+
+class AdminController extends AbstractController
 {
+    protected $logger;
+    protected $authChecker;
+
+    // Repository methods
+
+    protected $teamRepository;
+    protected $projectRepository;
+    protected $originRepository;
+    protected $uapRepository;
+    protected $anomalyTypeRepository;
+    protected $placeRepository;
+    protected $imcomeRepository;
+    protected $productCategoryRepository;
+    protected $productColorRepository;
+    protected $productVersionRepository;
+    protected $eFNCRepository;
+
+    // Services methods
+
+    protected $entityDeletionService;
+    protected $teamService;
+    protected $projectService;
+    protected $originService;
+    protected $uapService;
+    protected $anomalyTypeService;
+    protected $placeService;
+    protected $imcomeService;
+    protected $productCategoryService;
+    protected $productColorService;
+    protected $productVersionService;
+
+
+    public function __construct(
+
+
+        AuthorizationCheckerInterface   $authChecker,
+        LoggerInterface                 $logger,
+
+        // Repository methods
+
+        TeamRepository                  $teamRepository,
+        ProjectRepository               $projectRepository,
+        OriginRepository                $originRepository,
+        UAPRepository                   $uapRepository,
+        AnomalyTypeRepository           $anomalyTypeRepository,
+        PlaceRepository                 $placeRepository,
+        ImmediateConservatoryMeasuresListRepository $imcomeRepository,
+        ProductCategoryRepository       $productCategoryRepository,
+        ProductColorRepository          $productColorRepository,
+        ProductVersionRepository        $productVersionRepository,
+        EFNCRepository                  $eFNCRepository,
+
+        // Services methods
+
+        EntityDeletionService           $entityDeletionService,
+        ProjectService                  $projectService,
+        OriginService                   $originService,
+        UAPService                      $uapService,
+        AnomalyTypeService              $anomalyTypeService,
+        PlaceService                    $placeService,
+        ImCoMeService                   $imcomeService,
+        ProductCategoryService          $productCategoryService,
+        ProductColorService             $productColorService,
+        ProductVersionService           $productVersionService
+
+
+    ) {
+
+        $this->authChecker                  = $authChecker;
+        $this->logger                       = $logger;
+
+        // Variables related to the repositories
+
+        $this->teamRepository               = $teamRepository;
+        $this->projectRepository            = $projectRepository;
+        $this->originRepository             = $originRepository;
+        $this->uapRepository                = $uapRepository;
+        $this->anomalyTypeRepository        = $anomalyTypeRepository;
+        $this->placeRepository              = $placeRepository;
+        $this->imcomeRepository             = $imcomeRepository;
+        $this->productCategoryRepository    = $productCategoryRepository;
+        $this->productColorRepository       = $productColorRepository;
+        $this->productVersionRepository     = $productVersionRepository;
+        $this->eFNCRepository               = $eFNCRepository;
+
+        // Variables related to the services
+
+        $this->entityDeletionService        = $entityDeletionService;
+        $this->projectService               = $projectService;
+        $this->originService                = $originService;
+        $this->uapService                   = $uapService;
+        $this->anomalyTypeService           = $anomalyTypeService;
+        $this->placeService                 = $placeService;
+        $this->imcomeService                = $imcomeService;
+        $this->productCategoryService       = $productCategoryService;
+        $this->productColorService          = $productColorService;
+        $this->productVersionService        = $productVersionService;
+    }
 
     #[Route('/admin/view', name: 'admin_page')]
     public function adminPage(): Response
@@ -67,7 +193,7 @@ class AdminController extends FrontController
                 $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
             return $this->render('services/admin_services/team/team_creation.html.twig', [
                 'teamForm' => $teamForm->createView(),
                 'teams' => $this->teamRepository->findAll(),
@@ -97,7 +223,7 @@ class AdminController extends FrontController
                 $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
             return $this->render('services/admin_services/project/project_creation.html.twig', [
                 'projectForm' => $projectForm->createView(),
                 'projects' => $this->projectRepository->findAll(),
@@ -127,7 +253,7 @@ class AdminController extends FrontController
                 $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
             return $this->render('services/admin_services/origin/origin_creation.html.twig', [
                 'originForm' => $originForm->createView(),
                 'origins' => $this->originRepository->findAll(),
@@ -157,7 +283,7 @@ class AdminController extends FrontController
                 $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
             return $this->render('services/admin_services/uap/uap_creation.html.twig', [
                 'uapForm' => $uapForm->createView(),
                 'uaps' => $this->uapRepository->findAll(),
@@ -187,7 +313,7 @@ class AdminController extends FrontController
                 $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
             return $this->render('services/admin_services/anomalyType/anomalyType_creation.html.twig', [
                 'anomalyTypeForm' => $anomalyTypeForm->createView(),
                 'anomalyTypes' => $this->anomalyTypeRepository->findAll(),
@@ -217,7 +343,7 @@ class AdminController extends FrontController
                 $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
             return $this->render('services/admin_services/place/place_creation.html.twig', [
                 'placeForm' => $placeForm->createView(),
                 'places' => $this->placeRepository->findAll(),
@@ -235,9 +361,7 @@ class AdminController extends FrontController
             $imcomeListForm->handleRequest($request);
             if ($imcomeListForm->isSubmitted() && $imcomeListForm->isValid()) {
                 $this->imcomeService->imcomeListCreation(
-                    $imcomeList,
-                    $request,
-                    $imcomeListForm
+                    $imcomeList
                 );
                 $this->addFlash('success', 'La Mesure Conservatoire Immédiate a bien été ajoutée');
                 return $this->redirect($originUrl);
@@ -247,7 +371,7 @@ class AdminController extends FrontController
                 $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
             return $this->render('services/admin_services/imcome/imcome_creation.html.twig', [
                 'imcomeForm' => $imcomeListForm->createView(),
                 'imcomes' => $this->imcomeRepository->findAll(),
@@ -277,7 +401,7 @@ class AdminController extends FrontController
                 $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
             return $this->render('services/admin_services/productCategory/product_category_creation.html.twig', [
                 'productCategoryForm' => $productCategoryForm->createView(),
                 'productCategories' => $this->productCategoryRepository->findAll(),
@@ -307,7 +431,7 @@ class AdminController extends FrontController
                 $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
             return $this->render('services/admin_services/productColor/product_color_creation.html.twig', [
                 'productColorForm' => $productColorForm->createView(),
                 'productColors' => $this->productColorRepository->findAll(),
@@ -337,7 +461,7 @@ class AdminController extends FrontController
                 $this->addFlash('danger', $errorMessage);
                 return $this->redirect($originUrl);
             }
-        } else if ($request->getMethod() == 'GET') {
+        } else {
             return $this->render('services/admin_services/productVersion/product_version_creation.html.twig', [
                 'productVersionForm' => $productVersionForm->createView(),
                 'productVersions' => $this->productVersionRepository->findAll(),
@@ -399,15 +523,15 @@ class AdminController extends FrontController
             $result = $this->entityDeletionService->archivedEntity($entityType, $id, $commentary);
 
             if ($result == false) {
-                $this->addFlash('danger', 'L\'élément n\'a pas pu être archivé');
-                return $this->redirect($originUrl);
-            } else {
                 $this->addFlash('success', 'L\'élément a bien été archivé');
                 if ($entityType == "efnc") {
-                    return $this->redirectToRoute('app_base', []);
+                    return $this->redirectToRoute('app_base');
                 } else {
                     return $this->redirect($originUrl);
                 }
+            } else {
+                $this->addFlash('danger', 'L\'élément n\'a pas pu être archivé');
+                return $this->redirect($originUrl);
             }
         }
     }
@@ -421,11 +545,11 @@ class AdminController extends FrontController
     {
         $originUrl = $request->headers->get('referer');
         $result = $this->entityDeletionService->unarchiveEntity($entityType, $id); // Implement this method in your service
-        if ($result == false) {
-            $this->addFlash('danger', 'L\'élément n\'a pas pu être restauré');
+        if ($result) {
+            $this->addFlash('success', 'L\'élément a bien été restauré');
             return $this->redirect($originUrl);
         } else {
-            $this->addFlash('success', 'L\'élément a bien été restauré');
+            $this->addFlash('danger', 'L\'élément n\'a pas pu être restauré');
             return $this->redirect($originUrl);
         }
     }
@@ -437,14 +561,37 @@ class AdminController extends FrontController
     {
         $originUrl = $request->headers->get('referer');
         $result = $this->entityDeletionService->deleteEntity($entityType, $id);
-        if ($result == false) {
-            $this->addFlash('danger', 'L\'élément n\'a pas pu être supprimé');
+        if ($result) {
+            $this->addFlash('success', 'L\'élément a bien été supprimé');
             return $this->redirect($originUrl);
         } else {
-            $this->addFlash('success', 'L\'élément a bien été supprimé');
+            $this->addFlash('danger', 'L\'élément n\'a pas pu être supprimé');
             return $this->redirect($originUrl);
         }
     }
 
-    
+    #[Route('admin/update', name: 'update')]
+    public function updateEFNC(): Response
+    {
+        $efncs = $this->eFNCRepository->findAll();
+        $i = 0;
+        $errorMessages = [];
+        foreach ($efncs as $efnc) {
+            try {
+                $this->entityDeletionService->setStatusFlag($efnc);
+                $i++;
+            } catch (\Exception $e) {
+                $errorMessages[] = $e->getMessage();
+            }
+        }
+        if (count($errorMessages) > 0) {
+            foreach ($errorMessages as $errorMessage) {
+                $this->logger->error('Error: ' . $errorMessage);
+            }
+            $this->addFlash('danger', 'Une erreur est survenue lors de la mise à jour:  ' . implode(', ', $errorMessages));
+            return $this->redirectToRoute('app_base');
+        }
+        $this->addFlash('success', 'Mise à jour terminée. Sur ' . count($efncs) . ', ' . $i . ' Fiches ont été modifiées.');
+        return $this->redirectToRoute('app_base');
+    }
 }

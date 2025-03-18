@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -10,14 +12,29 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Routing\Annotation\Route;
 
-use App\Controller\FrontController;
-
 use App\Entity\User;
 
+use App\Repository\UserRepository;
+
+use App\Service\AccountService;
 
 #[Route('/', name: 'app_')]
-class AccountController extends FrontController
+class AccountController extends AbstractController
 {
+    private $userRepository;
+
+    private $accountService;
+
+    public function __construct(
+        UserRepository $userRepository,
+
+        AccountService $accountService,
+    ) {
+        $this->userRepository = $userRepository;
+
+        $this->accountService = $accountService;
+    }
+
     #[Route('/createAccount', name: 'create_account')]
     public function createAccount(Request $request): Response
     {
@@ -52,28 +69,11 @@ class AccountController extends FrontController
 
     // This function is responsible for rendering the account modifiying interface destined to the super admin
     #[Route(path: '/admin/modify_account/{userid}', name: 'modify_account')]
-    public function modify_account(UserInterface $currentUser, int $userid, AuthenticationUtils $authenticationUtils, Request $request): Response
+    public function modifyAccount(UserInterface $currentUser, int $userid, AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
-        $user = $this->userRepository->findOneBy(['id' => $userid]);
-        if ($request->isMethod('GET')) {
-            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
-                $this->addFlash('danger', 'Le compte ne peut être modifié');
-                return $this->redirectToRoute('app_base');
-            }
-
-            if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
-                return $this->render('services/admin_services/accountservices/superadmin_modify_account_view.html.twig', [
-                    'user'          => $user,
-                    'error'         => $error,
-                ]);
-            } else {
-                return $this->render('services/admin_services/accountservices/modify_account_view.html.twig', [
-                    'user'          => $user,
-                    'error'         => $error,
-                ]);
-            }
-        } else if ($request->isMethod('POST')) {
+        $user = $this->userRepository->find($userid);
+        if ($request->isMethod('POST')) {
             $error = $authenticationUtils->getLastAuthenticationError();
             $usermod = $this->accountService->modifyAccount($request, $currentUser, $user);
             if ($usermod instanceof User) {
@@ -81,6 +81,20 @@ class AccountController extends FrontController
                 return $this->redirectToRoute('app_base');
             };
             return $this->redirectToRoute('app_base');
+        }
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+            $this->addFlash('danger', 'Le compte ne peut être modifié');
+            return $this->redirectToRoute('app_base');
+        } else if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
+            return $this->render('services/admin_services/accountservices/superadmin_modify_account_view.html.twig', [
+                'user'          => $user,
+                'error'         => $error,
+            ]);
+        } else {
+            return $this->render('services/admin_services/accountservices/modify_account_view.html.twig', [
+                'user'          => $user,
+                'error'         => $error,
+            ]);
         }
     }
 
@@ -92,6 +106,9 @@ class AccountController extends FrontController
         $result = $this->accountService->deleteUser($userId);
         if ($result) {
             $this->addFlash('success',  'Le compte a été supprimé');
+            return $this->redirectToRoute('app_base');
+        } else {
+            $this->addFlash('warning',  'Le compte n\'a pas été supprimé');
             return $this->redirectToRoute('app_base');
         }
     }

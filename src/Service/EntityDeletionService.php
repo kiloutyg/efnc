@@ -103,6 +103,7 @@ class EntityDeletionService extends AbstractController
             $entity->setArchiver($this->getUser()->getUsername());
             $entity->setArchivingCommentary($commentary);
             $entity->setArchived(true);
+            $this->setStatusFlag($entity);
         } else {
             $this->basicEntityManagement($entity, true);
         }
@@ -126,6 +127,7 @@ class EntityDeletionService extends AbstractController
         }
         if ($entityType === 'efnc') {
             $entity->setArchived(true);
+            $this->setStatusFlag($entity);
         } else {
             $this->basicEntityManagement($entity, true);
         }
@@ -150,6 +152,7 @@ class EntityDeletionService extends AbstractController
         }
         if ($entityType === 'efnc') {
             $entity->setArchived(false);
+            $this->setStatusFlag($entity);
         } else {
             $this->basicEntityManagement($entity, false);
         }
@@ -171,12 +174,13 @@ class EntityDeletionService extends AbstractController
         if (!$entity) {
             return false;
         }
-        
+
         if ($entityType === 'efnc') {
             $entity->setCloser($user);
             $entity->setClosingCommentary($commentary);
             $entity->setArchived(true);
             $entity->setClosed(true);
+            $this->setStatusFlag($entity);
         }
 
         $this->em->flush();
@@ -237,6 +241,7 @@ class EntityDeletionService extends AbstractController
 
     public function basicEntityManagement($entity, Bool $flag): void
     {
+        $this->logger->info('basicEntityManagement, flag : ', [$flag]);
         $entity->setArchived($flag);
         if (($forms = $entity->getEFNCs()) !== null) {
             $this->formArchiving($forms, $flag);
@@ -247,6 +252,8 @@ class EntityDeletionService extends AbstractController
 
     public function basicEntityManagementWithMidEntities($entity, Bool $flag): void
     {
+        $this->logger->info('basicEntityManagementWithMidEntities, flag : ', [$flag]);
+
         $midEntities = ($entity->getImmediateConservatoryMeasures() !== null) ? $entity->getImmediateConservatoryMeasures() : $entity->getProducts();
         foreach ($midEntities as $midEntity) {
             $this->formArchiving($midEntity->getEFNC(), $flag);
@@ -255,6 +262,8 @@ class EntityDeletionService extends AbstractController
 
     public function formArchiving(ArrayCollection $efncs, Bool $flag): void
     {
+        $this->logger->info('formArchiving, flag : ', [$flag]);
+
         foreach ($efncs as $efnc) {
             $efnc->setArchived($flag);
             $this->setStatusFlag($efnc);
@@ -263,6 +272,8 @@ class EntityDeletionService extends AbstractController
 
     public function setStatusFlag(EFNC $efnc): void
     {
+        $this->logger->info('basicEntityManagement, efnc : ', [$efnc->getTitle()]);
+
         $status = $efnc->getStatus();
         $archived = $efnc->isArchived();
         $closed = $efnc->isClosed();
