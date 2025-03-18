@@ -63,7 +63,7 @@ class EFNCController extends BaseController
         $this->mailerService = $mailerService;
     }
 
-    #[Route('/form_creation', name: 'form_creation')]
+    #[Route('/form/creation', name: 'form_creation')]
     public function formCreation(Request $request): Response
     {
         $efnc = new EFNC();
@@ -112,57 +112,65 @@ class EFNCController extends BaseController
     }
 
 
-    #[Route('/form{efncID}_modification_display', name: 'form_modification_display')]
+    #[Route('/form/{efncID}/modification_display', name: 'form_modification_display')]
     public function formModificationDisplay(int $efncID, Request $request): Response
     {
+        $response = null;
         $efnc = $this->eFNCRepository->find($efncID);
         if (!$efnc) {
             throw $this->createNotFoundException('No EFNC found for id ' . $efncID);
         }
+
         if ($efnc->getImmediateConservatoryMeasures()->isEmpty()) {
             $measure = new ImmediateConservatoryMeasures();
             $efnc->getImmediateConservatoryMeasures()->add($measure);
         }
 
+        // Either remove this line or replace with proper setter if needed
         $riskWeighting = $efnc->getRiskWeighting();
-        $efnc->getRiskWeighting($riskWeighting);
+        $efnc->setRiskWeighting($riskWeighting);  // If you need to set it
 
         $form1 = $this->createForm(FormCreationType::class, $efnc);
 
         if ($request->getMethod() == 'POST') {
-            if ($this->authChecker->isGranted('ROLE_ADMIN')) {
-                if ($efnc->isArchived() !== true || $efnc->isClosed() !== true) {
-                    $form1->handleRequest($request);
-                    if ($form1->isValid() && $form1->isSubmitted()) {
-                        $result = $this->formModificationService->modifyNCForm(
-                            $efnc,
-                            $request,
-                            $form1,
-                            $this->getUser()->getUsername()
-                        );
-                    }
-                    if ($result === true) {
+            $flag = 'error';
+            $message = '';
 
-                        $this->addFlash('success', 'Fiche correctement modifiée!');
-                        return $this->redirectToRoute('app_base', []);
-                    } else {
-                        $this->addFlash('error', 'Erreur lors de la modification de la fiche!');
-                        return $this->redirectToRoute('app_base', []);
-                    }
-                } else {
-                    $this->addFlash('error', 'Vous ne pouvez pas modifier une fiche archivée ou cloturée!');
-                    return $this->redirectToRoute('app_base', []);
-                }
+            if (!$this->authChecker->isGranted('ROLE_ADMIN')) {
+                $message = 'Vous n\'avez pas les droits pour modifier cette fiche!';
+            } elseif ($efnc->isArchived() || $efnc->isClosed()) {
+                $message = 'Vous ne pouvez pas modifier une fiche archivée ou cloturée!';
             } else {
-                $this->addFlash('error', 'Vous n\'avez pas les droits pour modifier cette fiche!');
-                return $this->redirectToRoute('app_base', []);
+                $form1->handleRequest($request);
+                $result = false;
+
+                if ($form1->isValid() && $form1->isSubmitted()) {
+                    $result = $this->formModificationService->modifyNCForm(
+                        $efnc,
+                        $request,
+                        $form1,
+                        $this->getUser()->getUsername()
+                    );
+                }
+
+                if ($result === true) {
+                    $flag = 'success';
+                    $message = 'Fiche correctement modifiée!';
+                } else {
+                    $message = 'Erreur lors de la modification de la fiche!';
+                }
             }
+
+            $this->addFlash($flag, $message);
+            $response = $this->redirectToRoute('app_base');
         } else {
-            return $this->render('/services/efnc/modification/form_modification.html.twig', [
+            $response = $this->render('/services/efnc/modification/form_modification.html.twig', [
                 'form1' => $form1->createView(),
                 'EFNC' => $efnc,
             ]);
         }
+
+        return $response;
     }
 
     #[Route('/picture_view/{pictureID}', name: 'picture_view')]

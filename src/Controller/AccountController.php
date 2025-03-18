@@ -39,15 +39,13 @@ class AccountController extends AbstractController
     public function createAccount(Request $request): Response
     {
         if ($request->isMethod('GET')) {
+            $url = 'services/admin_services/accountservices/create_account.html.twig';
             if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
-                return $this->render('services/admin_services/accountservices/superadmin_create_account.html.twig', [
-                    'users' => $this->userRepository->findAll(),
-                ]);
-            } else {
-                return $this->render('services/admin_services/accountservices/create_account.html.twig', [
-                    'users' => $this->userRepository->findAll(),
-                ]);
+                $url = 'services/admin_services/accountservices/superadmin_create_account.html.twig';
             }
+            return $this->render($url, [
+                'users' => $this->userRepository->findAll(),
+            ]);
         } else {
             $superAdmin = $this->userRepository->findOneBy(['roles' => 'ROLE_SUPER_ADMIN']);
             $requestedRole = $request->request->get('role');
@@ -73,28 +71,23 @@ class AccountController extends AbstractController
     #[Route(path: '/admin/modify_account/{userid}', name: 'modify_account')]
     public function modifyAccount(UserInterface $currentUser, int $userid, AuthenticationUtils $authenticationUtils, Request $request): Response
     {
-        $error = $authenticationUtils->getLastAuthenticationError();
         $user = $this->userRepository->find($userid);
         if ($request->isMethod('POST')) {
             $error = $authenticationUtils->getLastAuthenticationError();
             $usermod = $this->accountService->modifyAccount($request, $currentUser, $user);
-            if ($usermod instanceof User) {
+            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+                $this->addFlash('danger', 'Le compte ne peut être modifié');
+            } else if ($usermod instanceof User) {
                 $this->addFlash('success', 'Le compte ' . $usermod->getUsername() . ' a été modifié');
             };
             return $this->redirectToRoute('app_base');
         }
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
-            $this->addFlash('danger', 'Le compte ne peut être modifié');
-            return $this->redirectToRoute('app_base');
-        } else if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
-            return $this->render('services/admin_services/accountservices/superadmin_modify_account_view.html.twig', [
-                'user'          => $user,
-                'error'         => $error,
-            ]);
+        $url = 'services/admin_services/accountservices/modify_account_view.html.twig';
+        if (in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles())) {
+            $url = 'services/admin_services/accountservices/superadmin_modify_account_view.html.twig';
         }
-        return $this->render('services/admin_services/accountservices/modify_account_view.html.twig', [
+        return $this->render($url, [
             'user'          => $user,
-            'error'         => $error,
         ]);
     }
 

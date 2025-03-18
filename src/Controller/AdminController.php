@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use  \Psr\Log\LoggerInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,7 +34,6 @@ use App\Form\ProductCategoryType;
 use App\Form\ProductColorType;
 use App\Form\ProductVersionType;
 
-use App\Repository\UserRepository;
 use App\Repository\TeamRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\OriginRepository;
@@ -64,6 +65,7 @@ class AdminController extends AbstractController
 {
     protected $logger;
     protected $authChecker;
+    protected $em;
 
     // Repository methods
     protected $teamRepository;
@@ -98,6 +100,7 @@ class AdminController extends AbstractController
 
         AuthorizationCheckerInterface   $authChecker,
         LoggerInterface                 $logger,
+        EntityManagerInterface                   $em,
 
         // Repository methods
         TeamRepository                  $teamRepository,
@@ -130,6 +133,7 @@ class AdminController extends AbstractController
 
         $this->authChecker                  = $authChecker;
         $this->logger                       = $logger;
+        $this->em                           = $em;
 
         // Variables related to the repositories
         $this->teamRepository               = $teamRepository;
@@ -520,7 +524,7 @@ class AdminController extends AbstractController
 
             $result = $this->entityDeletionService->archivedEntity($entityType, $id, $commentary);
 
-            if ($result == false) {
+            if ($result) {
                 $this->addFlash('success', 'L\'élément a bien été archivé');
                 if ($entityType == "efnc") {
                     return $this->redirectToRoute('app_base');
@@ -588,6 +592,9 @@ class AdminController extends AbstractController
             }
             $this->addFlash('danger', 'Une erreur est survenue lors de la mise à jour:  ' . implode(', ', $errorMessages));
             return $this->redirectToRoute('app_base');
+        }
+        if (count($efncs) == $i) {
+            $this->em->flush();
         }
         $this->addFlash('success', 'Mise à jour terminée. Sur ' . count($efncs) . ', ' . $i . ' Fiches ont été modifiées.');
         return $this->redirectToRoute('app_base');
