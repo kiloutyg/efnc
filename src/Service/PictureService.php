@@ -45,6 +45,7 @@ class PictureService extends AbstractController
     public function formPictureManager(Request $request, EFNC $efnc, string $efncFolderName): bool
     {
         $response = true;
+        $result = [];
 
         // Check if 'picture' key exists and is not null
         if (key_exists('picture', $request->files->all()) && $request->files->get('picture') != null) {
@@ -52,35 +53,23 @@ class PictureService extends AbstractController
             // Process TraceabilityPictures
             if (key_exists('TraceabilityPicture', $pictures)) {
                 foreach ($pictures['TraceabilityPicture'] as $traceabilityPicture) {
-                    $traceabilityPictures[] = $traceabilityPicture;
+                    $result[] = $this->pictureUpload($traceabilityPicture, $efnc, $efncFolderName, 'traceability');
                 }
             }
             // Process NCpictures
             if (key_exists('NCpicture', $pictures)) {
                 foreach ($pictures['NCpicture'] as $ncPicture) {
-                    $ncPictures[] = $ncPicture;
+                    $result[] = $this->pictureUpload($ncPicture, $efnc, $efncFolderName, 'NC');
                 }
             }
         }
-        // Process each file, e.g., save them to the server
-        if (isset($traceabilityPictures)) {
-            foreach ($traceabilityPictures as $picture) {
-                // Save or process $pictures
-                $result = $this->pictureUpload($picture, $efnc, $efncFolderName, 'traceability');
-            }
-        }
-        if (isset($ncPictures)) {
-            foreach ($ncPictures as $picture) {
-                // Save or process $picture
-                $result = $this->pictureUpload($picture, $efnc, $efncFolderName, 'NC');
-            }
-        }
-        if ($result != true) {
+        if (in_array(false, $result)) {
             $response = false;
         }
-
         return $response;
     }
+
+
     public function pictureUpload(UploadedFile $file, EFNC $efnc, $efncFolderName, string $category)
     {
         $result = true;

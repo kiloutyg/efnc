@@ -51,7 +51,7 @@ class FormModificationService extends AbstractController
         try {
             $this->pictureService->formPictureManager($request, $efnc, $efncFolderName);
         } catch (\Exception $e) {
-            $this->logger->error('error ', [$e->getMessage()]);
+            $this->logger->error('error in pictureService modifyNCForm', [$e->getMessage()]);
             return false;
         }
         $efnc->setLastModifier($this->getUser()->getUsername());
