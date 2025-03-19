@@ -92,3 +92,4 @@ efnc.yml
 doc
 /doc/
 *.code-workspace
+.env

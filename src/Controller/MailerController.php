@@ -2,19 +2,54 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
+
+use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
+use App\Repository\UserRepository;
+use App\Repository\EFNCRepository;
+
+use App\Service\MailerService;
+
 
 class MailerController extends FrontController
-
 {
+    private $logger;
+    private $em;
+
+    private $eFNCRepository;
+    private $userRepository;
+
+    private $mailerService;
+
+    public function __construct(
+        LoggerInterface             $logger,
+        EntityManagerInterface      $em,
+
+        UserRepository              $userRepository,
+        EFNCRepository              $eFNCRepository,
+
+        MailerService               $mailerService
+    ) {
+        $this->logger = $logger;
+        $this->em = $em;
+
+        $this->userRepository = $userRepository;
+        $this->eFNCRepository = $eFNCRepository;
+
+        $this->mailerService = $mailerService;
+    }
+
+
+
     #[Route('/mailer/{id}', name: 'app_mailer')]
     public function mailTemplateTester(int $id)
     {
-        $EFNC = $this->EFNCRepository->findOneBy(['id' => $id]);
-        $this->mailerService->notificationEmail($EFNC);
+        $efnc = $this->eFNCRepository->findOneBy(['id' => $id]);
+        $this->mailerService->notificationEmail($efnc);
         return $this->redirectToRoute('app_base');
     }
 
@@ -44,26 +79,17 @@ class MailerController extends FrontController
             if ($oldEmail !== $newEmail) {
                 $user->setEmailAddress($newEmail);
                 $this->logger->info('user email now: ' . $user->getEmailAddress());
-
-                // Persist and flush inside the loop is not efficient, should be done outside
-                // $this->em->persist($user);
-                // $this->em->flush();
-
                 $usersUpdated[] = $user;
                 $emailAfterUpdate = $user->getEmailAddress();
 
                 $htmlContent .= "<p>{$username}'s email address updated to {$emailAfterUpdate}</p>"; // Append to the HTML content
             }
         }
-
         if (!empty($usersUpdated)) {
-
             foreach ($usersUpdated as $updatedUser) {
                 $this->em->persist($updatedUser);
             }
             $this->em->flush();
-
-
             // Send email or handle the response with the HTML content
             $subject = "Update Email Address";
             $recipient = $this->userRepository->findOneBy(['username' => 'florian.dkhissi']);
@@ -102,10 +128,6 @@ class MailerController extends FrontController
             if ($oldEmail !== $newEmail) {
                 $user->setEmailAddress($newEmail);
                 $this->logger->info('user email now: ' . $user->getEmailAddress());
-
-                // Persist and flush inside the loop is not efficient, should be done outside
-                // $this->em->persist($user);
-                // $this->em->flush();
 
                 $usersUpdated[] = $user;
                 $emailAfterUpdate = $user->getEmailAddress();

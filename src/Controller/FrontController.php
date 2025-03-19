@@ -55,13 +55,4 @@ class FrontController extends AbstractController
         return $this->render('/services/efnc/display/closed_efnc_list.html.twig', []);
     }
 
-    #[Route('/admin/statusflag', name: 'status_flag')]
-    public function statusFlagUpdate(): Response
-    {
-        foreach ($this->eFNCRepository->findAll() as $eFNC) {
-            $this->entityDeletionService->setStatusFlag($eFNC);
-        }
-        $this->addFlash('success', 'status_flag has been updated');
-        return $this->redirectToRoute('app_base');
-    }
 }

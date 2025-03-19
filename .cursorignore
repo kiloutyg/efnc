@@ -2,5 +2,9 @@
 /node_modules/
 /vendor/
 *.env
+.env.*
+.env
+/var/*
 /secrets/
 /public/doc/*
+/public/*

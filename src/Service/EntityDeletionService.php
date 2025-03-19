@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Psr\Log\LoggerInterface;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use App\Entity\EFNC;
 
 use App\Repository\UserRepository;
@@ -24,7 +26,6 @@ use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductColorRepository;
 use App\Repository\ProductVersionRepository;
 use App\Repository\EFNCRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 
 // This class is responsible for managing the deletion of entities, their related entities from the database
 // It also refer to the logic for deleting the folder and files from the server filesystem
@@ -103,7 +104,7 @@ class EntityDeletionService extends AbstractController
             $entity->setArchiver($this->getUser()->getUsername());
             $entity->setArchivingCommentary($commentary);
             $entity->setArchived(true);
-            $this->setStatusFlag($entity);
+            $this->setStatusFlagMethod($entity);
         } else {
             $this->basicEntityManagement($entity, true);
         }
@@ -127,7 +128,7 @@ class EntityDeletionService extends AbstractController
         }
         if ($entityType === 'efnc') {
             $entity->setArchived(true);
-            $this->setStatusFlag($entity);
+            $this->setStatusFlagMethod($entity);
         } else {
             $this->basicEntityManagement($entity, true);
         }
@@ -152,7 +153,7 @@ class EntityDeletionService extends AbstractController
         }
         if ($entityType === 'efnc') {
             $entity->setArchived(false);
-            $this->setStatusFlag($entity);
+            $this->setStatusFlagMethod($entity);
         } else {
             $this->basicEntityManagement($entity, false);
         }
@@ -180,7 +181,7 @@ class EntityDeletionService extends AbstractController
             $entity->setClosingCommentary($commentary);
             $entity->setArchived(true);
             $entity->setClosed(true);
-            $this->setStatusFlag($entity);
+            $this->setStatusFlagMethod($entity);
         }
 
         $this->em->flush();
@@ -264,24 +265,21 @@ class EntityDeletionService extends AbstractController
 
         foreach ($efncs as $efnc) {
             $efnc->setArchived($flag);
-            $this->setStatusFlag($efnc);
+            $this->setStatusFlagMethod($efnc);
         }
     }
 
-    public function setStatusFlag(EFNC $efnc): void
+    public function setStatusFlagMethod(EFNC $efnc): void
     {
-        $status = $efnc->getStatus();
         $archived = $efnc->isArchived();
         $closed = $efnc->isClosed();
 
-        if ($status === null) {
-            if ($closed === true) {
-                $efnc->setStatus('closed');
-            } elseif ($archived === true) {
-                $efnc->setStatus('archived');
-            } else {
-                $efnc->setStatus('open');
-            }
+        if ($closed === true) {
+            $efnc->setStatusFlag('closed');
+        } elseif ($archived === true) {
+            $efnc->setStatusFlag('archived');
+        } else {
+            $efnc->setStatusFlag('open');
         }
     }
 }

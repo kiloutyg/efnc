@@ -17,15 +17,10 @@ php bin/console cache:warmup --env=dev;
 # Set the ownership
 chown -R www-data:www-data /var/www/var/;
 chown -R www-data:www-data /var/www/public/;
+chown -R www-data:www-data /var/www/migrations/;
 
 # Set the permissions
 chmod 755 . -R;
-
-# Create the migrations directory
-mkdir -p migrations;
-
-# Delete any past migration file
-rm -rf migrations/*.php;
 
 # Create the database and run the migrations
 php bin/console make:migration;
