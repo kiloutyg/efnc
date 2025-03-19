@@ -580,7 +580,7 @@ class AdminController extends AbstractController
         $errorMessages = [];
         foreach ($efncs as $efnc) {
             try {
-                $this->entityDeletionService->setStatusFlag($efnc);
+                $this->entityDeletionService->setStatusFlagMethod($efnc);
                 $i++;
             } catch (\Exception $e) {
                 $errorMessages[] = $e->getMessage();
