@@ -21,12 +21,6 @@ chown -R www-data:www-data /var/www/public/;
 # Set the permissions
 chmod 755 . -R;
 
-# Create the migrations directory
-mkdir -p migrations;
-
-# Delete any past migration file
-rm -rf migrations/*.php;
-
 # Create the database and run the migrations
 php bin/console make:migration;
 php bin/console doctrine:migrations:migrate;
