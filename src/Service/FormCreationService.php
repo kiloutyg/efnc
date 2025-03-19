@@ -66,7 +66,7 @@ class FormCreationService extends AbstractController
         }
 
         $this->imcomeService->imcomeAssignation($efnc, $form1);
-        $efnc->setStatus('open');
+        $efnc->setStatusFlag('open');
         $this->em->persist($efnc);
         $this->em->flush();
         return true;

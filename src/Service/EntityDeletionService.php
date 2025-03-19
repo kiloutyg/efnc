@@ -270,17 +270,17 @@ class EntityDeletionService extends AbstractController
 
     public function setStatusFlag(EFNC $efnc): void
     {
-        $status = $efnc->getStatus();
+        $status = $efnc->getStatusFlag();
         $archived = $efnc->isArchived();
         $closed = $efnc->isClosed();
 
         if ($status === null) {
             if ($closed === true) {
-                $efnc->setStatus('closed');
+                $efnc->setStatusFlag('closed');
             } elseif ($archived === true) {
-                $efnc->setStatus('archived');
+                $efnc->setStatusFlag('archived');
             } else {
-                $efnc->setStatus('open');
+                $efnc->setStatusFlag('open');
             }
         }
     }

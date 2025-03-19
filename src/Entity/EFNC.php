@@ -108,7 +108,7 @@ class EFNC
     private ?string $closingCommentary = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $status = null;
+    private ?string $statusFlag = null;
 
 
     public function __construct()
@@ -373,7 +373,7 @@ class EFNC
     public function setClosed(?bool $closed): static
     {
         $this->closed = $closed;
-        // If the closed status is set to true, we set the ClosedDate to the current date
+        // If the closed statusFlag is set to true, we set the ClosedDate to the current date
         if ($closed === true) {
             $this->closedDate = new \DateTime();
         }
@@ -587,14 +587,14 @@ class EFNC
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatusFlag(): ?string
     {
-        return $this->status;
+        return $this->statusFlag;
     }
 
-    public function setStatus(?string $status): static
+    public function setStatusFlag(?string $statusFlag): static
     {
-        $this->status = $status;
+        $this->statusFlag = $statusFlag;
 
         return $this;
     }
