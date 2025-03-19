@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250319100632 extends AbstractMigration
+final class Version20250319104756 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,7 +27,7 @@ final class Version20250319100632 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE efnc DROP status_flag, CHANGE closed status TINYINT(1) DEFAULT NULL');
         $this->addSql('ALTER TABLE immediate_conservatory_measures CHANGE done status TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE efnc DROP status_flag, CHANGE closed status TINYINT(1) DEFAULT NULL');
     }
 }

@@ -48,8 +48,8 @@ class MailerController extends FrontController
     #[Route('/mailer/{id}', name: 'app_mailer')]
     public function mailTemplateTester(int $id)
     {
-        $EFNC = $this->eFNCRepository->findOneBy(['id' => $id]);
-        $this->mailerService->notificationEmail($EFNC);
+        $efnc = $this->eFNCRepository->findOneBy(['id' => $id]);
+        $this->mailerService->notificationEmail($efnc);
         return $this->redirectToRoute('app_base');
     }
 
