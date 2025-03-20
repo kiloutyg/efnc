@@ -2,30 +2,23 @@ doctrine:
     dbal:
         url: "%env(resolve:DATABASE_URL)%"
         default_table_options:
-            charset: latin1
-            collate: latin1_general_ci
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
         driver: "pdo_mysql"
         options:
-            # SSL private key
+            # Keep existing SSL options
             !php/const PDO::MYSQL_ATTR_SSL_KEY: "%env(MYSQL_SSL_KEY)%"
-            # SSL certificate
             !php/const PDO::MYSQL_ATTR_SSL_CERT: "%env(MYSQL_SSL_CERT)%"
-            # SSL CA authority
             !php/const PDO::MYSQL_ATTR_SSL_CA: "%env(MYSQL_SSL_CA)%"
-            # SSL does not check for valid CA
             !php/const PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT: false
-
-            # # SSL private key
-            # PDO::MYSQL_ATTR_SSL_KEY: "%env(resolve:MYSQL_SSL_KEY)%"
-            # # SSL certificate
-            # PDO::MYSQL_ATTR_SSL_CERT: "%env(resolve:MYSQL_SSL_CERT)%"
-            # # SSL CA authority
-            # PDO::MYSQL_ATTR_SSL_CA: "%env(resolve:MYSQL_SSL_CA)%"
-            # # Disable server certificate verification (as a boolean!)
-            # PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT: false
-        # IMPORTANT: You MUST configure your server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '15'
+            # Add init commands as numeric keys
+            1001: "SET NAMES latin1 COLLATE latin1_general_ci"
+            1002: "SET SESSION net_read_timeout=3600"
+            1003: "SET SESSION net_write_timeout=3600"
+            1004: "SET SESSION wait_timeout=28800"
+            1005: "SET SESSION interactive_timeout=28800"
+            # Add connection timeout setting
+            !php/const PDO::ATTR_TIMEOUT: 60
 
         profiling_collect_backtrace: "%kernel.debug%"
     orm:
