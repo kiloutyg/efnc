@@ -2,8 +2,8 @@ doctrine:
     dbal:
         url: "%env(resolve:DATABASE_URL)%"
         default_table_options:
-            charset: utf8mb4
-            collate: utf8mb4_unicode_ci
+            charset: latin1
+            collate: latin1_general_ci
         driver: "pdo_mysql"
         options:
             # SSL private key
