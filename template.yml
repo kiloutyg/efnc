@@ -1,4 +1,14 @@
 apiVersion: v1
+kind: Service
+metadata:
+  name: efnc-database-service
+spec:
+  selector:
+    app: efnc-database
+  ports:
+    - port: 3306
+---
+apiVersion: v1
 kind: LimitRange
 metadata:
   name: efnc-database-pod-limits-range
@@ -61,6 +71,8 @@ spec:
           value: run/secrets/database_user
         - name: MARIADB_PASSWORD_FILE
           value: run/secrets/database_password
+      ports:
+        - containerPort: 3306
       volumeMounts:
         - mountPath: /run/secrets/root_password
           readOnly: true
