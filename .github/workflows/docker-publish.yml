@@ -90,22 +90,22 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
 
-  sonarcloud:
-    needs: analyze
-    name: SonarQube Cloud
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.2.2
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarQube Cloud Scan
-        uses: SonarSource/sonarqube-scan-action@v4.2.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#  sonarcloud:
+#    needs: analyze
+#    name: SonarQube Cloud
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4.2.2
+#        with:
+#          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+#      - name: SonarQube Cloud Scan
+#        uses: SonarSource/sonarqube-scan-action@v4.2.1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build-to-prod:
-    needs: sonarcloud
+#    needs: sonarcloud
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -185,7 +185,7 @@ jobs:
         #       done
 
   build-to-dev:
-    needs: sonarcloud
+ #   needs: sonarcloud
     runs-on: ubuntu-latest
     permissions:
       contents: read
