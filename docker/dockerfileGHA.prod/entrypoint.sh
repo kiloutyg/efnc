@@ -15,8 +15,11 @@ yarn install --ignore-scripts --production
 # Clear Composer cache
 composer clear-cache
 
-# Run the migrations
-php bin/console doctrine:migrations:migrate --no-interaction --no-all-or-nothing;
+# Generate migration files and apply them
+php bin/console doctrine:migrations:diff --no-interaction;
+for version in $(php bin/console doctrine:migrations:status --no-interaction | grep "Latest" | awk '{print $5}'); do
+  php bin/console doctrine:migrations:execute --up "$version" --no-interaction;
+done
 
 # Clear and warm up Symfony cache
 php ./bin/console cache:clear --no-warmup --env=prod
