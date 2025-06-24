@@ -147,8 +147,8 @@ class MailerService extends AbstractController
                 }
             }
             $monthOldEfnc = $this->EFNCRepository->getMonthOldLowLevelRiskEfnc();
-            $this->logger->info('Month old efncs: ' . count($monthOldEfnc));
-            $this->logger->info('month old efncs: ', [$monthOldEfnc]);
+            $this->logger->info('MailerService::sendReminderEmailToAdmin : count($monthOldEfnc) : ' . count($monthOldEfnc));
+            $this->logger->info('MailerService::sendReminderEmailToAdmin : [$monthOldEfnc] : ', [$monthOldEfnc]);
 
             $email = (new TemplatedEmail())
                 ->from($senderEmail)
