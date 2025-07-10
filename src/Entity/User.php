@@ -24,7 +24,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3, max: 180)]
-    #[Assert\Regex(pattern: '/^[a-zA-Z]+\.[a-zA-Z]+$/', message: 'Le nom d\'utilisateur doit être au format prénom.nom')]
+    #[Assert\Regex(
+        pattern: '/^(it-[a-z]+|[a-z]+(?:-[a-z]+)?\.[a-z]+(?:-[a-z]+)?)$/',
+        message: 'Le nom d\'utilisateur doit être au format prénom.nom, prénom-nom.nom, ou it-polangres'
+    )]
     private ?string $username = null;
 
     #[ORM\Column]
