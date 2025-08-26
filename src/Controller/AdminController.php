@@ -56,6 +56,7 @@ use App\Service\ImCoMeService;
 use App\Service\ProductCategoryService;
 use App\Service\ProductColorService;
 use App\Service\ProductVersionService;
+use App\Service\TeamService;
 
 #[Route('/', name: 'app_')]
 
@@ -126,7 +127,8 @@ class AdminController extends AbstractController
         ImCoMeService                   $imcomeService,
         ProductCategoryService          $productCategoryService,
         ProductColorService             $productColorService,
-        ProductVersionService           $productVersionService
+        ProductVersionService           $productVersionService,
+        TeamService                     $teamService
 
 
     ) {
@@ -160,6 +162,7 @@ class AdminController extends AbstractController
         $this->productCategoryService       = $productCategoryService;
         $this->productColorService          = $productColorService;
         $this->productVersionService        = $productVersionService;
+        $this->teamService                  = $teamService;
     }
 
     #[Route('/admin/view', name: 'admin_page')]
